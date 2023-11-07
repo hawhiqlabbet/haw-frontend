@@ -4,7 +4,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import './MyInputField.css';
-import io from 'socket.io-client';
+import io from 'socket.io-client'
+const socket = io.connect(process.env.REACT_APP_API_URL);
 
 export default function MyInputField({ handleIsHosting }) {
   // States
@@ -53,15 +54,8 @@ export default function MyInputField({ handleIsHosting }) {
 
         handleIsHosting('true');
 
-
-        // console.log(process.env.REACT_APP_API_URL);
-        // connection 
-        const socket = io('http://localhost:3001');
-
-        socket.on("connect", () => {
-          console.log('Connected to the WebSocket server');
-        });
-
+        // Connect socket
+        socket.emit();
 
         // Dispatch a custom event
         const event = new Event('storage');

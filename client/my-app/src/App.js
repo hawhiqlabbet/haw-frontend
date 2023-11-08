@@ -57,6 +57,7 @@ export default function App() {
                 handleIsHosting={(isHosting) => setIsHosting(isHosting)}
                 handleIsJoining={(isJoining) => setIsJoining(isJoining)}
                 handleNameSet={(nameSet) => setNameSet(nameSet)}
+                isHosting={isHosting}
                 name={name}
             />
           )}

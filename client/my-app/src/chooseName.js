@@ -17,6 +17,9 @@ export default function ChooseName( {isHosting, isJoining, handleNameSet, handle
     };
 
     const sendName = () => {
+        if((inputName === '') || (inputName === null))
+            return;
+
         if(isHosting === 'true'){
             socket.emit("setHostUsername", inputName);
         }

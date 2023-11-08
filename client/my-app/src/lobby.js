@@ -5,7 +5,8 @@ import Grid from '@mui/material/Grid';
 import { socket } from './socket';
 
 
-export default function Lobby({ handleIsHosting, handleIsJoining, handleNameSet, name }) {
+export default function Lobby({ handleIsHosting, handleIsJoining, handleNameSet, isHosting, name }) {
+
 
     // Effects
     useEffect(() => {
@@ -31,17 +32,29 @@ export default function Lobby({ handleIsHosting, handleIsJoining, handleNameSet,
         const event = new Event('storage');
         window.dispatchEvent(event);
       };
-    return (
-    <Grid container justifyContent="center" alignItems="center">
-      <Grid item style={{ textAlign: 'center' }}>
-        <Button variant="contained">Game1</Button>
-      </Grid>
-      <Grid item style={{ textAlign: 'center' }}>
-        <Button variant="contained">Game 2</Button>
-      </Grid>
-      <Grid item>
-        <Button variant="contained" onClick={quit}>Quit</Button>
-      </Grid>
-    </Grid>
-    )
+
+
+      return (
+        <div>
+          {isHosting === 'true' ? (
+            <Grid container justifyContent="center" alignItems="center">
+              <Grid item style={{ textAlign: 'center' }}>
+                <Button variant="contained">Game 1</Button>
+              </Grid>
+              <Grid item style={{ textAlign: 'center' }}>
+                <Button variant="contained">Game 2</Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" onClick={quit}>Quit</Button>
+              </Grid>
+            </Grid>
+          ) : (
+            <Grid container justifyContent="center" alignItems="center">
+              <Grid item>
+                <Button variant="contained" onClick={quit}>Quit</Button>
+              </Grid>
+            </Grid>
+          )}
+        </div>
+      );
 }

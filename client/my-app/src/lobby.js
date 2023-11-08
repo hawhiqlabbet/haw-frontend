@@ -1,19 +1,30 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { socket } from './socket';
 
 
-export default function Lobby({ handleIsHosting }) {
+export default function Lobby({ handleIsHosting, handleIsJoining, handleNameSet, name }) {
+
+    // Effects
+    useEffect(() => {
+        socket.on("host_disconnected", (data) => {
+        alert(data);
+        handleIsJoining('false');
+        handleNameSet('false');
+        })
+    },[ socket ])
 
     // Functions
     const quit = async () => {
         localStorage.setItem('hosting', 'false');
         handleIsHosting('false');
+        handleIsJoining('false');
+        handleNameSet('false');
 
         // Disconnect socket
-        socket.emit("disconnectName", "WEEE");
+        socket.emit("disconnectName", name);
         socket.disconnect();
 
         // Dispatch a custom event
@@ -32,6 +43,5 @@ export default function Lobby({ handleIsHosting }) {
         <Button variant="contained" onClick={quit}>Quit</Button>
       </Grid>
     </Grid>
-        
     )
 }

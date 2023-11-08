@@ -46,6 +46,7 @@ app.post('/join', (req, res, next) => {
 });
 
 app.get('/host', (req, res) => {
+  console.log("Someone is trying to host");
   if(currCode == "") {
     const code = crypto.randomBytes(2).toString('hex').toUpperCase();
     currCode = code;
@@ -55,29 +56,51 @@ app.get('/host', (req, res) => {
     res.json({ token, code });
     console.log(currCode);
   }
+  else{
+    res.json({"token": "", "code": ""});
+  }
 });
 
 
+const disconnectTimeout = 60000; // 60 seconds in milliseconds
+let disconnectTimer;
 
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
   console.log(io.engine.clientsCount);
 
   socket.on("setHostUsername", (username) => {
-    console.log(`Setting username to:${username}`)
+    console.log(`Setting host username to:${username}`)
     clients[socket.id] = username;
     currHost = username;
   });
 
-  socket.on("disconnect", (reason) => {
-    console.log(`User disconnected, reason: ${reason}`);
-    delete clients[socket.id];
+  socket.on("setClientUsername", (username) => {
+    console.log(`Setting client username to:${username}`)
+    clients[socket.id] = username;
   });
 
-  socket.on("disconnectName", (name) => {
-    if(name == currHost){
+  /*
+  socket.on("disconnect", (reason) => {
+    console.log(`User disconnected, reason: ${reason}`);
+    console.log(currHost);
+    if(clients[socket.id] === currHost){
       currHost = "";
       currCode = "";
+    }
+    delete clients[socket.id];
+  });
+  */
+
+  socket.on("disconnectName", (name) => {
+    console.log(`User disconnected, name: ${name}`)
+    console.log(currHost);
+    if(name === currHost){
+      currHost = "";
+      currCode = "";
+      
+      // Emit lobby shutting down
+      io.emit("host_disconnected");
     }
     delete clients[socket.id];
   });

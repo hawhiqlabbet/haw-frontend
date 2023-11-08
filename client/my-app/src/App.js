@@ -1,12 +1,16 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import Lobby from './lobby'
+import ChooseName from './chooseName';
 import MyInputField from './MyInputField';
 import { socket } from './socket';
 
 export default function App() {
     
-    const [isHosting, setIsHosting] = useState(localStorage.getItem('hosting'));
+    const [isHosting, setIsHosting] = useState('false');
+    const [isJoining, setIsJoining] = useState('false');
+    const [nameSet, setNameSet] = useState('false');
+    const [name, setName] = useState('');
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [fooEvents, setFooEvents] = useState([]);
     
@@ -34,9 +38,33 @@ export default function App() {
         };
       }, []);
 
-    return (
+      return (
         <div>
-          {isHosting === 'true' ? (
+          {isHosting === 'false' && isJoining === 'false' ? (
+            <MyInputField
+                handleIsHosting={(isHosting) => setIsHosting(isHosting)}
+                handleIsJoining={(isJoining) => setIsJoining(isJoining)}
+            />
+          ) : nameSet === 'false' ? (
+            <ChooseName 
+                isHosting={isHosting}
+                isJoining={isJoining}
+                handleNameSet={(nameSet) => setNameSet(nameSet)}
+                handleName={(name) => setName(name)}
+              />
+          ) : (
+            <Lobby
+                handleIsHosting={(isHosting) => setIsHosting(isHosting)}
+                handleIsJoining={(isJoining) => setIsJoining(isJoining)}
+                handleNameSet={(nameSet) => setNameSet(nameSet)}
+                name={name}
+            />
+          )}
+        </div>
+      );
+        /*
+        <div>
+          {isHosting === 'true' ?(
             <Lobby 
                 handleIsHosting={(isHosting) => setIsHosting(isHosting)}
             />
@@ -47,4 +75,5 @@ export default function App() {
           )}
         </div>
       );
+      */
 }

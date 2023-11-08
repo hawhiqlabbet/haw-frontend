@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import './MyInputField.css';
 import { socket } from './socket';
 
-export default function MyInputField({ handleIsHosting }) {
+export default function MyInputField({ handleIsHosting, handleIsJoining }) {
   // States
   const [fetchedData, setFetchedData] = useState(null);
   const [inputCode, setInputCode] = useState(null);
@@ -14,7 +14,10 @@ export default function MyInputField({ handleIsHosting }) {
   // Effects
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      alert(data)
+      alert(data);
+    })
+    socket.on("host_disconnected", (data) => {
+      alert(data);
     })
   },[ socket ])
 
@@ -55,7 +58,10 @@ export default function MyInputField({ handleIsHosting }) {
       }
       const data = await response.json();
       if (data.success === "true") {
-        socket.emit("setClientUsername", "WOOO");
+        // Connect socket
+        socket.connect();
+        handleIsJoining('true');
+        //socket.emit("setClientUsername", "WOOO");
       }
       else {
         console.log("Invalid code");
@@ -84,7 +90,6 @@ export default function MyInputField({ handleIsHosting }) {
 
         // Connect socket
         socket.connect();
-        socket.emit("setHostUsername", "WEEE");
 
         // Dispatch a custom event
         const event = new Event('storage');

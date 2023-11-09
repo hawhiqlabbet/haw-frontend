@@ -17,8 +17,7 @@ spec:
           image: awappcr.azurecr.io/frontendImage
           ports:
           - containerPort: 3000
-
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

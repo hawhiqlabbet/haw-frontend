@@ -31,8 +31,7 @@ metadata:
   name: web-ingress
 spec:
   rules:
-  - host: REPLACE_WITH_EXTERNAL_IP
-    http:
+  - http:
       paths:
       - path: /frontend
         pathType: Prefix

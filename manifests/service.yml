@@ -61,3 +61,17 @@ spec:
       port: 80
       targetPort: 80
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-lb
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      name: http
+      port: 3001
+      targetPort: 3001
+  type: LoadBalancer

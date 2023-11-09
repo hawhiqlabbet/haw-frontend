@@ -1,0 +1,27 @@
+@import '../../styles.scss';
+
+
+.white-box {
+    background-color:  rgba(white, 0.3);
+    height: 80px; 
+  }
+
+  .form-input {
+    font-size: 1rem; 
+    height: 38px; 
+    padding: 6px 12px; 
+    border-radius: 5px; 
+    border: transparent;
+    color: $primary; 
+    background-color: #f9f9f9; 
+    margin-right: 10px;
+  }
+  
+  .form-input::placeholder {
+    color: $primary; /* Set placeholder text color to pink */
+  }
+  
+
+  .form-input::focus {
+    border-color: #FF4D6D; /* Set border color to pink on focus */
+  }

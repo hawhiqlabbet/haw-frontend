@@ -1,0 +1,70 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+
+// Override Bootstrap variables 
+$primary: #FF4D6D; 
+$secondary: #800F2F;
+
+
+body { 
+    background: url('assets/Screenshot\ 2023-11-08\ 135514.png') center/cover no-repeat; 
+    font-family: 'Inter', sans-serif;
+}
+
+.transparent-background {
+    background-color: rgba($primary, 0.9); /* Background color with 30% opacity */
+  }
+
+/* Heading Styles */
+.heading {
+    font-family: 'Unlock', sans-serif;
+    font-size: 64px;
+    font-weight: bold;
+    color: $secondary;
+  }
+  
+/* Button Styles */
+
+.btn-primary {
+    background-color:  $primary; 
+    color: $secondary; 
+    border-color:$primary; 
+    font-size: 14px;
+
+  }
+
+.btn-primary:hover {
+    background-color: $secondary; 
+    color: $primary; 
+    border-color: $primary; 
+  }
+
+.btn-secondary {
+    background-color:  $secondary; 
+    color: white; 
+    border-color:$secondary; 
+    font-size: 14px;
+}
+
+.btn-secondary:hover {
+    background-color: $primary; 
+    color: $secondary; 
+    border-color: $primary; 
+  }
+
+.pink-background {
+    background-color: $primary; 
+    color: $secondary; 
+    }
+
+.white-background {
+    background-color: $secondary;
+    color: $primary; 
+  }
+
+.secondary-icon {
+    color: $secondary; 
+  }

@@ -16,7 +16,7 @@ spec:
         - name: frontendcontainer
           image: awappcr.azurecr.io/frontendimage
           ports:
-          - containerPort: 3000
+          - containerPort: 80
 ---
 apiVersion: apps/v1
 kind: Deployment

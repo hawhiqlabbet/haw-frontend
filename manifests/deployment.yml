@@ -1,19 +1,40 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: davidangstromawapp 
+  name: frontend-deployment 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: davidangstromawapp
+      app: frontend
   template:
     metadata:
       labels:
-        app: davidangstromawapp 
+        app: frontend
     spec:
       containers:
-        - name: davidangstromawapp 
-          image: awappcr.azurecr.io/davidangstromawapp
+        - name: frontend-container
+          image: awappcr.azurecr.io/frontendImage
           ports:
           - containerPort: 3000
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-container
+          image: awappcr.azurecr.io/backendImage
+          ports:
+          - containerPort: 3001

@@ -13,16 +13,12 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // Listen for socket events
-    this.socketService.socket.fromEvent('event_name').subscribe((data) => {
-      // Handle the data received from the server
-      console.log(data);
-    });
+
   }
 
   onClickSubmit(result: string) {
     console.log("You have entered : " + result);
-    this.socketService.emitUsername(result);
+    this.socketService.login(result);
     this.router.navigate(['/home']);
   }
 

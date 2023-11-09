@@ -9,8 +9,10 @@ import { GamesComponent } from './games/games.component';
 import { TabBarComponent } from './tab-bar/tab-bar.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
+
+const config: SocketIoConfig = { url: 'http://localhost:3001', options: { autoConnect: false } };
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
     FormsModule,
     AppRoutingModule,
     SocketIoModule.forRoot(config),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

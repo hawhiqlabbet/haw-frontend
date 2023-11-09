@@ -26,4 +26,4 @@ FROM nginx:latest
 COPY --from=build /usr/local/app/dist/angular-client /usr/share/nginx/html
 
 # Expose port 80
-EXPOSE 3000
+EXPOSE 80

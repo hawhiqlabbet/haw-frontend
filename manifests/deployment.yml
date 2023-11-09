@@ -1,7 +1,7 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment 
+  name: frontendDeployment 
 spec:
   replicas: 1
   selector:
@@ -13,7 +13,7 @@ spec:
         app: frontend
     spec:
       containers:
-        - name: frontend-container
+        - name: frontendContainer
           image: awappcr.azurecr.io/frontendimage
           ports:
           - containerPort: 3000
@@ -21,7 +21,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
+  name: backendDeployment
 spec:
   replicas: 1
   selector:
@@ -33,7 +33,7 @@ spec:
         app: backend
     spec:
       containers:
-        - name: backend-container
+        - name: backendContainer
           image: awappcr.azurecr.io/backendimage
           ports:
           - containerPort: 3001

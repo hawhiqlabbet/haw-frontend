@@ -12,7 +12,8 @@ variables:
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'a6d1bebe-11e4-4ae2-b9c9-77e112f51f47'
-  imageRepository: 'davidangstromawapp'
+  frontendRepository: 'frontendImage'
+  backendRepository: 'backendImage'
   containerRegistry: 'awappcr.azurecr.io'
   frontendDockerfile: 'angular-client/Dockerfile'
   backendDockerfile: 'server/Dockerfile'
@@ -36,7 +37,7 @@ stages:
       displayName: Build and push frontend to container registry
       inputs:
         command: buildAndPush
-        repository: $(imageRepository)
+        repository: $(frontendRepository)
         dockerfile: $(frontendDockerfile)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
@@ -45,7 +46,7 @@ stages:
       displayName: Build and push backend to container registry
       inputs:
         command: buildAndPush
-        repository: $(imageRepository)
+        repository: $(backendRepository)
         dockerfile: $(backendDockerfile)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
@@ -84,5 +85,6 @@ stages:
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
+                $(containerRegistry)/$(frontendRepository):$(tag)
+                $(containerRegistry)/$(backendRepository):$(tag)
 

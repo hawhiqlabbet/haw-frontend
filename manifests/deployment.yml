@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: davidangstromawapp 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: davidangstromawapp
+  template:
+    metadata:
+      labels:
+        app: davidangstromawapp 
+    spec:
+      containers:
+        - name: davidangstromawapp 
+          image: awappcr.azurecr.io/davidangstromawapp
+          ports:
+          - containerPort: 3000

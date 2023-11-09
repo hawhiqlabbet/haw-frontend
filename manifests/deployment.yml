@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          image: awappcr.azurecr.io/frontendImage
+          image: awappcr.azurecr.io/frontendimage
           ports:
           - containerPort: 3000
 ---
@@ -34,6 +34,6 @@ spec:
     spec:
       containers:
         - name: backend-container
-          image: awappcr.azurecr.io/backendImage
+          image: awappcr.azurecr.io/backendimage
           ports:
           - containerPort: 3001

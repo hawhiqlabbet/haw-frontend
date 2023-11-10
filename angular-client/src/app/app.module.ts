@@ -10,9 +10,10 @@ import { TabBarComponent } from './tab-bar/tab-bar.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { environment } from './../environments/environment';
 
 
-const config: SocketIoConfig = { url: 'http://localhost:3001', options: { autoConnect: false } };
+const config: SocketIoConfig = { url: environment.apiUrl, options: { autoConnect: false } };
 
 @NgModule({
   declarations: [

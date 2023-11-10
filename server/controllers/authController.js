@@ -18,7 +18,7 @@ function generateTokenAndSetCookie(res, username) {
     return token;
 }
 
-function login(req, res, next) {
+function login(req, res) {
 
     const { username } = req.query;
 
@@ -39,11 +39,9 @@ function login(req, res, next) {
     }
 }
 
-function extractUsernameFromToken(req, res, next) {
+function extractUsernameFromToken(req, res) {
     const cookies = cookie.parse(req.headers.cookie || '');
     const token = cookies.jwt;
-
-    console.log(token)
 
 
     if (token) {

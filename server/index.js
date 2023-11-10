@@ -9,10 +9,10 @@ app.use(cors()); // Enable CORS for all routes
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const authRoutes = require('./routes/authRoutes');
+const routes = require('./routes/routes');
 const socketEvents = require('./socketEvents');
 
-app.use('', authRoutes);
+app.use('', routes);
 
 const server = http.createServer(app);
 const io = new Server(server, {

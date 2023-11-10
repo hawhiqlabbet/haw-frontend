@@ -1,16 +1,26 @@
-app.post('/join', (req, res, next) => {
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+
+const secretKey = "MySecretKey";
+
+let currCode = "";
+let currHost = "";
+
+function joinRoom(req, res, next) {
+    const { code } = req.query;
+
     console.log("Current code: " + currCode);
     console.log("Current host: " + currHost);
-    console.log(req.body.code);
-    if (currCode === req.body.code) {
+    console.log(code);
+    if (currCode === code) {
         res.json({ "success": "true" });
     }
     else {
         res.json({ "success": "false" });
     }
-});
+}
 
-app.get('/host', (req, res) => {
+function hostRoom(req, res, next) {
     console.log("Someone is trying to host");
     if (currCode == "") {
         const code = crypto.randomBytes(2).toString('hex').toUpperCase();
@@ -24,4 +34,10 @@ app.get('/host', (req, res) => {
     else {
         res.json({ "token": "", "code": "" });
     }
-});
+}
+
+
+module.exports = {
+    joinRoom,
+    hostRoom
+};

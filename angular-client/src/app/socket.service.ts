@@ -17,7 +17,8 @@ export class SocketService {
     this.socket.emit('setClientUsername', username);
   }
 
-  login(username: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { name: username });
+  login(name: string): Observable<any> {
+    console.log("post username")
+    return this.http.post<any>(`${this.apiUrl}/login`, { username: name });
   }
 }

@@ -18,7 +18,16 @@ export class LoginComponent implements OnInit {
 
   onClickSubmit(result: string) {
     console.log("You have entered : " + result);
-    this.socketService.login(result);
+    this.socketService.login(result).subscribe(
+      response => {
+        // Handle successful response
+        console.log(response);
+      },
+      error => {
+        // Handle error response
+        console.error(error);
+      }
+    );
     this.router.navigate(['/home']);
   }
 

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SocketService {
-  private apiUrl = 'http://localhost:3001';
+  private apiUrl = 'http://20.166.165.244:3001';
 
   constructor(public socket: Socket, private http: HttpClient) {
   }

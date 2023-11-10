@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-games',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./games.component.scss']
 })
 export class GamesComponent {
+
+  code: string = "";
+
+  constructor(private router: Router) {
+    this.code = this.router.getCurrentNavigation()?.extras?.state?.['code']
+  }
 
 }

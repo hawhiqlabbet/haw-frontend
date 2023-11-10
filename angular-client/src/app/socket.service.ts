@@ -8,6 +8,7 @@ import { environment } from './../environments/environment';
   providedIn: 'root'
 })
 export class SocketService {
+
   private apiUrl = environment.apiUrl
 
   constructor(public socket: Socket, private http: HttpClient) {
@@ -27,4 +28,5 @@ export class SocketService {
     console.log("Hosting")
     return this.http.get<any>(`${this.apiUrl}/host`);
   }
+  
 }

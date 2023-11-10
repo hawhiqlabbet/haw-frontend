@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SocketService } from '../socket.service';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,14 +9,14 @@ import { SocketService } from '../socket.service';
 })
 export class HomeComponent {
 
-  constructor(private socketService: SocketService){
+  constructor(private socketService: SocketService, private router: Router) {}
 
-  }
+
 
   host(): void {
     this.socketService.host().subscribe({
       next: (data) => {
-        console.log(data)
+        this.router.navigate(['games'], { state: { code: data.code } })
       },
       error: (err) => {
         console.log(err)

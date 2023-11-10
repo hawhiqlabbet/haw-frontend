@@ -22,4 +22,9 @@ export class SocketService {
     console.log("post username")
     return this.http.post<any>(`${this.apiUrl}/login`, { username: name });
   }
+
+  host(): Observable<any> {
+    console.log("Hosting")
+    return this.http.get<any>(`${this.apiUrl}/host`);
+  }
 }

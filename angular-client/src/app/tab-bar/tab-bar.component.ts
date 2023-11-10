@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from './../../environments/environment';
 
 @Component({
   selector: 'app-tab-bar',
@@ -6,5 +7,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./tab-bar.component.scss']
 })
 export class TabBarComponent {
-
 }

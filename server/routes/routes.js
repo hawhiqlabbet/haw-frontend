@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const homeController = require('../controllers/homeController');
+const gameController = require('../controllers/gameController');
 
 // auth routes
 router.post('/auth/register', authController.register);
 router.post('/auth/login', authController.login);
 //router.get('/profile', authController.extractUsernameFromToken);
 
-// home routes
-router.post('/join', homeController.joinRoom);
-router.get('/host', homeController.hostRoom);
+// game routes
+router.get('/game/host', gameController.hostGame);
+router.post('/game/join', gameController.joinGame)
 
 module.exports = router;
 

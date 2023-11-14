@@ -1,0 +1,18 @@
+<div class="d-flex flex-column justify-content-center align-items-center vh-100">
+    <i class="bi bi-joystick secondary-icon" style="font-size: 2rem;"></i>
+    <div class="heading">HaW</div>
+    <app-animated-header></app-animated-header>
+
+    <div class="white-box fixed-bottom d-flex align-items-center justify-content-around">
+        <button class="btn btn-secondary btn-lg" style="width: 45%;" (click)="onClick('/login')">LOGGA IN</button>
+        <button class="btn btn-primary btn-lg" style="width: 45%;" (click)="onClick('/register')">REGISTRERA</button>
+
+    
+
+        <!-- <form #userName="ngForm" (ngSubmit)="onClickSubmit(userName.value.username)">
+            <input type="text" class="form-input" placeholder="Välj ditt namn" name="username" ngModel required>
+            <button type="submit" class="btn btn-secondary btn-lg" id="loginButton">LOGGA IN</button>
+         </form> -->
+
+  </div>
+</div>

@@ -1,44 +1,15 @@
 @import '../../styles.scss';
 
-.white-background {
-    background: white;
-  }
+
   
-  .centered-placeholder {
-    text-align: center;
-    ::placeholder {
-      color: pink;
-    }
-  }
-
-.card {
-  background-color: $primary; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    gap: 10px; 
-  }
-
-.card-title {
-    text-transform: uppercase;
-    color: white; 
-}
-
 .btn-secondary {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25); 
   }
 
 .heading {
     font-family: 'Unlock', sans-serif;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
     color: $primary;
+    margin-bottom: 30px;
   }

@@ -3,16 +3,15 @@ const activeLobbies = new Map();
 function socketEvents(io) {
     io.on('connection', (socket) => {
         console.log(`User connected: ${socket.id}`);
-        console.log(io.engine.clientsCount);
 
         // Handle game-related events and synchronization here...
-        handleJoinGame(socket);
+        handleJoinGame(io, socket);
         handleHostGame(socket);
-        handleDisconnect(socket);
+        handleDisconnect(io, socket);
     })
 }
 
-function handleJoinGame(socket) {
+function handleJoinGame(io, socket) {
     socket.on('joinGame', (data) => {
         const { gameId, username } = data;
 
@@ -36,7 +35,7 @@ function handleHostGame(socket) {
 
 }
 
-function handleDisconnect(socket) {
+function handleDisconnect(io, socket) {
 
     socket.on('disconnect', (data) => {
         
@@ -49,6 +48,7 @@ function handleDisconnect(socket) {
             io.to(gameId).emit('playerLeft', { username });
             console.log(`User ${username} left game ${gameId}`);
         }
+
     })
 
 }

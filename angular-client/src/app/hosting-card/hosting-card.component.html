@@ -2,15 +2,15 @@
     <div class="front">
       <div class="card-body">
         <h6 class="card-title text-center">Har du fått en rumskod?</h6>
-        <input class="form-control form-control-lg centered-placeholder" type="text" placeholder="Kod">
-        <button type="submit" class="btn btn-secondary btn-lg">JOINA</button>
+        <input [(ngModel)]="gameId" class="form-control form-control-lg centered-placeholder" type="text" placeholder="Kod">
+        <button type="submit" (click)="joinGame()" class="btn btn-secondary btn-lg">JOINA</button>
         <p class="card-info text-end mt-4" (click)="flipCard()">Klicka här om du istället vill hosta ett rum!</p>
       </div>
     </div>
     <div class="back">
       <div class="card-body">
         <h6 class="card-title text-center">Hosta ett nytt rum?</h6>
-        <button type="submit" class="btn btn-primary btn-lg">HOSTA</button>
+        <button type="submit" (click)="hostGame()" class="btn btn-primary btn-lg">HOSTA</button>
         <p class="card-info text-end mt-4" (click)="flipCard()">Klicka här om du istället vill joina ett rum!</p>
       </div>
     </div>

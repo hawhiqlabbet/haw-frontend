@@ -11,8 +11,13 @@ function hostGame(req, res) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
 
+    for (const lobby of activeLobbies.values()) {
+        if (lobby.host === username) {
+            return res.status(400).json({ message: 'User is already hosting a lobby' });
+        }
+    }
+
     const gameId = generateGameId();
-    console.log(gameId);
     activeLobbies.set(gameId, { host: username, players: [] });
     console.log(activeLobbies);
     res.status(200).json({ gameId: gameId, username: username, message: 'hostGameSuccess' });

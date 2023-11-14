@@ -10,11 +10,21 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:4200',
+    credentials: true,
+  }
+});
 socketEvents(io);
 const PORT = 3000;
 
-app.use(cors()); // Enable CORS for all routes
+const corsOptions = {
+  origin: 'http://localhost:4200',
+  credentials: true,
+}
+
+app.use(cors(corsOptions)); // Enable CORS for all routes
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

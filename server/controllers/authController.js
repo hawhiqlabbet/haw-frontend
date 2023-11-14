@@ -70,6 +70,7 @@ module.exports = {
 */
 
 const { connectToCluster } = require('../db/conn');
+const jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
 
 async function register(req, res) {
@@ -105,8 +106,40 @@ async function register(req, res) {
     }
 }
 
-function login(req, res) {
+async function login(req, res) {
 
+    const { username, password } = req.body;
+    let mongoClient;
+
+    try {
+        mongoClient = await connectToCluster();
+        const db = mongoClient.db();
+        const usersCollection = db.collection('users');
+
+        const user = await usersCollection.findOne({ username });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.cookie('jwt', token, { httpOnly: true });
+
+        res.json({ success: true, message: 'Login successful' });
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        await mongoClient.close();
+        console.log('MongoDB connection closed.');
+    }
 }
 
 module.exports = {

@@ -5,7 +5,7 @@ const homeController = require('../controllers/homeController');
 
 // auth routes
 router.post('/auth/register', authController.register);
-router.post('/login', authController.login);
+router.post('/auth/login', authController.login);
 //router.get('/profile', authController.extractUsernameFromToken);
 
 // home routes

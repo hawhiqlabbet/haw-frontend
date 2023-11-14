@@ -1,15 +1,9 @@
 <div class="d-flex flex-column justify-content-center align-items-center vh-100 white-background">
-    <p class="heading">Hej, David!</p>
+    <h1 class="heading">Hej, David!</h1>
 
-    <form class="card">
-        <div class="card-body">
-          <h6 class="card-title ">Har du fått en rumskod?</h6>
-          <input class="form-control form-control-lg centered-placeholder" type="text" placeholder="Kod">
-          <button type="submit" class="btn btn-secondary btn-lg">Joina</button>
-        </div>
+    <form>
+      <app-hosting-card></app-hosting-card>
     </form>
 
-    <small id="emailHelp" class="form-text text-center  mt-5 mb-2">Vill du istället hosta ett rum?</small>
-    <button type="button" (click)="host()" class="btn btn-secondary btn-lg">Hosta!</button>
     <app-tab-bar></app-tab-bar>
 </div>

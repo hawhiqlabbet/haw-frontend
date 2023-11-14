@@ -6,54 +6,98 @@
 
 // Override Bootstrap variables 
 $primary: #FF4D6D; 
-$secondary: #800F2F;
+$secondary: #B241B4;
 
 
 body { 
-    background: url('assets/Screenshot\ 2023-11-08\ 135514.png') center/cover no-repeat; 
-    font-family: 'Inter', sans-serif;
+  background: linear-gradient(to top, white, $secondary, $primary);
+  font-family: 'Inter', sans-serif;
 }
-
-.transparent-background {
-    background-color: rgba($primary, 0.9); /* Background color with 30% opacity */
-  }
 
 /* Heading Styles */
 .heading {
     font-family: 'Unlock', sans-serif;
     font-size: 64px;
     font-weight: bold;
-    color: $secondary;
+    color: white;
   }
   
-/* Button Styles */
+/* Primary Button Styles */
 
 .btn-primary {
-    background-color:  $primary; 
-    color: $secondary; 
-    border-color:$primary; 
-    font-size: 14px;
-
-  }
+  color: $secondary;
+  background-color: white;
+  border-color: $secondary;
+  border-width: 2px;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
 
 .btn-primary:hover {
-    background-color: $secondary; 
-    color: $primary; 
-    border-color: $primary; 
-  }
+  color: white;
+  border-color: $secondary;
+  background-color: $secondary;
 
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  box-shadow: 0 0 0 .2rem rgba($secondary, 0.5)
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show>.btn-primary.dropdown-toggle {
+  color: white;
+  background-color: rgba($secondary, 0.5);
+  border-color: $secondary;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show>.btn-secondary.dropdown-toggle:focus {
+  box-shadow: rgba($secondary, 0.5);
+}
+
+
+/* Secondary button styles */
 .btn-secondary {
-    background-color:  $secondary; 
-    color: white; 
-    border-color:$secondary; 
-    font-size: 14px;
+  color: white;
+  background-color: $secondary;
+  border-color: $secondary;
+  border-width: 2px;
+  font-size: 14px;
+  letter-spacing: 2px;
+
 }
 
 .btn-secondary:hover {
-    background-color: $primary; 
-    color: $secondary; 
-    border-color: $primary; 
-  }
+  color: $secondary;
+  background-color: white;
+  border-color: $secondary;
+  border-width: 2px;
+}
+
+.btn-secondary:focus,
+.btn-secondary.focus {
+  box-shadow: 0 0 0 .2rem rgba($secondary, 0.5)
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active,
+.btn-secondary:not(:disabled):not(.disabled).active,
+.show>.btn-primary.dropdown-toggle {
+  color: white;
+  background-color: rgba($secondary, 0.5);
+  border-color: $secondary;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active:focus,
+.btn-secondary:not(:disabled):not(.disabled).active:focus,
+.show>.btn-secondary.dropdown-toggle:focus {
+  box-shadow: rgba($secondary, 0.5);
+}
+
+/*Background styles*/
 
 .pink-background {
     background-color: $primary; 
@@ -66,5 +110,61 @@ body {
   }
 
 .secondary-icon {
-    color: $secondary; 
+    color: white; 
   }
+
+  .white-box {
+    background-color:  rgba(white, 0.9);
+    height: 80px; 
+  }
+
+  .form-input {
+    font-size: 1rem; 
+    height: 38px; 
+    padding: 6px 12px; 
+    border-radius: 5px; 
+    border: transparent;
+    color: $primary; 
+    background-color: #f9f9f9; 
+    margin-right: 10px;
+  }
+  
+  .form-input::placeholder {
+    color: $primary; /* Set placeholder text color to pink */
+  }
+  
+
+  .form-input::focus {
+    border-color: #FF4D6D; /* Set border color to pink on focus */
+    
+
+  }
+
+  .white-background {
+    background: white;
+  }
+
+  .form-control::focus {
+    border-color: $primary;
+
+  }
+  
+/* Form input */
+
+.custom-input {
+  padding: 10px;
+  
+  font-size: 16px;
+  border: 1px solid $primary;
+  background-color: white;
+  color: white;
+  letter-spacing: 1px;
+}
+
+.custom-input:hover,
+.custom-input:focus {
+  background-color: rgba($primary, 0.1);
+  border-color: $primary;
+  box-shadow: none;
+
+}

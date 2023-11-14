@@ -4,8 +4,9 @@ const authController = require('../controllers/authController');
 const homeController = require('../controllers/homeController');
 
 // auth routes
+router.post('/auth/register', authController.register);
 router.post('/login', authController.login);
-router.get('/profile', authController.extractUsernameFromToken);
+//router.get('/profile', authController.extractUsernameFromToken);
 
 // home routes
 router.post('/join', homeController.joinRoom);

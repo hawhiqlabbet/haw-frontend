@@ -1,3 +1,4 @@
+/*
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const cookie = require('cookie');
@@ -66,3 +67,49 @@ module.exports = {
     login,
     extractUsernameFromToken
 };
+*/
+
+const { connectToCluster } = require('../db/conn');
+let bcrypt = require('bcryptjs');
+
+async function register(req, res) {
+
+    const { username, password } = req.body;
+    let mongoClient;
+
+    try {
+        mongoClient = await connectToCluster();
+        const db = mongoClient.db();
+        const usersCollection = db.collection('users');
+
+        const existingUser = await usersCollection.findOne({ username });
+        
+        if (existingUser) {
+            return res.status(400).json({ message: 'Username already exists. Choose a different username.' });
+        }
+
+        const newUser = {
+            username: username,
+            password: bcrypt.hashSync(password, 8),
+        }
+
+        const result = await usersCollection.insertOne(newUser);
+        console.log(`User registered with ID: ${result.insertedId}`);
+        res.status(200).json({ message: 'User registered succesfully' });
+    } catch (error) {
+        console.error('Error registering user:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    } finally {
+        await mongoClient.close();
+        console.log('MongoDB connection closed.');
+    }
+}
+
+function login(req, res) {
+
+}
+
+module.exports = {
+    register,
+    login
+}

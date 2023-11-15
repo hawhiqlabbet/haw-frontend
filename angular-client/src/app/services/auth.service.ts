@@ -14,7 +14,8 @@ export class AuthService {
   }
 
   register(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/auth/register`, { username, password });
+    const options = { withCredentials: true }
+    return this.http.post<any>(`${this.apiUrl}/api/auth/register`, { username, password }, options);
   }
 
   login(username: string, password: string): Observable<any> {

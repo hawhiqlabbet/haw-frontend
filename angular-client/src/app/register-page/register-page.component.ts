@@ -28,7 +28,7 @@ export class RegisterPageComponent {
 
     this.passwordsNotEqual = false;
 
-    this.authService.login(username, password).subscribe({
+    this.authService.register(username, password).subscribe({
       next: (data) => {
         console.log(data);
         this.router.navigate(['/home']);

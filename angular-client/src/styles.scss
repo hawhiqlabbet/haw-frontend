@@ -153,11 +153,10 @@ body {
 
 .custom-input {
   padding: 10px;
-  
   font-size: 16px;
   border: 1px solid $primary;
   background-color: white;
-  color: white;
+  color: black;
   letter-spacing: 1px;
 }
 
@@ -166,5 +165,54 @@ body {
   background-color: rgba($primary, 0.1);
   border-color: $primary;
   box-shadow: none;
+}
 
+/* Gradient components */
+
+.gradient-heading {
+  font-family: 'Unlock', sans-serif;
+  font-size: 45px;
+  margin-bottom: 30px;
+  /* Apply linear gradient as background */
+  background: linear-gradient(to right, $secondary, $primary);
+  /* Ensure text remains visible */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+.form-margin {
+  margin-bottom: 15px;
+}
+
+.gradient-button {
+  color: white;
+  width: 100%;
+  background: linear-gradient(to right, $secondary, $primary);
+
+}
+
+.alert-failed {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  color: white;
+  background-color: rgba($primary, 0.5);
+}
+
+.link-style {
+  color: $secondary;
+  text-decoration: underline;
+  transition: color 0.3s ease-in-out, text-decoration 0.3s ease-in-out;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.link-style:hover {
+  color: $primary; /* Darker shade of purple on hover */
+  text-decoration: underline; /* Maintain the underline on hover */
 }

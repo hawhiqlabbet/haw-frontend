@@ -33,6 +33,14 @@ function handleHostGame(socket) {
         console.log(`User ${username} hosted game ${gameId}`);
     })
 
+    socket.on('closeLobby', (data) => {
+        const { gameId } = data;
+
+        io.to(gameId).emit('lobbyClosed', { gameId });
+        
+        io.in(gameId).socketsLeave(gameId);
+    })
+
 }
 
 function handleDisconnect(io, socket) {

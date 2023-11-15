@@ -72,6 +72,8 @@ module.exports = {
 const { connectToCluster } = require('../db/conn');
 const jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
+const { activeLobbies } = require('../socketEvents');
+const { extractUsernameFromJwt } = require('../utils/jwtUtils');
 
 async function register(req, res) {
 

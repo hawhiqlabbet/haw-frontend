@@ -59,7 +59,69 @@ function joinGame(req, res) {
 }
 
 
+function closeLobby(req, res) {
+
+    const token = req.cookies.jwt;
+    const username = extractUsernameFromJwt(token);
+
+    if (!username) {
+        return res.status(401).json({ message: 'Error verifying JWT' });
+    }
+
+    const gameId = req.body.gameId;
+
+    if (!activeLobbies.has(gameId)) {
+        return res.status(404).json({ message: `Game with ID: ${gameId} not found` });
+    }
+
+    const lobby = activeLobbies.get(gameId);
+
+    if (lobby.host !== username) {
+        return res.status(403).json({ message: 'You are not the host of this lobby' });
+    }
+
+    activeLobbies.delete(gameId);
+
+    console.log(`Lobby ${gameId} closed by host ${username}`);
+
+    res.status(200).json({ message: 'Lobby closed successfully' });
+}
+
+function leaveGame(req, res) {
+
+    const token = req.cookies.jwt;
+    const username = extractUsernameFromJwt(token);
+
+    if (!username) {
+        return res.status(401).json({ message: 'Error verifying JWT' });
+    }
+
+    const gameId = req.body.gameId;
+
+    if (!activeLobbies.has(gameId)) {
+        return res.status(404).json({ message: `Game with ID: ${gameId} not found` });
+    }
+
+    const lobby = activeLobbies.get(gameId);
+
+    if (lobby.host === username) {
+        return res.status(400).json({ message: 'Host cannot leave the game using this endpoint' });
+    }
+
+    if (!lobby.players.includes(username)) {
+        return res.status(400).json({ message: 'User is not in the game' });
+    }
+
+    lobby.players = lobby.players.filter(player => player !== username);
+
+    console.log(`User ${username} left game ${gameId}`);
+    res.status(200).json({ message: 'Left the game successfully' });
+}
+
+
 module.exports = {
     hostGame,
-    joinGame
+    joinGame,
+    closeLobby,
+    leaveGame
 };

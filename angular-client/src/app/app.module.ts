@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-//import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -15,10 +13,6 @@ import { LaunchPageComponent } from './launch-page/launch-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RoomPageComponent } from './room-page/room-page.component';
-import { environment } from './../environments/environment';
-
-
-//const config: SocketIoConfig = { url: environment.apiUrl, options: { autoConnect: false } };
 
 @NgModule({
   declarations: [
@@ -37,7 +31,6 @@ import { environment } from './../environments/environment';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    //SocketIoModule.forRoot(config),
     HttpClientModule
   ],
   providers: [],

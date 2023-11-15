@@ -75,6 +75,8 @@ let bcrypt = require('bcryptjs');
 
 async function register(req, res) {
 
+    console.log('register');
+
     const { username, password } = req.body;
     let mongoClient;
 
@@ -84,7 +86,7 @@ async function register(req, res) {
         const usersCollection = db.collection('users');
 
         const existingUser = await usersCollection.findOne({ username });
-        
+
         if (existingUser) {
             return res.status(400).json({ message: 'Username already exists. Choose a different username.' });
         }

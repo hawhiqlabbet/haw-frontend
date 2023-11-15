@@ -12,7 +12,7 @@ export class LoginPageComponent {
   loginFailed = false;
   emptyFields = false;
 
-  constructor(private router: Router, private socketService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   onSubmit(form: any): void {
     const { username, password } = form.value;
@@ -28,7 +28,7 @@ export class LoginPageComponent {
 
     this.emptyFields = false;
 
-    this.socketService.login(username, password).subscribe({
+    this.authService.login(username, password).subscribe({
       next: (data) => {
         console.log(data);
         this.router.navigate(['/home']);

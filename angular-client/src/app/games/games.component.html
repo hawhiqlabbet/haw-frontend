@@ -1,1 +1,11 @@
-<div class="heading">{{code}}</div>
+<div class="d-flex flex-column justify-content-center align-items-center vh-100 primary-background">
+    <div class="white-heading text-center">Vad vill du spela idag?</div>
+    <app-tab-bar></app-tab-bar>
+    <form style="width: 90%;" >
+        <button (click)="hostGame('SpyQ')" type="button" class="btn game-button btn-secondary">SpyQ</button>
+        <button (click)="hostGame('HiQlash')" type="button" class="btn game-button btn-secondary">HiQlash</button>
+        <button (click)="hostGame('Smartare än en LEAPare')" type="button" class="btn game-button btn-secondary">Smartare än en LEAPare</button>
+        <button (click)="hostGame('PiQollo')" type="button" class="btn game-button btn-secondary">PiQollo</button>
+        <button (click)="hostGame('InQognito')" type="button" class="btn game-button btn-secondary">InQognito</button>
+    </form>
+</div>

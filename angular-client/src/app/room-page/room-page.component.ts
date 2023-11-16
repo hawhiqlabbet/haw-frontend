@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-room-page',
@@ -6,6 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./room-page.component.scss']
 })
 export class RoomPageComponent {
+  roomId: string | null = null;
+
+  constructor(private route: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.roomId = params['roomId'];
+    });
+  }
+
   circleRadius = 21.5;
 
   users = [
@@ -23,6 +34,10 @@ export class RoomPageComponent {
   getRandomY(): string {
     const circleRadius = 21.5;
     return `${Math.random() * (window.innerHeight - 2 * circleRadius) + circleRadius}`;
+  }
+
+  leaveGame(): void {
+
   }
 
 }

@@ -1,12 +1,16 @@
-<div  class="white-background" >
-    <div class="gradient-heading">Välkommen till rum 'XXXX' :D</div>
+<div class="d-flex flex-column align-items-center justify-content-center vh-100 vv-100 room-background">
 
+    <div class="white-heading text-center ">RUMSKOD: {{roomId}}</div>
+    <div class="room-sub-heading text-center">Här spelar vi ...</div>
     <app-user-circle *ngFor="let user of users; let i = index"
                    [cx]="user.cx"
                    [cy]="user.cy"
                    [fill]="user.fill"
                    [radius]="circleRadius">
   </app-user-circle>
+  <button (click)="leaveGame()" type="button" class="btn room-button btn-secondary">Starta spelet</button>
+  <button (click)="leaveGame()" type="button" class="btn room-button btn-primary">Lämna rummet</button>
+
   </div> 
 
 

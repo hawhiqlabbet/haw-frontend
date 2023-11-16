@@ -9,8 +9,8 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginPageComponent {
 
-  loginFailed = false;
-  emptyFields = false;
+  loginFailed: boolean = false;
+  emptyFields: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) { }
 

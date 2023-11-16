@@ -1,6 +1,7 @@
 // hosting-card.component.ts
 import { Component } from '@angular/core';
 import { GameService } from '../services/game.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hosting-card',
@@ -12,7 +13,7 @@ export class HostingCardComponent {
   isFlipped: boolean = false;
   gameId: string = '';
 
-  constructor(private gameService: GameService) {}
+  constructor(private gameService: GameService, private router: Router) {}
 
   flipCard(): void {
     this.isFlipped = !this.isFlipped;
@@ -25,6 +26,7 @@ export class HostingCardComponent {
         const { gameId, username, message } = response
         if (message === 'hostGameSuccess') {
           this.gameService.hostGameSocketConnect(gameId, username)
+          this.router.navigateByUrl('/room', { state: { gameId: gameId, username: username } })
         }
 
       },
@@ -41,6 +43,7 @@ export class HostingCardComponent {
         const { gameId, username, message } = response
         if (message === 'joinGameSuccess') {
           this.gameService.joinGameSocketConnect(gameId, username)
+          this.router.navigateByUrl('/room', { state: { gameId: gameId, username: username } })
         }
 
       },

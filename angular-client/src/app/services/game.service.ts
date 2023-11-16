@@ -1,15 +1,15 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { io } from 'socket.io-client';
+import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs'
+import { environment } from 'src/environments/environment'
+import { io } from 'socket.io-client'
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
 
-  private socket: any;
+  private socket: any
 
   constructor(private http: HttpClient) { }
 
@@ -35,6 +35,46 @@ export class GameService {
       this.socket = io(environment.apiUrl)
     }
     this.socket.emit('joinGame', { gameId, username })
+  }
+
+  closeLobby(gameId: string): Observable<any> {
+    const options = { 
+      withCredentials: true,
+      body: {
+        gameId: gameId,
+      }
+    }
+    return this.http.delete(`${environment.apiUrl}/api/game/close`, options)
+  }
+
+  closeLobbySocket(gameId: string, username: string) {
+    if (!this.socket) {
+      this.socket = io(environment.apiUrl)
+    }
+    this.socket.emit('closeLobby', { gameId, username })
+  }
+
+  disconnectSocketEvent() {
+    this.socket.on('lobbyClosed', (data: any) => {
+      const { gameId, username } = data
+      console.log(`Host ${username} closed the lobby, disconnecting...`)
+      this.socket.disconnect()
+      this.socket = null
+    })
+  }
+
+  playerJoinedEvent() {
+    this.socket.on('playerJoined', (data: any) => {
+      const { username } = data
+      console.log(`User ${username} joined the game!`)
+    })
+  }
+
+  playerLeftEvent() {
+    this.socket.on('playerLeft', (data: any) => {
+      const { username } = data
+      console.log(`User ${username} left the game!`)
+    })
   }
 
 }

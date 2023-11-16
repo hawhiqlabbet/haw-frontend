@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { GameService } from '../services/game.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,6 +9,10 @@ import { GameService } from '../services/game.service';
 })
 export class HomeComponent {
 
-  constructor() {}
+  username: string = ''
+
+  constructor(private router: Router) {
+    this.username = this.router.getCurrentNavigation()?.extras?.state?.['username']
+  }
 
 }

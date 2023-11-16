@@ -6,7 +6,9 @@ function socketEvents(io) {
 
         // Handle game-related events and synchronization here...
         handleJoinGame(io, socket);
-        handleHostGame(socket);
+        handleHostGame(io, socket);
+        handleCloseLobby(io, socket);
+        handleLeaveGame(io, socket);
         handleDisconnect(io, socket);
     })
 }
@@ -24,7 +26,7 @@ function handleJoinGame(io, socket) {
     })
 }
 
-function handleHostGame(socket) {
+function handleHostGame(io, socket) {
 
     socket.on('hostGame', (data) => {
         const { gameId, username } = data;
@@ -33,33 +35,36 @@ function handleHostGame(socket) {
         console.log(`User ${username} hosted game ${gameId}`);
     })
 
-    socket.on('closeLobby', (data) => {
-        const { gameId } = data;
+}
 
-        io.to(gameId).emit('lobbyClosed', { gameId });
-        
+function handleCloseLobby(io, socket) {
+
+    socket.on('closeLobby', (data) => {
+        const { gameId, username } = data
+        io.to(gameId).emit('lobbyClosed', { gameId, username });
         io.in(gameId).socketsLeave(gameId);
+        console.log(`Lobby ${gameId} closed by host ${username}`);
     })
 
+}
+
+function handleLeaveGame(io, socket) {
+    socket.on('leaveGame', (data) => {
+        const { gameId, username } = data;
+        console.log(`${username} left the game ${gameId}`);
+        io.to(gameId).emit('playerLeft', { gameId, username });
+    })
 }
 
 function handleDisconnect(io, socket) {
 
-    socket.on('disconnect', (data) => {
-        
-        const { gameId, username } = data;
-
-        const lobby = activeLobbies.get(gameId);
-        
-        if (lobby && lobby.players.includes(username)) {
-            lobby.players = lobby.players.filter(player => player !== username);
-            io.to(gameId).emit('playerLeft', { username });
-            console.log(`User ${username} left game ${gameId}`);
-        }
-
+    socket.on('disconnect', () => {
+        console.log(`Socket ${socket.id} disconnected`);
     })
-
 }
+
+
+
 
 module.exports = {
     activeLobbies,

@@ -77,8 +77,6 @@ const { extractUsernameFromJwt } = require('../utils/jwtUtils');
 
 async function register(req, res) {
 
-    console.log('register');
-
     const { username, password } = req.body;
     let mongoClient;
 
@@ -136,7 +134,7 @@ async function login(req, res) {
 
         res.cookie('jwt', token, { httpOnly: true });
 
-        res.status(200).json({ success: true, message: 'Login successful' });
+        res.status(200).json({ message: 'Login successful', username: user.username });
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ error: 'Internal Server Error' });

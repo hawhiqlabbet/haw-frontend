@@ -1,32 +1,28 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import anime from 'animejs/lib/anime.es';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-room-page',
   templateUrl: './room-page.component.html',
   styleUrls: ['./room-page.component.scss']
 })
-export class RoomPageComponent implements OnInit {
-  @ViewChild('floatingCircle') floatingCircle!: ElementRef;
+export class RoomPageComponent {
+  circleRadius = 21.5;
 
-  ngOnInit(): void {
-    // Get the circle element
-    const circle = this.floatingCircle.nativeElement;
+  users = [
+    { fill: 'blue', cx: this.getRandomX(), cy: this.getRandomY() },
+    { fill: '#33FF57', cx: this.getRandomX(), cy: this.getRandomY() },
+    { fill: 'red', cx: this.getRandomX(), cy: this.getRandomY() },
+    { fill: 'yellow', cx: this.getRandomX(), cy: this.getRandomY() }
+  ];
 
-    // Set initial position
-    anime.set(circle, {
-      translateX: anime.random(0, window.innerWidth - 50),
-      translateY: anime.random(0, window.innerHeight - 50),
-    });
-
-    // Animate the circle's movement
-    anime({
-      targets: circle,
-      translateX: () => anime.random(0, window.innerWidth - 50),
-      translateY: () => anime.random(0, window.innerHeight - 50),
-      easing: 'easeInOutQuad',
-      duration: 3000,
-      loop: true,
-    });
+  getRandomX(): string {
+    const circleRadius = 21.5;
+    return `${Math.random() * (window.innerWidth - 2 * circleRadius) + circleRadius}`;
   }
+
+  getRandomY(): string {
+    const circleRadius = 21.5;
+    return `${Math.random() * (window.innerHeight - 2 * circleRadius) + circleRadius}`;
+  }
+
 }

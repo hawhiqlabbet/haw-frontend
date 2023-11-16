@@ -13,6 +13,7 @@ import { LaunchPageComponent } from './launch-page/launch-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RoomPageComponent } from './room-page/room-page.component';
+import { UserCircleComponent } from './user-circle/user-circle.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { RoomPageComponent } from './room-page/room-page.component';
     LaunchPageComponent,
     RegisterPageComponent,
     LoginPageComponent,
-    RoomPageComponent
+    RoomPageComponent,
+    UserCircleComponent,
   ],
   imports: [
     BrowserModule,

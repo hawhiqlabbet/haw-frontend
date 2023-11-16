@@ -21,6 +21,14 @@ body {
     font-weight: bold;
     color: white;
   }
+
+.white-heading {
+  font-family: 'Unlock', sans-serif;
+  font-size: 30px;
+  margin-bottom: 30px;
+  color: white;
+}
+
   
 /* Primary Button Styles */
 
@@ -99,9 +107,14 @@ body {
 
 /*Background styles*/
 
-.pink-background {
-    background-color: $primary; 
-    color: $secondary; 
+.primary-background {
+  background-color: $primary; 
+  color: white;
+  }
+
+.secondary-background {
+    background-color: $secondary; 
+    color: white;
     }
 
 .white-background {
@@ -142,6 +155,10 @@ body {
 
   .white-background {
     background: white;
+  }
+
+  .pink-background {
+    background: $primary;
   }
 
   .form-control::focus {

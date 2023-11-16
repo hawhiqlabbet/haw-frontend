@@ -27,17 +27,17 @@ function handleJoinGame(io, socket) {
 function handleHostGame(socket) {
 
     socket.on('hostGame', (data) => {
-        const { gameId, username } = data;
+        const { gameId, username, gameChoice } = data;
 
         socket.join(gameId);
-        console.log(`User ${username} hosted game ${gameId}`);
+        console.log(`User ${username} hosted game ${gameId} with the choice ${gameChoice}`);
     })
 
     socket.on('closeLobby', (data) => {
         const { gameId } = data;
 
         io.to(gameId).emit('lobbyClosed', { gameId });
-        
+
         io.in(gameId).socketsLeave(gameId);
     })
 
@@ -46,11 +46,11 @@ function handleHostGame(socket) {
 function handleDisconnect(io, socket) {
 
     socket.on('disconnect', (data) => {
-        
+
         const { gameId, username } = data;
 
         const lobby = activeLobbies.get(gameId);
-        
+
         if (lobby && lobby.players.includes(username)) {
             lobby.players = lobby.players.filter(player => player !== username);
             io.to(gameId).emit('playerLeft', { username });

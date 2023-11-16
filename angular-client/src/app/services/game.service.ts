@@ -4,6 +4,7 @@ import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment'
 import { io } from 'socket.io-client'
 import { Router } from '@angular/router'
+import { UserService } from './user.service'
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +33,17 @@ export class GameService {
     return this.http.post(`${environment.apiUrl}/api/game/join`, { gameId: gameId }, options)
   }
 
-  joinGameSocketConnect(gameId: string, username: string) {
+  joinGameSocketConnect(gameId: string, username: string, imageUrl: string) {
     if (!this.socket) {
       this.socket = io(environment.apiUrl)
     }
     this.socket.connect()
-    this.socket.emit('joinGame', { gameId, username })
+    const data = {
+      gameId: gameId,
+      username: username,
+      imageUrl: imageUrl,
+    }
+    this.socket.emit('joinGame', data)
   }
 
   closeLobby(gameId: string): Observable<any> {
@@ -75,8 +81,8 @@ export class GameService {
 
   playerJoinedEvent() {
     this.socket.on('playerJoined', (data: any) => {
-      const { username } = data
-      console.log(`User ${username} joined the game!`)
+      const { username, imageUrl } = data
+      console.log(`User ${username} joined the game! With profile picture: ${imageUrl}`)
     })
   }
 

@@ -15,11 +15,11 @@ function socketEvents(io) {
 
 function handleJoinGame(io, socket) {
     socket.on('joinGame', (data) => {
-        const { gameId, username } = data;
+        const { gameId, username, imageUrl } = data;
 
         socket.join(gameId);
 
-        io.to(gameId).emit('playerJoined', { username });
+        io.to(gameId).emit('playerJoined', { username, imageUrl });
 
         console.log(`User ${username} joined game ${gameId}`);
 

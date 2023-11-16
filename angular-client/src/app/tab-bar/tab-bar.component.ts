@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { UserService } from '../services/user.service';
 @Component({
   selector: 'app-tab-bar',
   templateUrl: './tab-bar.component.html',
@@ -6,8 +7,10 @@ import { Component, Input } from '@angular/core';
 })
 export class TabBarComponent {
 
-  @Input() imageUrl: string = ''
+  imageUrl: string = ''
   
-  constructor() { }
+  constructor(private userService: UserService) {
+    this.userService.getImageUrl.subscribe(imageUrl => this.imageUrl = imageUrl)
+  }
 
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameService } from '../services/game.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-games',
@@ -9,8 +10,9 @@ import { GameService } from '../services/game.service';
 })
 export class GamesComponent {
 
-  constructor(private router: Router, private gameService: GameService) {
-  }
+
+
+  constructor(private router: Router, private gameService: GameService) {}
 
   hostGame(gameChoice: string): void {
     this.gameService.hostGame().subscribe({

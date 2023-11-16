@@ -31,7 +31,7 @@ function joinGame(req, res) {
     if (!username) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
-
+    
     const gameId = req.body.gameId;
 
     if (!gameId) {

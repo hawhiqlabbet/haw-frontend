@@ -81,10 +81,9 @@ function closeLobby(req, res) {
     }
 
     activeLobbies.delete(gameId);
+    console.log(activeLobbies);
 
-    console.log(`Lobby ${gameId} closed by host ${username}`);
-
-    res.status(200).json({ message: 'Lobby closed successfully' });
+    res.status(200).json({ message: 'closeLobbySuccess' });
 }
 
 function leaveGame(req, res) {
@@ -113,9 +112,10 @@ function leaveGame(req, res) {
     }
 
     lobby.players = lobby.players.filter(player => player !== username);
+    activeLobbies.set(gameId, lobby);
+    console.log(activeLobbies);
 
-    console.log(`User ${username} left game ${gameId}`);
-    res.status(200).json({ message: 'Left the game successfully' });
+    res.status(200).json({ message: 'leaveGameSuccess' });
 }
 
 

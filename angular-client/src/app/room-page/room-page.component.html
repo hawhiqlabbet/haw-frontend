@@ -1,6 +1,5 @@
 <div class="d-flex flex-column align-items-center justify-content-center vh-100 vv-100 room-background">
-
-    <div class="white-heading text-center ">RUMSKOD: {{roomId}}</div>
+    <div class="white-heading text-center ">RUMSKOD: {{gameId}}</div>
     <div class="room-sub-heading text-center">Här spelar vi ...</div>
     <app-user-circle *ngFor="let user of users; let i = index"
                    [cx]="user.cx"

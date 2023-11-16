@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+// hosting-card.component.ts
+import { Component, Output, EventEmitter } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { Router } from '@angular/router';
 
@@ -9,10 +10,12 @@ import { Router } from '@angular/router';
 })
 export class HostingCardComponent {
 
+  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>
+
   isFlipped: boolean = false;
   gameId: string = '';
 
-  constructor(private router: Router, private gameService: GameService) { }
+  constructor(private gameService: GameService, private router: Router) { }
 
   flipCard(): void {
     this.isFlipped = !this.isFlipped;
@@ -30,11 +33,21 @@ export class HostingCardComponent {
         const { gameId, username, message } = response
         if (message === 'joinGameSuccess') {
           this.gameService.joinGameSocketConnect(gameId, username)
+          this.router.navigateByUrl('/room', { state: { gameId: gameId, username: username } })
         }
 
       },
-      error: (err) => {
-        console.log(err)
+      error: (error) => {
+        console.log(error)
+
+        if (error.status === 400) {
+          this.valueChange.emit('gameIdRequired')
+        }
+
+        if (error.status === 404) {
+          this.valueChange.emit('lobbyNotFound')
+        }
+
       }
     })
   }

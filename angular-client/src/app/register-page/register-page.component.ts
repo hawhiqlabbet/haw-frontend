@@ -31,13 +31,13 @@ export class RegisterPageComponent {
     this.authService.register(username, password).subscribe({
       next: (data) => {
         console.log(data);
-        this.router.navigate(['/home']);
+        this.router.navigateByUrl('/login');
       },
       error: (error) => {
         console.log('Register failed:', error);
 
 
-        if (error.status === 401) {
+        if (error.status === 400) {
           this.userAlreadyExists = true;
           setTimeout(() => {
             this.userAlreadyExists = false;

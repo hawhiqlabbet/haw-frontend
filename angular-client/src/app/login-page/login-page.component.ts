@@ -30,8 +30,8 @@ export class LoginPageComponent {
 
     this.authService.login(username, password).subscribe({
       next: (data) => {
-        console.log(data);
-        this.router.navigate(['/home']);
+        const { username, imageUrl } = data
+        this.router.navigateByUrl('/home', { state: { username: username, imageUrl: imageUrl } });
       },
       error: (error) => {
         console.log('Login failed:', error);

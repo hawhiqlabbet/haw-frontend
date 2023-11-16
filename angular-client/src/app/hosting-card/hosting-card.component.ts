@@ -1,5 +1,5 @@
 // hosting-card.component.ts
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { Router } from '@angular/router';
 
@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 })
 export class HostingCardComponent {
   
+  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>
+
   isFlipped: boolean = false;
   gameId: string = '';
 
@@ -47,8 +49,17 @@ export class HostingCardComponent {
         }
 
       },
-      error: (err) => {
-        console.log(err)
+      error: (error) => {
+        console.log(error)
+
+        if (error.status === 400) {
+          this.valueChange.emit('gameIdRequired')
+        }
+
+        if (error.status === 404) {
+          this.valueChange.emit('lobbyNotFound')
+        }
+
       }
     })
   }

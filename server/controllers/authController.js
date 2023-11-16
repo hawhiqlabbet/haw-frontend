@@ -74,6 +74,7 @@ const jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
 const { activeLobbies } = require('../socketEvents');
 const { extractUsernameFromJwt } = require('../utils/jwtUtils');
+const { generateRandomAvatarString } = require('../utils/authUtils');
 
 async function register(req, res) {
 
@@ -94,6 +95,7 @@ async function register(req, res) {
         const newUser = {
             username: username,
             password: bcrypt.hashSync(password, 8),
+            imageUrl: `https://api.multiavatar.com/${generateRandomAvatarString()}.png`,
         }
 
         const result = await usersCollection.insertOne(newUser);
@@ -134,7 +136,7 @@ async function login(req, res) {
 
         res.cookie('jwt', token, { httpOnly: true });
 
-        res.status(200).json({ message: 'Login successful', username: user.username });
+        res.status(200).json({ message: 'Login successful', username: user.username, imageUrl: user.imageUrl });
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ error: 'Internal Server Error' });

@@ -13,6 +13,13 @@ export class RoomPageComponent implements OnInit {
 
   gameId: string = ''
   username: string = ''
+  circleRadius = 21.5
+  users = [
+    { fill: 'blue', cx: this.getRandomX(), cy: this.getRandomY() },
+    { fill: '#33FF57', cx: this.getRandomX(), cy: this.getRandomY() },
+    { fill: 'red', cx: this.getRandomX(), cy: this.getRandomY() },
+    { fill: 'yellow', cx: this.getRandomX(), cy: this.getRandomY() }
+  ];
 
   ngOnInit(): void {
     // Get the circle element
@@ -60,6 +67,13 @@ export class RoomPageComponent implements OnInit {
     })
   }
 
+  getRandomX(): string {
+    const circleRadius = 21.5;
+    return `${Math.random() * (window.innerWidth - 2 * circleRadius) + circleRadius}`;
+  }
 
-
+  getRandomY(): string {
+    const circleRadius = 21.5;
+    return `${Math.random() * (window.innerHeight - 2 * circleRadius) + circleRadius}`;
+  }
 }

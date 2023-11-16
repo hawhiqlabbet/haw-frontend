@@ -28,7 +28,7 @@ export class HostingCardComponent {
         const { gameId, username, message } = response
         if (message === 'hostGameSuccess') {
           this.gameService.hostGameSocketConnect(gameId, username)
-          this.router.navigateByUrl('/room', { state: { gameId: gameId, username: username } })
+          this.router.navigateByUrl('/room', { state: { gameId: gameId } })
         }
 
       },

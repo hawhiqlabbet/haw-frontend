@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import anime from 'animejs/lib/anime.es'
 import { GameService } from '../services/game.service'
 import { Router } from '@angular/router'
+import { UserService } from '../services/user.service'
 
 @Component({
   selector: 'app-room-page',
@@ -42,16 +43,17 @@ export class RoomPageComponent implements OnInit {
     })
   }
 
-  constructor(private gameService: GameService, private router: Router) {
+  constructor(private gameService: GameService, private router: Router, private userService: UserService) {
     this.gameId = this.router.getCurrentNavigation()?.extras?.state?.['gameId']
-    this.username = this.router.getCurrentNavigation()?.extras?.state?.['username']
+    this.userService.getUsername.subscribe(username => this.username = username)
 
     // Initialize listeners for socket events
-    this.gameService.disconnectSocketEvent();
+    this.gameService.lobbyClosedEvent();
     this.gameService.playerJoinedEvent();
     this.gameService.playerLeftEvent();
   }
 
+  // BARA HOST SKA KUNNA KÖRA DENNA
   closeLobby(): void {
     this.gameService.closeLobby(this.gameId).subscribe({
       next: (response) => {
@@ -59,6 +61,22 @@ export class RoomPageComponent implements OnInit {
         const { message } = response
         if (message === 'closeLobbySuccess') {
           this.gameService.closeLobbySocket(this.gameId, this.username)
+        }
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    })
+  }
+
+  leaveGame(): void {
+    this.gameService.leaveGame(this.gameId).subscribe({
+      next: (response) => {
+        console.log(response)
+        const { message } = response
+        if (message === 'leaveGameSuccess') {
+          this.gameService.leaveGameSocket(this.gameId, this.username)
+          this.router.navigateByUrl('/home')
         }
       },
       error: (err) => {

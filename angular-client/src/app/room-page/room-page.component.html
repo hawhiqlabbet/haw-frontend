@@ -1,12 +1,17 @@
 <div  class="white-background" >
     <div class="gradient-heading">Välkommen till rum {{gameId}} :D</div>
 
+    <button (click)="closeLobby()">Stäng lobby</button>
+    <button (click)="leaveGame()">Lämna lobby</button>
+
+    <!--
     <app-user-circle *ngFor="let user of users; let i = index"
                    [cx]="user.cx"
                    [cy]="user.cy"
                    [fill]="user.fill"
                    [radius]="circleRadius">
   </app-user-circle>
+  -->
   </div> 
 
 

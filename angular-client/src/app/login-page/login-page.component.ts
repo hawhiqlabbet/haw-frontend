@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-login-page',
@@ -12,7 +13,7 @@ export class LoginPageComponent {
   loginFailed = false;
   emptyFields = false;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
 
   onSubmit(form: any): void {
     const { username, password } = form.value;
@@ -31,7 +32,9 @@ export class LoginPageComponent {
     this.authService.login(username, password).subscribe({
       next: (data) => {
         const { username, imageUrl } = data
-        this.router.navigateByUrl('/home', { state: { username: username, imageUrl: imageUrl } });
+        this.userService.setUsername(username)
+        this.userService.setImageUrl(imageUrl)
+        this.router.navigateByUrl('/home');
       },
       error: (error) => {
         console.log('Login failed:', error);

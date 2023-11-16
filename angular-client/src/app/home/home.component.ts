@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +15,11 @@ export class HomeComponent {
   lobbyNotFound: boolean = false
   gameIdRequired: boolean = false
 
-  constructor(private router: Router) {
-    this.username = this.router.getCurrentNavigation()?.extras?.state?.['username']
-    this.imageUrl = this.router.getCurrentNavigation()?.extras?.state?.['imageUrl']
+  constructor(private router: Router, private userService: UserService) {
+    //this.username = this.router.getCurrentNavigation()?.extras?.state?.['username']
+    //this.imageUrl = this.router.getCurrentNavigation()?.extras?.state?.['imageUrl']
+    this.userService.getUsername.subscribe(username => this.username = username)
+    this.userService.getImageUrl.subscribe(imageUrl => this.imageUrl = imageUrl)
   }
 
   handleValueChange(value: string) {

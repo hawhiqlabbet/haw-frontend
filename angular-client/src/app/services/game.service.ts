@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment'
 import { io } from 'socket.io-client'
+import { Router } from '@angular/router'
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class GameService {
 
   private socket: any
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   hostGame(): Observable<any> {
     const options = { withCredentials: true }
@@ -22,6 +23,7 @@ export class GameService {
     if (!this.socket) {
       this.socket = io(environment.apiUrl)
     }
+    this.socket.connect()
     this.socket.emit('hostGame', { gameId, username })
   }
 
@@ -34,6 +36,7 @@ export class GameService {
     if (!this.socket) {
       this.socket = io(environment.apiUrl)
     }
+    this.socket.connect()
     this.socket.emit('joinGame', { gameId, username })
   }
 
@@ -47,19 +50,26 @@ export class GameService {
     return this.http.delete(`${environment.apiUrl}/api/game/close`, options)
   }
 
+  leaveGame(gameId: string): Observable<any> {
+    const options = { withCredentials: true }
+    return this.http.post(`${environment.apiUrl}/api/game/leave`, { gameId: gameId }, options)
+  }
+
   closeLobbySocket(gameId: string, username: string) {
-    if (!this.socket) {
-      this.socket = io(environment.apiUrl)
-    }
     this.socket.emit('closeLobby', { gameId, username })
   }
 
-  disconnectSocketEvent() {
+  leaveGameSocket(gameId: string, username: string) {
+    this.socket.emit('leaveGame', { gameId, username })
+    this.socket.disconnect()
+  }
+
+  lobbyClosedEvent() {
     this.socket.on('lobbyClosed', (data: any) => {
       const { gameId, username } = data
       console.log(`Host ${username} closed the lobby, disconnecting...`)
       this.socket.disconnect()
-      this.socket = null
+      this.router.navigateByUrl('/home')
     })
   }
 
@@ -76,5 +86,4 @@ export class GameService {
       console.log(`User ${username} left the game!`)
     })
   }
-
 }

@@ -29,10 +29,10 @@ function handleJoinGame(io, socket) {
 function handleHostGame(io, socket) {
 
     socket.on('hostGame', (data) => {
-        const { gameId, username } = data;
+        const { gameId, username, gameChoice } = data;
 
         socket.join(gameId);
-        console.log(`User ${username} hosted game ${gameId}`);
+        console.log(`User ${username} hosted game ${gameId} with the choice ${gameChoice}`);
     })
 
 }

@@ -10,8 +10,8 @@ import { UserService } from '../services/user.service';
 })
 export class LoginPageComponent {
 
-  loginFailed = false;
-  emptyFields = false;
+  loginFailed: boolean = false;
+  emptyFields: boolean = false;
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
 

@@ -9,33 +9,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./hosting-card.component.scss']
 })
 export class HostingCardComponent {
-  
+
   @Output() valueChange: EventEmitter<string> = new EventEmitter<string>
 
   isFlipped: boolean = false;
   gameId: string = '';
 
-  constructor(private gameService: GameService, private router: Router) {}
+  constructor(private gameService: GameService, private router: Router) { }
 
   flipCard(): void {
     this.isFlipped = !this.isFlipped;
   }
 
-  hostGame(): void {
-    this.gameService.hostGame().subscribe({
-      next: (response) => {
-        
-        const { gameId, username, message } = response
-        if (message === 'hostGameSuccess') {
-          this.gameService.hostGameSocketConnect(gameId, username)
-          this.router.navigateByUrl('/room', { state: { gameId: gameId } })
-        }
+  hostGame() {
+    this.router.navigate(['/games']);
 
-      },
-      error: (err) => {
-        console.log(err)
-      }
-    })
   }
 
   joinGame(): void {

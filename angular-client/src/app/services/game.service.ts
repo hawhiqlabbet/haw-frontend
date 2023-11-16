@@ -19,12 +19,12 @@ export class GameService {
     return this.http.get(`${environment.apiUrl}/api/game/host`, options)
   }
 
-  hostGameSocketConnect(gameId: string, username: string): void {
+  hostGameSocketConnect(gameId: string, username: string, gameChoice: string): void {
     if (!this.socket) {
       this.socket = io(environment.apiUrl)
     }
     this.socket.connect()
-    this.socket.emit('hostGame', { gameId, username })
+    this.socket.emit('hostGame', { gameId, username, gameChoice })
   }
 
   joinGame(gameId: string): Observable<any> {

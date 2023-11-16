@@ -13,8 +13,8 @@ const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'games', redirectTo: '', component: GamesComponent },
-  { path: 'room', component: RoomPageComponent },
+  { path: 'games', component: GamesComponent },
+  { path: 'room/:gameId', component: RoomPageComponent },
 
   // { path: 'home', redirectTo: '', component: HomeComponent, canActivate: [AuthGuard] },
 ];

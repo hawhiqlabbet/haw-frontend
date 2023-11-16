@@ -1,0 +1,42 @@
+@import '../../styles.scss';
+
+.room-background{
+    background: linear-gradient(to top, white, $primary);
+
+}
+
+.white-heading {
+  font-size: 40px;
+}
+
+.room-sub-heading{
+  color: $primary;
+  font-family: 'Roboto Mono', monospace;
+
+}
+
+.room-button-primary {
+  color: white; 
+  width: 90%;
+  background: $primary;
+  border-color: $primary;
+  margin-bottom: 15px;
+  font-weight: bold;
+  position: fixed;
+  bottom: 20px; 
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.room-button-secondary {
+  color: white; 
+  width: 90%;
+  background: $primary;
+  border-color: $primary;
+  margin-bottom: 15px;
+  font-weight: bold;
+  position: fixed;
+  bottom: 20px; 
+  left: 50%;
+  transform: translateX(-50%);
+}

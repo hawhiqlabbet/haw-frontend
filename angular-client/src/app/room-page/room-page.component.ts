@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
-import anime from 'animejs/lib/anime.es'
+import { ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, ViewChild } from '@angular/core'
 import { GameService } from '../services/game.service'
 import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
@@ -9,49 +9,30 @@ import { UserService } from '../services/user.service'
   templateUrl: './room-page.component.html',
   styleUrls: ['./room-page.component.scss']
 })
-export class RoomPageComponent implements OnInit {
+export class RoomPageComponent {
   @ViewChild('floatingCircle') floatingCircle!: ElementRef
 
-  gameId: string = ''
   username: string = ''
   circleRadius = 21.5
-  users = [
-    { fill: 'blue', cx: this.getRandomX(), cy: this.getRandomY() },
-    { fill: '#33FF57', cx: this.getRandomX(), cy: this.getRandomY() },
-    { fill: 'red', cx: this.getRandomX(), cy: this.getRandomY() },
-    { fill: 'yellow', cx: this.getRandomX(), cy: this.getRandomY() }
-  ];
+  gameId: string = ''
 
-  ngOnInit(): void {
-    // Get the circle element
-    const circle = this.floatingCircle.nativeElement
-
-    // Set initial position
-    anime.set(circle, {
-      translateX: anime.random(0, window.innerWidth - 50),
-      translateY: anime.random(0, window.innerHeight - 50),
-    })
-
-    // Animate the circle's movement
-    anime({
-      targets: circle,
-      translateX: () => anime.random(0, window.innerWidth - 50),
-      translateY: () => anime.random(0, window.innerHeight - 50),
-      easing: 'easeInOutQuad',
-      duration: 3000,
-      loop: true,
-    })
-  }
-
-  constructor(private gameService: GameService, private router: Router, private userService: UserService) {
-    this.gameId = this.router.getCurrentNavigation()?.extras?.state?.['gameId']
+  constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
     this.userService.getUsername.subscribe(username => this.username = username)
+
 
     // Initialize listeners for socket events
     this.gameService.lobbyClosedEvent();
     this.gameService.playerJoinedEvent();
     this.gameService.playerLeftEvent();
   }
+
+  users = [
+    { fill: 'blue', cx: this.getRandomX(), cy: this.getRandomY() },
+    { fill: '#33FF57', cx: this.getRandomX(), cy: this.getRandomY() },
+    { fill: 'red', cx: this.getRandomX(), cy: this.getRandomY() },
+    { fill: 'yellow', cx: this.getRandomX(), cy: this.getRandomY() }
+  ];
 
   // BARA HOST SKA KUNNA KÖRA DENNA
   closeLobby(): void {

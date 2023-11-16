@@ -1,0 +1,11 @@
+@import '../../styles.scss';
+
+
+.game-button {
+    color: $primary;
+    width: 100%;
+    background: white;  
+    border-color: white;
+    margin-bottom: 15px;
+    font-weight: bold;    
+}

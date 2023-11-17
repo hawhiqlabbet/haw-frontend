@@ -1,14 +1,16 @@
 <div class="d-flex flex-column align-items-center justify-content-center vh-100 vv-100 room-background">
-    <div class="white-heading text-center ">RUMSKOD: {{gameId}}</div>
     <div class="room-sub-heading text-center">Här spelar vi ...</div>
-    <app-user-circle *ngFor="let user of users; let i = index"
+
+    <div class="white-heading text-center ">RUMSKOD: {{gameId}}</div>
+    <app-user-circle class="app-user-circle" *ngFor="let user of users; let i = index"
                    [cx]="user.cx"
                    [cy]="user.cy"
                    [fill]="user.fill"
                    [radius]="circleRadius">
     </app-user-circle>
-  <button (click)="leaveGame()" type="button" class="btn room-button btn-secondary">Starta spelet</button>
-  <button (click)="leaveGame()" type="button" class="btn room-button btn-primary">Lämna rummet</button>
+  <button (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
+  <button (click)="closeLobby()" type="button" class="btn room-button-third btn-secondary">Stäng lobbyn</button>
+  <button (click)="leaveGame()" type="button" class="btn room-button-secondary btn-secondary">Lämna rummet</button>
 </div> 
 
 

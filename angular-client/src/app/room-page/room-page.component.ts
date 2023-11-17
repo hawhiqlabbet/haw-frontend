@@ -66,6 +66,10 @@ export class RoomPageComponent {
     })
   }
 
+  startGame(): void {
+    console.log('Starting game...')
+  }
+
   getRandomX(): string {
     const circleRadius = 21.5;
     return `${Math.random() * (window.innerWidth - 2 * circleRadius) + circleRadius}`;

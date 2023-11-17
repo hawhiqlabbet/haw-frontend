@@ -1,6 +1,3 @@
-
-
-
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import anime from 'animejs/lib/anime.es';
 
@@ -27,13 +24,13 @@ export class UserCircleComponent implements OnInit {
 
   animateCircle(): void {
     const circleElement = this.elementRef.nativeElement.querySelector('#box1');
-    const boundaryElement = this.elementRef.nativeElement.parentElement; // Change this line to point to your boundary element
+    const boundaryElement = this.elementRef.nativeElement.parentElement;
 
     const boundaryRect = boundaryElement.getBoundingClientRect();
-    const minX = boundaryRect.left + 10; // Adjust the padding as needed
-    const maxX = boundaryRect.right - 10; // Adjust the padding as needed
-    const minY = boundaryRect.top + 10; // Adjust the padding as needed
-    const maxY = boundaryRect.bottom - 10; // Adjust the padding as needed
+    const minX = boundaryRect.left + 10;
+    const maxX = boundaryRect.right - 10;
+    const minY = boundaryRect.top + 10;
+    const maxY = boundaryRect.bottom - 10;
 
     const randomX = this.getRandomPosition(minX, maxX);
     const randomY = this.getRandomPosition(minY, maxY);
@@ -43,11 +40,11 @@ export class UserCircleComponent implements OnInit {
       translateX: [this.cx ?? '50', randomX],
       translateY: [this.cy ?? '50', randomY],
       easing: 'linear',
-      duration: 10000, // Adjust the duration to slow down the movement (in milliseconds)
+      duration: 10000,
       complete: () => {
         this.cx = circleElement.getAttribute('cx');
         this.cy = circleElement.getAttribute('cy');
-        this.animateCircle(); // Trigger a new animation when the current animation completes
+        this.animateCircle();
       }
     });
   }

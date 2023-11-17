@@ -1,8 +1,15 @@
 @import '../../styles.scss';
 
+.app-user-circle {
+  position: absolute;
+  z-index: 1; 
+  top: 0; 
+  left: 0;
+}
+
 .room-background{
     background: linear-gradient(to top, white, $primary);
-
+    position: relative; 
 }
 
 .white-heading {
@@ -16,27 +23,38 @@
 }
 
 .room-button-primary {
+  z-index: 2;
+  position: relative; 
   color: white; 
   width: 90%;
   background: $primary;
   border-color: $primary;
-  margin-bottom: 15px;
   font-weight: bold;
-  position: fixed;
-  bottom: 20px; 
-  left: 50%;
-  transform: translateX(-50%);
+  margin-bottom: 5px;
+  margin-top: 40px;
+}
+
+
+.room-button-third {
+  z-index: 2;
+  position: relative; 
+  color: white; 
+  width: 90%;
+  background: $primary;
+  border-color: $primary;
+  font-weight: bold;
+  margin-bottom: 5px;
+
 }
 
 .room-button-secondary {
-  color: white; 
+  z-index: 2;
+  position: relative; 
+  color: $primary; 
   width: 90%;
-  background: $primary;
+  background: white;
   border-color: $primary;
-  margin-bottom: 15px;
   font-weight: bold;
-  position: fixed;
-  bottom: 20px; 
-  left: 50%;
-  transform: translateX(-50%);
+  margin-bottom: 5px;
+
 }

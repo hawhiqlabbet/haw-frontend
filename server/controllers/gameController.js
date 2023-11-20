@@ -18,7 +18,7 @@ function hostGame(req, res) {
     }
 
     const gameId = generateGameId();
-    activeLobbies.set(gameId, { host: username, players: [] });
+    activeLobbies.set(gameId , { host: username, gameChoice: '', players: [] });
     console.log(activeLobbies);
     res.status(200).json({ gameId: gameId, username: username, message: 'hostGameSuccess' });
 }
@@ -118,10 +118,40 @@ function leaveGame(req, res) {
     res.status(200).json({ message: 'leaveGameSuccess' });
 }
 
+function startGame(req, res) {
+
+    const token = req.cookies.jwt;
+    const username = extractUsernameFromJwt(token);
+
+    if (!username) {
+        return res.status(401).json({ message: 'Error verifying JWT' });
+    }
+
+    const gameId = req.body.gameId;
+
+    if (!activeLobbies.has(gameId)) {
+        return res.status(404).json({ message: `Game with ID: ${gameId} not found` });
+    }
+
+    const lobby = activeLobbies.get(gameId);
+
+    if (lobby.host === username) {
+        return res.status(400).json({ message: 'Non host player cannot start the game' });
+    }
+
+    if (!lobby.players.includes(username)) {
+        return res.status(400).json({ message: 'User is not in the game' });
+    }
+
+    // Do stuff
+
+    res.status(200).json({ message: 'startGameSuccess' });
+}
 
 module.exports = {
     hostGame,
     joinGame,
     closeLobby,
-    leaveGame
+    leaveGame,
+    startGame
 };

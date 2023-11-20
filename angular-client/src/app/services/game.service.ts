@@ -70,6 +70,10 @@ export class GameService {
     this.socket.disconnect()
   }
 
+  startGameSocket(gameId: string, username: string){
+    this.socket.emit('startGame', { gameId, username })
+  }
+
   lobbyClosedEvent() {
     this.socket.on('lobbyClosed', (data: any) => {
       const { gameId, username } = data
@@ -90,6 +94,13 @@ export class GameService {
     this.socket.on('playerLeft', (data: any) => {
       const { username } = data
       console.log(`User ${username} left the game!`)
+    })
+  }
+
+  hostStartedEvent(){
+    this.socket.on('hostStarted', (data: any) => {
+      const { username, gameChoice } = data
+      console.log(`Host ${username} started the game with mode ${gameChoice}`)
     })
   }
 }

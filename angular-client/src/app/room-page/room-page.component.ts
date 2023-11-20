@@ -15,6 +15,7 @@ export class RoomPageComponent {
   username: string = ''
   circleRadius = 21.5
   gameId: string = ''
+  gameChoice: string = ''
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
@@ -25,6 +26,7 @@ export class RoomPageComponent {
     this.gameService.lobbyClosedEvent();
     this.gameService.playerJoinedEvent();
     this.gameService.playerLeftEvent();
+    this.gameService.hostStartedEvent();
   }
 
   users = [
@@ -68,6 +70,7 @@ export class RoomPageComponent {
 
   startGame(): void {
     console.log('Starting game...')
+    this.gameService.startGameSocket(this.gameId, this.username)
   }
 
   getRandomX(): string {

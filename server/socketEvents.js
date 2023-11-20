@@ -10,6 +10,7 @@ function socketEvents(io) {
         handleCloseLobby(io, socket);
         handleLeaveGame(io, socket);
         handleDisconnect(io, socket);
+        handleHostStartGame(io, socket);
     })
 }
 
@@ -30,8 +31,8 @@ function handleHostGame(io, socket) {
 
     socket.on('hostGame', (data) => {
         const { gameId, username, gameChoice } = data;
-
-        socket.join(gameId);
+        const lobby = activeLobbies.get(gameId);
+        lobby.gameChoice = gameChoice
         console.log(`User ${username} hosted game ${gameId} with the choice ${gameChoice}`);
     })
 
@@ -63,6 +64,15 @@ function handleDisconnect(io, socket) {
     })
 }
 
+function handleHostStartGame(io, socket) {
+    socket.on('startGame', (data) => {
+        const { gameId, username } = data;
+        const lobby = activeLobbies.get(gameId);
+        const gameChoice = lobby.gameChoice
+        io.to(gameId).emit('hostStarted', { username, gameChoice });
+        console.log(`Host ${username} started game ${gameId} with mode ${gameChoice}`);
+    })
+}
 
 
 

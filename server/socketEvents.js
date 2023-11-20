@@ -20,9 +20,11 @@ function handleJoinGame(io, socket) {
 
         socket.join(gameId);
 
-        io.to(gameId).emit('playerJoined', { username, imageUrl });
+        const players = activeLobbies.get(gameId).players;
+        io.to(gameId).emit('playerJoined', { username, imageUrl, players });
+        io.to(socket.id).emit('userList', { users: players });
 
-        console.log(`User ${username} joined game ${gameId}`);
+        console.log(`User ${username} joined game ${gameId} and image url ${imageUrl} and the players are ${players}`);
 
     })
 }
@@ -73,8 +75,6 @@ function handleHostStartGame(io, socket) {
         console.log(`Host ${username} started game ${gameId} with mode ${gameChoice}`);
     })
 }
-
-
 
 module.exports = {
     activeLobbies,

@@ -13,45 +13,32 @@ export class UserCircleComponent implements OnInit {
   @Input() fill: string = '#1D39C4';
   @Input() radius: number | null = 21.5;
 
-  lastPositionX = 50;
-  lastPositionY = 50;
 
-  constructor(private elementRef: ElementRef) { }
 
   ngOnInit(): void {
-    // this.animateCircle();
+    //this.animateCircle();
   }
 
   animateCircle(): void {
-    const circleElement = this.elementRef.nativeElement.querySelector('#box1');
-    const boundaryElement = this.elementRef.nativeElement.parentElement;
-
-    const boundaryRect = boundaryElement.getBoundingClientRect();
-    const minX = boundaryRect.left + 10;
-    const maxX = boundaryRect.right - 10;
-    const minY = boundaryRect.top + 10;
-    const maxY = boundaryRect.bottom - 10;
-
-    const randomX = this.getRandomPosition(minX, maxX);
-    const randomY = this.getRandomPosition(minY, maxY);
 
     anime({
-      targets: circleElement,
-      translateX: [this.cx ?? '50', randomX],
-      translateY: [this.cy ?? '50', randomY],
-      easing: 'linear',
-      duration: 10000,
-      complete: () => {
-        this.cx = circleElement.getAttribute('cx');
-        this.cy = circleElement.getAttribute('cy');
-        this.animateCircle();
-      }
+      targets: '#box1',
+      translateX: function () {
+        return anime.random(0, window.innerWidth - 21.5);
+      },
+      translateY: function () {
+        return anime.random(21.5, window.innerHeight - 21.5);
+      },
+      easing: 'easeInOutQuad',
+      duration: 7000,
+      loop: true
     });
+
+
+
   }
 
-  getRandomPosition(min: number, max: number): string {
-    return `${Math.floor(Math.random() * (max - min)) + min}`;
-  }
+
 }
 
 

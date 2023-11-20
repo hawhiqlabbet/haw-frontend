@@ -18,7 +18,8 @@ function hostGame(req, res) {
     }
 
     const gameId = generateGameId();
-    activeLobbies.set(gameId , { host: username, gameChoice: '', players: [] });
+
+    activeLobbies.set(gameId, { host: username, gameChoice: '', players: [username] });
     console.log(activeLobbies);
     res.status(200).json({ gameId: gameId, username: username, message: 'hostGameSuccess' });
 }
@@ -31,7 +32,7 @@ function joinGame(req, res) {
     if (!username) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
-    
+
     const gameId = req.body.gameId;
 
     if (!gameId) {
@@ -52,8 +53,6 @@ function joinGame(req, res) {
 
     lobby.players.push(username);
     activeLobbies.set(gameId, lobby);
-
-    console.log(activeLobbies);
 
     res.status(200).json({ gameId: gameId, username: username, message: 'joinGameSuccess' });
 }

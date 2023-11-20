@@ -1,16 +1,26 @@
-<div class="d-flex flex-column align-items-center justify-content-center vh-100 vv-100 room-background">
-    <div class="room-sub-heading text-center">Här spelar vi ...</div>
+<div class="d-flex flex-column align-items-center vh-100 vv-100 room-background ">
 
+    <div class="room-sub-heading text-center">Här spelar vi ...</div>
     <div class="white-heading text-center ">RUMSKOD: {{gameId}}</div>
-    <app-user-circle class="app-user-circle" *ngFor="let user of users; let i = index"
-                   [cx]="user.cx"
-                   [cy]="user.cy"
-                   [fill]="user.fill"
-                   [radius]="circleRadius">
-    </app-user-circle>
-  <button (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
-  <button (click)="closeLobby()" type="button" class="btn room-button-third btn-secondary">Stäng lobbyn</button>
-  <button (click)="leaveGame()" type="button" class="btn room-button-secondary btn-secondary">Lämna rummet</button>
+    
+    <button (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
+    <button (click)="closeLobby()" type="button" class="btn room-button-third btn-secondary">Stäng lobbyn</button>
+    <button (click)="leaveGame()" type="button" class="btn room-button-secondary btn-secondary">Lämna rummet</button>
+
+    
+    <div class="svg-container">
+        <svg class="circle-svg" style="height: 70vh; width: 100%;">
+            <g class="circle-group">
+                <circle *ngFor="let user of users; let i = index" 
+                    [attr.cx]="user.cx" 
+                    [attr.cy]="user.cy" 
+                    [attr.fill]="user.fill" 
+                    opacity="0.45" 
+                    r="21.5">
+                </circle>
+            </g>
+        </svg>
+    </div>
 </div> 
 
 

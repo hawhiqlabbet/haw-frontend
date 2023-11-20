@@ -4,6 +4,14 @@ import { GameService } from '../services/game.service'
 import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
 
+interface User {
+  username: string;
+  imageUrl: string;
+  cx: string;
+  cy: string;
+  fill: string;
+}
+
 @Component({
   selector: 'app-room-page',
   templateUrl: './room-page.component.html',
@@ -12,29 +20,35 @@ import { UserService } from '../services/user.service'
 export class RoomPageComponent {
   @ViewChild('floatingCircle') floatingCircle!: ElementRef
 
+  users: User[] = [];
+
   username: string = ''
   circleRadius = 21.5
   gameId: string = ''
   gameChoice: string = ''
+
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
     this.userService.getUsername.subscribe(username => this.username = username)
 
 
-    // Initialize listeners for socket events
     this.gameService.lobbyClosedEvent();
+    this.gameService.playerJoinedEvent().subscribe((data: any) => {
+      const newUser: User = {
+        username: data.username,
+        imageUrl: data.imageUrl,
+        cx: this.getRandomX(),
+        cy: this.getRandomY(),
+        fill: 'green',
+      };
+      this.users.push(newUser);
+      console.log(this.users);
+    });
     this.gameService.playerJoinedEvent();
     this.gameService.playerLeftEvent();
     this.gameService.hostStartedEvent();
   }
-
-  users = [
-    { fill: 'blue', cx: this.getRandomX(), cy: this.getRandomY() },
-    { fill: '#33FF57', cx: this.getRandomX(), cy: this.getRandomY() },
-    { fill: 'red', cx: this.getRandomX(), cy: this.getRandomY() },
-    { fill: 'yellow', cx: this.getRandomX(), cy: this.getRandomY() }
-  ];
 
   // BARA HOST SKA KUNNA KÖRA DENNA
   closeLobby(): void {

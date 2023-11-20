@@ -4,7 +4,6 @@ import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment'
 import { io } from 'socket.io-client'
 import { Router } from '@angular/router'
-import { UserService } from './user.service'
 
 @Injectable({
   providedIn: 'root'
@@ -44,10 +43,15 @@ export class GameService {
       imageUrl: imageUrl,
     }
     this.socket.emit('joinGame', data)
+
+    this.socket.on('userList', (data: any) => {
+      console.log('List of users:', data.players);
+    })
+
   }
 
   closeLobby(gameId: string): Observable<any> {
-    const options = { 
+    const options = {
       withCredentials: true,
       body: {
         gameId: gameId,
@@ -83,11 +87,14 @@ export class GameService {
     })
   }
 
-  playerJoinedEvent() {
-    this.socket.on('playerJoined', (data: any) => {
-      const { username, imageUrl } = data
-      console.log(`User ${username} joined the game! With profile picture: ${imageUrl}`)
-    })
+  playerJoinedEvent(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('playerJoined', (data: any) => {
+        const { username, imageUrl, players } = data;
+        console.log(`User ${username} joined the game! With profile picture: ${imageUrl} and the players are ${players}`);
+        observer.next({ username, imageUrl });
+      });
+    });
   }
 
   playerLeftEvent() {

@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'games', component: GamesComponent },
   { path: 'room/:gameId', component: RoomPageComponent },
+  //{ path: 'room', component: RoomPageComponent },
 
   // { path: 'home', redirectTo: '', component: HomeComponent, canActivate: [AuthGuard] },
 ];

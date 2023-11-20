@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:4200',
+    origin: process.env.NODE_ENV === 'production' ? 'ENTER CORRECT IP HERE' : 'http://localhost:4200',
     credentials: true,
   }
 });
@@ -20,7 +20,7 @@ socketEvents(io);
 const PORT = 3000;
 
 const corsOptions = {
-  origin: 'http://localhost:4200',
+  origin: process.env.NODE_ENV === 'production' ? 'ENTER CORRECT IP HERE' : 'http://localhost:4200',
   credentials: true,
 }
 

@@ -3,6 +3,8 @@ import { Component } from '@angular/core'
 import { GameService } from '../services/game.service'
 import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
+import { environment } from 'src/environments/environment'
+import { io } from 'socket.io-client'
 
 interface User {
   username: string;
@@ -25,18 +27,23 @@ export class RoomPageComponent {
   gameId: string = ''
   gameChoice: string = ''
 
+  private socket: any  
+
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
     //this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
     //this.userService.getUsername.subscribe(username => this.username = username)
+    
 
     this.gameService.lobbyClosedEvent()
     this.gameService.playerJoinedEvent().subscribe((data: any) => {
+      this.getGameData(this.gameId);
       console.log('player joined new users list: ', this.users);
     });
     this.gameService.playerJoinedEvent();
     this.gameService.playerLeftEvent().subscribe((data: any) => {
       this.users.filter((user) => user.username !== data.username);
+      this.getGameData(this.gameId);
       console.log('player left new users list: ', this.users);
     });
     this.gameService.hostStartedEvent();
@@ -49,7 +56,8 @@ export class RoomPageComponent {
 
   // Used to request and store necessary data persistently
   ngOnInit(): void {
-    
+    this.socket = io(environment.apiUrl) 
+    this.socket.connect()
     // Retrieve data from local storage
     const storedUsername = localStorage.getItem('username');
     const storedGameId   = localStorage.getItem('gameId');
@@ -127,8 +135,8 @@ getGameData(gameId: string): void {
           cx: this.getRandomX(),
           cy: this.getRandomY(),
           fill: 'green',
-        }));
-        
+        })).filter((newUser) => !this.users.some((existingUser) => existingUser.username === newUser.username));;
+
         this.users.push(...gameUsers);
         console.log('Got game data from server')
         console.log(this.users)

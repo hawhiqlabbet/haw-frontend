@@ -15,7 +15,21 @@ describe('RoomPageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should generate random X within the specified range', () => {
+    const x = +component.getRandomX();
+    expect(x).toBeGreaterThanOrEqual(43);
+    expect(x).toBeLessThanOrEqual(window.innerWidth - 43);
   });
+
+  it('should generate random Y within the specified range', () => {
+    const y = +component.getRandomY();
+    expect(y).toBeGreaterThanOrEqual(43);
+    expect(y).toBeLessThanOrEqual((window.innerHeight * 0.7) - 43);
+  });
+
+  it('should adjust value coordinate correctly', () => {
+    const adjustedValue = component.getAdjustedDiameter('100');
+    expect(adjustedValue).toBe('79');
+  });
+
 });

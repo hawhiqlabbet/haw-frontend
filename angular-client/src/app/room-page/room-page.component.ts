@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, ElementRef, ViewChild } from '@angular/core'
+import { Component } from '@angular/core'
 import { GameService } from '../services/game.service'
 import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
@@ -18,10 +18,8 @@ interface User {
   styleUrls: ['./room-page.component.scss']
 })
 export class RoomPageComponent {
-  @ViewChild('floatingCircle') floatingCircle!: ElementRef
 
   users: User[] = [];
-
   username: string = ''
   circleRadius = 21.5
   gameId: string = ''
@@ -32,8 +30,7 @@ export class RoomPageComponent {
     //this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
     //this.userService.getUsername.subscribe(username => this.username = username)
 
-
-    this.gameService.lobbyClosedEvent();
+    this.gameService.lobbyClosedEvent()
     this.gameService.playerJoinedEvent().subscribe((data: any) => {
       console.log('player joined new users list: ', this.users);
     });
@@ -149,12 +146,19 @@ getGameData(gameId: string): void {
   }
 
   getRandomX(): string {
-    const circleRadius = 21.5;
-    return `${Math.random() * (window.innerWidth - 2 * circleRadius) + circleRadius}`;
+    const minX = 2 * this.circleRadius;
+    const maxX = window.innerWidth - minX;
+    return `${Math.random() * (maxX - minX) + minX}`;
   }
 
   getRandomY(): string {
-    const circleRadius = 21.5;
-    return `${Math.random() * (window.innerHeight - 2 * circleRadius) + circleRadius}`;
+    const minY = 2 * this.circleRadius;
+    const maxY = (window.innerHeight * 0.7) - minY;
+    return `${Math.random() * (maxY - minY) + minY}`;
   }
+
+  getAdjustedDiameter(value: any): string {
+    return `${Number(value) - this.circleRadius}`;
+  }
+
 }

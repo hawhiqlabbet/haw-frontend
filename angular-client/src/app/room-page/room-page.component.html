@@ -7,10 +7,8 @@
     <button (click)="closeLobby()" type="button" class="btn room-button-third btn-secondary">Stäng lobbyn</button>
     <button (click)="leaveGame()" type="button" class="btn room-button-secondary btn-secondary">Lämna rummet</button>
 
-    
     <div class="svg-container">
         <svg class="circle-svg" style="height: 70vh; width: 100%;">
-            <g class="circle-group">
                 <circle *ngFor="let user of users; let i = index" 
                     [attr.cx]="user.cx" 
                     [attr.cy]="user.cy" 
@@ -18,7 +16,12 @@
                     opacity="0.45" 
                     r="21.5">
                 </circle>
-            </g>
+                <image *ngFor="let user of users; let i = index"  
+                    [attr.x]="getAdjustedDiameter(user.cx)" 
+                    [attr.y]="getAdjustedDiameter(user.cy)" 
+                    [attr.width]="42" 
+                    [attr.height]="42" 
+                    [attr.href]="user.imageUrl" />
         </svg>
     </div>
 </div> 

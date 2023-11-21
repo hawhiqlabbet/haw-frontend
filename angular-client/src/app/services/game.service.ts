@@ -12,7 +12,7 @@ export class GameService {
 
   private socket: any
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { this.socket = io(environment.apiUrl) }
 
   hostGame(): Observable<any> {
     const options = { withCredentials: true }

@@ -1,6 +1,5 @@
 // hosting-card.component.ts
 import { Component, Output, EventEmitter } from '@angular/core';
-import { GameService } from '../services/game.service';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 
@@ -17,7 +16,7 @@ export class HostingCardComponent {
   gameId: string = '';
   imageUrl: string = ''
 
-  constructor(private gameService: GameService, private router: Router, private userService: UserService) {
+  constructor(private router: Router, private userService: UserService) {
     this.userService.getImageUrl.subscribe(imageUrl => this.imageUrl = imageUrl)
   }
 
@@ -31,15 +30,14 @@ export class HostingCardComponent {
   }
 
   joinGame(): void {
-    this.gameService.joinGame(this.gameId).subscribe({
+    this.userService.joinGame(this.gameId).subscribe({
       next: (response) => {
         console.log(response)
         const { gameId, username, message } = response
         if (message === 'joinGameSuccess') {
-          this.gameService.joinGameSocketConnect(gameId, username, this.imageUrl)
+          this.userService.setJoining(true)
           this.router.navigate(['/room', gameId])
         }
-
       },
       error: (error) => {
         console.log(error)

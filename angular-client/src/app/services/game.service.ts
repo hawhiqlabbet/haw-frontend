@@ -16,23 +16,15 @@ export class GameService {
     this.socket = io(environment.apiUrl) 
   }
 
-  hostGame(): Observable<any> {
-    const options = { withCredentials: true }
-    return this.http.get(`${environment.apiUrl}/api/game/host`, options)
-  }
-
+  /*
   hostGameSocketConnect(gameId: string, username: string, gameChoice: string): void {
     if (!this.socket) {
       this.socket = io(environment.apiUrl)
     }
     this.socket.connect()
-    this.socket.emit('hostGame', { gameId, username, gameChoice })
+    this.socket.emit('hostGame', { gameChoice })
   }
-
-  joinGame(gameId: string): Observable<any> {
-    const options = { withCredentials: true }
-    return this.http.post(`${environment.apiUrl}/api/game/join`, { gameId: gameId }, options)
-  }
+  */
 
   getGameData(gameId: string): Observable<any> {
     const options = { withCredentials: true }

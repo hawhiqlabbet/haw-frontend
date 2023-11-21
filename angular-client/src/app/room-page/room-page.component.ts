@@ -26,14 +26,18 @@ export class RoomPageComponent {
   circleRadius = 21.5
   gameId: string = ''
   gameChoice: string = ''
+  joining: boolean = false
 
   private socket: any  
 
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
-    //this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
-    //this.userService.getUsername.subscribe(username => this.username = username)
-    
+    this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
+    this.userService.getUsername.subscribe(username => this.username = username)
+    this.userService.getJoining.subscribe(joining => this.joining = joining)
+
+    if(this.joining)
+      this.gameService.joinGameSocketConnect(this.gameId, this.username, `https://api.multiavatar.com/${this.username}.png`)
 
     this.gameService.lobbyClosedEvent()
     this.gameService.playerJoinedEvent().subscribe((data: any) => {
@@ -56,8 +60,6 @@ export class RoomPageComponent {
 
   // Used to request and store necessary data persistently
   ngOnInit(): void {
-    this.socket = io(environment.apiUrl) 
-    this.socket.connect()
     // Retrieve data from local storage
     const storedUsername = localStorage.getItem('username');
     const storedGameId   = localStorage.getItem('gameId');
@@ -85,6 +87,13 @@ export class RoomPageComponent {
 
     // On init, refresh the perception of players in the lobby
     this.getGameData(this.gameId);
+
+    //this.socket = io(environment.apiUrl) 
+    //this.socket.connect()
+
+    // Reconnect
+    const selectedGameId = this.gameId
+    this.socket.emit('reconnect', { selectedGameId })
   }
 
   // BARA HOST SKA KUNNA KÖRA DENNA

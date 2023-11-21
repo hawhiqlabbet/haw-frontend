@@ -12,6 +12,7 @@ function socketEvents(io) {
         handleDisconnect(io, socket);
         handleHostStartGame(io, socket);
         handleDisconnectUsername(io, socket);
+        handleReconnect(io, socket);
     })
 }
 
@@ -82,6 +83,15 @@ function handleDisconnectUsername(io, socket) {
         console.log(`User ${username} disconnected`)
     })
 }
+
+function handleReconnect(io, socket) {
+    socket.on('reconnect', (data) => {
+        console.log("Reconnecting")
+        const { gameId } = data;
+        socket.join(gameId)
+    })
+}
+
 module.exports = {
     activeLobbies,
     socketEvents

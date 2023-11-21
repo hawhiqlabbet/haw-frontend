@@ -9,7 +9,7 @@ router.post('/auth/login', authController.login);
 //router.get('/profile', authController.extractUsernameFromToken);
 
 // game routes
-router.get('/game/host', gameController.hostGame);
+router.post('/game/host', gameController.hostGame);
 router.post('/game/join', gameController.joinGame);
 router.delete('/game/close', gameController.closeLobby);
 router.post('/game/leave', gameController.leaveGame);

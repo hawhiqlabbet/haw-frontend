@@ -18,8 +18,10 @@ function hostGame(req, res) {
     }
 
     const gameId = generateGameId();
+    const gameChoice = req.body.gameChoice;
 
-    activeLobbies.set(gameId, { host: username, gameChoice: '', players: [username] });
+    activeLobbies.set(gameId, { host: username, gameChoice: gameChoice, players: [username] });
+    console.log(`User ${username} hosted game ${gameId} with the choice ${gameChoice}`);
     console.log(activeLobbies);
     res.status(200).json({ gameId: gameId, username: username, message: 'hostGameSuccess' });
 }

@@ -12,7 +12,9 @@ export class GameService {
 
   private socket: any
 
-  constructor(private http: HttpClient, private router: Router) { this.socket = io(environment.apiUrl) }
+  constructor(private http: HttpClient, private router: Router) { 
+    this.socket = io(environment.apiUrl) 
+  }
 
   hostGame(): Observable<any> {
     const options = { withCredentials: true }
@@ -76,6 +78,11 @@ export class GameService {
 
   startGameSocket(gameId: string, username: string){
     this.socket.emit('startGame', { gameId, username })
+  }
+
+  disconnectBeforeUnload(username: string) {
+    this.socket.emit('disconnectWithUsername', { username });
+    //this.socket.disconnect();
   }
 
   lobbyClosedEvent() {

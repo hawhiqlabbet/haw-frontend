@@ -30,7 +30,7 @@ export class RoomPageComponent {
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
-    this.userService.getUsername.subscribe(username => this.username = username)
+    //this.userService.getUsername.subscribe(username => this.username = username)
 
 
     this.gameService.lobbyClosedEvent();
@@ -48,6 +48,26 @@ export class RoomPageComponent {
     this.gameService.playerJoinedEvent();
     this.gameService.playerLeftEvent();
     this.gameService.hostStartedEvent();
+
+    // Attach the beforeunload event listener to handle disconnection on window close/refresh
+    window.addEventListener('beforeunload', () => {
+      this.gameService.disconnectBeforeUnload(this.username);
+    });
+  }
+
+  ngOnInit(): void {
+    // Retrieve username from local storage
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      this.username = storedUsername;
+    } else {
+      // If no stored username, subscribe to changes
+      this.userService.getUsername.subscribe(username => {
+        this.username = username;
+        // Store username in local storage
+        localStorage.setItem('username', username);
+      });
+    }
   }
 
   // BARA HOST SKA KUNNA KÖRA DENNA

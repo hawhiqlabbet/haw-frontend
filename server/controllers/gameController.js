@@ -52,6 +52,7 @@ function joinGame(req, res) {
     }
 
     lobby.players.push(username);
+    console.log(activeLobbies);
     activeLobbies.set(gameId, lobby);
 
     res.status(200).json({ gameId: gameId, username: username, message: 'joinGameSuccess' });
@@ -143,7 +144,7 @@ function startGame(req, res) {
     }
 
     // Do stuff
-
+    console.log(activeLobbies);
     res.status(200).json({ message: 'startGameSuccess' });
 }
 

@@ -78,6 +78,7 @@ export class RoomPageComponent {
         const { message } = response
         if (message === 'closeLobbySuccess') {
           this.gameService.closeLobbySocket(this.gameId, this.username)
+          this.router.navigateByUrl('/home')
         }
       },
       error: (err) => {

@@ -13,6 +13,7 @@ router.get('/game/host', gameController.hostGame);
 router.post('/game/join', gameController.joinGame);
 router.delete('/game/close', gameController.closeLobby);
 router.post('/game/leave', gameController.leaveGame);
+router.get('/game/gameData', gameController.getGameData)
 
 module.exports = router;
 

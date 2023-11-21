@@ -34,6 +34,11 @@ export class GameService {
     return this.http.post(`${environment.apiUrl}/api/game/join`, { gameId: gameId }, options)
   }
 
+  getGameData(gameId: string): Observable<any> {
+    const options = { withCredentials: true }
+    return this.http.get(`${environment.apiUrl}/api/game/gameData?gameId=${gameId}`, options);
+  }
+
   joinGameSocketConnect(gameId: string, username: string, imageUrl: string) {
     if (!this.socket) {
       this.socket = io(environment.apiUrl)
@@ -104,11 +109,15 @@ export class GameService {
     });
   }
 
-  playerLeftEvent() {
-    this.socket.on('playerLeft', (data: any) => {
-      const { username } = data
-      console.log(`User ${username} left the game!`)
-    })
+  playerLeftEvent(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('playerLeft', (data: any) => {
+        const { username } = data
+        console.log(`User ${username} left the game!`)
+        observer.next({ username })
+      });
+    });
+
   }
 
   hostStartedEvent(){

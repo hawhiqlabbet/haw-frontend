@@ -148,10 +148,36 @@ function startGame(req, res) {
     res.status(200).json({ message: 'startGameSuccess' });
 }
 
+function getGameData(req, res) {
+
+    const token = req.cookies.jwt;
+    const username = extractUsernameFromJwt(token);
+    const gameId = req.query.gameId
+
+    if (!username) {
+        return res.status(401).json({ message: 'Error verifying JWT' });
+    }
+
+    if (!activeLobbies.has(gameId)) {
+        return res.status(404).json({ message: `Game with ID: ${gameId} not found` });
+    }
+
+    const lobby = activeLobbies.get(gameId);
+
+    if (!lobby.players.includes(username)) {
+        return res.status(400).json({ message: 'User is not in the game' });
+    }
+
+    // Do stuff
+    console.log(activeLobbies);
+    res.status(200).json({ message: 'getGameDataSuccess', data: lobby });
+}
+
 module.exports = {
     hostGame,
     joinGame,
     closeLobby,
     leaveGame,
-    startGame
+    startGame,
+    getGameData
 };

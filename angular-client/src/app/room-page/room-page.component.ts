@@ -35,18 +35,13 @@ export class RoomPageComponent {
 
     this.gameService.lobbyClosedEvent();
     this.gameService.playerJoinedEvent().subscribe((data: any) => {
-      const newUser: User = {
-        username: data.username,
-        imageUrl: data.imageUrl,
-        cx: this.getRandomX(),
-        cy: this.getRandomY(),
-        fill: 'green',
-      };
-      this.users.push(newUser);
-      console.log(this.users);
+      console.log('player joined new users list: ', this.users);
     });
     this.gameService.playerJoinedEvent();
-    this.gameService.playerLeftEvent();
+    this.gameService.playerLeftEvent().subscribe((data: any) => {
+      this.users.filter((user) => user.username !== data.username);
+      console.log('player left new users list: ', this.users);
+    });
     this.gameService.hostStartedEvent();
 
     // Attach the beforeunload event listener to handle disconnection on window close/refresh
@@ -55,10 +50,14 @@ export class RoomPageComponent {
     });
   }
 
+  // Used to request and store necessary data persistently
   ngOnInit(): void {
-    // Retrieve username from local storage
+    
+    // Retrieve data from local storage
     const storedUsername = localStorage.getItem('username');
     const storedGameId   = localStorage.getItem('gameId');
+
+    // Check username
     if (storedUsername) {
       this.username = storedUsername;
     } else {
@@ -69,16 +68,18 @@ export class RoomPageComponent {
         localStorage.setItem('username', username);
       });
     }
-    // Same with gameId
+
+    // Check gameId
     if(storedGameId) {
       this.gameId = storedGameId;
     }
-    //else{
-      this.activatedRoute.params.subscribe(params => {
-        this.gameId = params['gameId'];
-        localStorage.setItem('gameId', this.gameId)
-      })
-   // }
+    this.activatedRoute.params.subscribe(params => {
+      this.gameId = params['gameId'];
+      localStorage.setItem('gameId', this.gameId)
+    })
+
+    // On init, refresh the perception of players in the lobby
+    this.getGameData(this.gameId);
   }
 
   // BARA HOST SKA KUNNA KÖRA DENNA
@@ -113,6 +114,34 @@ export class RoomPageComponent {
       }
     })
   }
+
+getGameData(gameId: string): void {
+  this.gameService.getGameData(gameId).subscribe({
+    next: (response) => {
+      console.log(response)
+      const { message } = response
+      if (message === 'getGameDataSuccess') {
+        const usernames: string[] = response.data.players;
+
+        // Use the usernames to create User objects
+        const gameUsers: User[] = usernames.map((username) => ({
+          username: username,
+          imageUrl: `https://api.multiavatar.com/${username}.png`, // Add default or empty values as needed
+          cx: this.getRandomX(),
+          cy: this.getRandomY(),
+          fill: 'green',
+        }));
+        
+        this.users.push(...gameUsers);
+        console.log('Got game data from server')
+        console.log(this.users)
+      }
+    },
+    error: (err) => {
+      console.log(err)
+    }
+  })
+}
 
   startGame(): void {
     console.log('Starting game...')

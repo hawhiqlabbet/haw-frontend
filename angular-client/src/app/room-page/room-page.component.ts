@@ -29,7 +29,7 @@ export class RoomPageComponent {
 
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
-    this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
+    //this.activatedRoute.params.subscribe(params => this.gameId = params['gameId'])
     //this.userService.getUsername.subscribe(username => this.username = username)
 
 
@@ -58,6 +58,7 @@ export class RoomPageComponent {
   ngOnInit(): void {
     // Retrieve username from local storage
     const storedUsername = localStorage.getItem('username');
+    const storedGameId   = localStorage.getItem('gameId');
     if (storedUsername) {
       this.username = storedUsername;
     } else {
@@ -68,6 +69,16 @@ export class RoomPageComponent {
         localStorage.setItem('username', username);
       });
     }
+    // Same with gameId
+    if(storedGameId) {
+      this.gameId = storedGameId;
+    }
+    //else{
+      this.activatedRoute.params.subscribe(params => {
+        this.gameId = params['gameId'];
+        localStorage.setItem('gameId', this.gameId)
+      })
+   // }
   }
 
   // BARA HOST SKA KUNNA KÖRA DENNA

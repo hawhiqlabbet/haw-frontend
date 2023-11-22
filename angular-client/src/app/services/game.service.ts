@@ -15,15 +15,19 @@ export class GameService {
     this.socket = io(environment.apiUrl) 
   }
 
-  /*
   hostGameSocketConnect(gameId: string, username: string, gameChoice: string): void {
     if (!this.socket) {
       this.socket = io(environment.apiUrl)
     }
     this.socket.connect()
-    this.socket.emit('hostGame', { gameChoice })
+    const data ={
+      gameId: gameId,
+      username: username,
+      gameChoice: gameChoice
+    }
+    this.socket.emit('hostGame', data)
   }
-  */
+  
 
   joinGameSocketConnect(gameId: string, username: string, imageUrl: string) {
     if (!this.socket) {
@@ -45,6 +49,7 @@ export class GameService {
 
   closeLobbySocket(gameId: string, username: string) {
     this.socket.emit('closeLobby', { gameId, username })
+    this.socket.disconnect()
   }
 
   leaveGameSocket(gameId: string, username: string) {

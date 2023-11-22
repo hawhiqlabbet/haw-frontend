@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GameService } from '../services/game.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -19,7 +18,7 @@ export class GamesComponent {
       next: (response) => {
         const { gameId, username, message } = response
         if (message === 'hostGameSuccess') {
-          //this.gameService.hostGameSocketConnect(gameId, username, gameChoice);
+          this.userService.setJoining(false)
           this.router.navigate(['/room', gameId]);
         }
       },

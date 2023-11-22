@@ -34,8 +34,6 @@ function handleHostGame(io, socket) {
     socket.on('hostGame', (data) => {
         const { gameId, username, gameChoice } = data;
         socket.join(gameId)
-        const lobby = activeLobbies.get(gameId);
-        lobby.gameChoice = gameChoice
         console.log(`User ${username} hosted game ${gameId} with the choice ${gameChoice}`);
     })
 

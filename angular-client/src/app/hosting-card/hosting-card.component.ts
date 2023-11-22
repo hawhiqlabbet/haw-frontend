@@ -26,7 +26,6 @@ export class HostingCardComponent {
 
   hostGame() {
     this.router.navigate(['/games']);
-
   }
 
   joinGame(): void {

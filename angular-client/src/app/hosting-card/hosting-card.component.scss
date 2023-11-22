@@ -2,6 +2,8 @@
 
 .card {
     background-color: $primary;
+    height: 260px;
+    width: 340px;
     display: flex;
     justify-content: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
@@ -26,7 +28,6 @@
     left: 0;
     transform: rotateY(180deg);
     color: white;
-    display: flex;
     align-items: flex-end;
     justify-content: center;
     font-size: 24px; 
@@ -81,4 +82,22 @@
     background-color: rgb($secondary, 0.3);
     border-color: $secondary; 
     color: white;
+}
+
+.btn-footer {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: white;
+  color: $secondary;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  &:hover {
+    background-color: rgb(white, 0.75);
+    color: rgb($secondary, 0.75);
+  }
+}
+
+.spacer {
+  height: 53px;
 }

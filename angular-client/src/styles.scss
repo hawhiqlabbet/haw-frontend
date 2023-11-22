@@ -105,6 +105,13 @@ body {
   box-shadow: rgba($secondary, 0.5);
 }
 
+.btn-footer:not(:disabled):not(.disabled):active:focus,
+.btn-footer:not(:disabled):not(.disabled).active:focus {
+  background-color: rgb(white, 0.5);
+  color: rgb($secondary, 0.5);
+  box-shadow: none;
+}
+
 /*Background styles*/
 
 .primary-background {
@@ -149,8 +156,6 @@ body {
 
   .form-input::focus {
     border-color: #FF4D6D; /* Set border color to pink on focus */
-    
-
   }
 
   .white-background {

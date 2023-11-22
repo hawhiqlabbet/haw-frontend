@@ -39,10 +39,10 @@ export class GameService {
       username: username,
       imageUrl: imageUrl,
     }
+    
     this.socket.emit('joinGame', data)
 
     this.socket.on('userList', (data: any) => {
-      console.log('List of users:', data.players);
     })
 
   }
@@ -79,7 +79,9 @@ export class GameService {
     return new Observable((observer) => {
       this.socket.on('playerJoined', (data: any) => {
         const { username, imageUrl, players } = data;
-        console.log(`User ${username} joined the game! With profile picture: ${imageUrl} and the players are ${players}`);
+        if(localStorage.getItem('username') !== username) {
+          console.log(`User ${username} joined the game! With profile picture: ${imageUrl} and the players are ${players}`);
+        }
         observer.next({ username, imageUrl });
       });
     });
@@ -89,7 +91,8 @@ export class GameService {
     return new Observable((observer) => {
       this.socket.on('playerLeft', (data: any) => {
         const { username } = data
-        console.log(`User ${username} left the game!`)
+        if(localStorage.getItem('username') !== username)
+          console.log(`User ${username} left the game!`)
         observer.next({ username })
       });
     });

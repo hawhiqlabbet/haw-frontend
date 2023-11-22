@@ -33,6 +33,7 @@ export class LoginPageComponent {
       next: (data) => {
         const { username, imageUrl } = data
         this.userService.setUsername(username)
+        localStorage.setItem('username', username)
         this.userService.setImageUrl(imageUrl)
         this.router.navigateByUrl('/home');
       },

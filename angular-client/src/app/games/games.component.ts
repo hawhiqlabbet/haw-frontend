@@ -18,7 +18,7 @@ export class GamesComponent {
       next: (response) => {
         const { gameId, username, message } = response
         if (message === 'hostGameSuccess') {
-          this.userService.setJoining(false)
+          localStorage.setItem('joining', 'false')
           this.router.navigate(['/room', gameId]);
         }
       },

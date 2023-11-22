@@ -23,24 +23,22 @@ export class RoomPageComponent {
   subscriptions: Subscription[] = []
 
   users: User[] = [];
-  username: string = ''
+  username: string = localStorage.getItem('username') ?? ''
   circleRadius = 21.5
   gameId: string = ''
   gameChoice: string = ''
-  joining: boolean = false
+  joining: boolean = localStorage.getItem('joining') === 'true' ? true : false
 
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
-    console.log(this.activatedRoute)
     this.subscriptions.push(
       this.activatedRoute.params.subscribe(params => {
-        console.log(params)
         this.gameId = params['gameId']
       })
     )
 
-    this.subscriptions.push(this.userService.getUsername.subscribe(username => this.username = username))
-    this.subscriptions.push(this.userService.getJoining.subscribe(joining => this.joining = joining))
+    // this.subscriptions.push(this.userService.getUsername.subscribe(username => this.username = username))
+    // this.subscriptions.push(this.userService.getJoining.subscribe(joining => this.joining = joining))
 
     if(this.joining)
       this.gameService.joinGameSocketConnect(this.gameId, this.username, `https://api.multiavatar.com/${this.username}.png`)
@@ -51,10 +49,10 @@ export class RoomPageComponent {
 
     this.subscriptions.push(
         this.gameService.playerJoinedEvent().subscribe((data: any) => {
-        console.log(this.gameId)
         this.getGameData(this.gameId);
         setTimeout(() => {
-          console.log('player joined new users list: ', this.users)
+          if(localStorage.getItem('username') !== data.username)
+            console.log('player joined new users list: ', this.users)
         }, 2500)
       })
     )
@@ -63,7 +61,6 @@ export class RoomPageComponent {
 
     this.subscriptions.push(
       this.gameService.playerLeftEvent().subscribe((data: any) => {
-        console.log(this.gameId)
         this.getGameData(this.gameId);
         setTimeout(() => {
           console.log('player left new users list: ', this.users)
@@ -88,43 +85,8 @@ export class RoomPageComponent {
 
   // Used to request and store necessary data persistently
   ngOnInit(): void {
-    // Retrieve data from local storage
-    const storedUsername = localStorage.getItem('username');
-    const storedGameId   = localStorage.getItem('gameId');
-
-    // Check username
-    if (storedUsername) {
-      this.username = storedUsername;
-    } else {
-      // If no stored username, subscribe to changes
-      this.subscriptions.push(
-        this.userService.getUsername.subscribe(username => {
-          this.username = username;
-          // Store username in local storage
-          localStorage.setItem('username', username);
-        })
-      )
-    }
-    // Check gameId
-    /*
-    if(storedGameId) {
-      this.gameId = storedGameId;
-    }
-    this.activatedRoute.params.subscribe(params => {
-      this.gameId = params['gameId'];
-      localStorage.setItem('gameId', this.gameId)
-    })
-    */
-
     // On init, refresh the perception of players in the lobby
     this.getGameData(this.gameId);
-
-    //this.socket = io(environment.apiUrl) 
-    //this.socket.connect()
-
-    // Reconnect
-    // const selectedGameId = this.gameId
-    // this.socket.emit('reconnect', { selectedGameId })
   }
 
   // BARA HOST SKA KUNNA KÖRA DENNA
@@ -137,6 +99,8 @@ export class RoomPageComponent {
           if (message === 'closeLobbySuccess') {
             this.gameService.closeLobbySocket(this.gameId, this.username)
             this.router.navigateByUrl('/home')
+
+            localStorage.removeItem('joining')
           }
         },
         error: (err) => {
@@ -155,6 +119,8 @@ export class RoomPageComponent {
           if (message === 'leaveGameSuccess') {
             this.gameService.leaveGameSocket(this.gameId, this.username)
             this.router.navigateByUrl('/home')
+
+            localStorage.removeItem('joining')
           }
         },
         error: (err) => {
@@ -168,7 +134,6 @@ getGameData(gameId: string): void {
   this.subscriptions.push(
     this.userService.getGameData(gameId).subscribe({
       next: (response) => {
-        //console.log(response)
         const { message } = response
         if (message === 'getGameDataSuccess') {
           this.users = []
@@ -184,8 +149,6 @@ getGameData(gameId: string): void {
           })).filter((newUser) => !this.users.some((existingUser) => existingUser.username === newUser.username));;
 
           this.users.push(...gameUsers);
-          //console.log('Got game data from server')
-          //console.log(this.users)
         }
       },
       error: (err) => {

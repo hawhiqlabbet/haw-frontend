@@ -31,10 +31,9 @@ export class HostingCardComponent {
   joinGame(): void {
     this.userService.joinGame(this.gameId).subscribe({
       next: (response) => {
-        console.log(response)
         const { gameId, username, message } = response
         if (message === 'joinGameSuccess') {
-          this.userService.setJoining(true)
+          localStorage.setItem('joining', 'true')
           this.router.navigate(['/room', gameId])
         }
       },

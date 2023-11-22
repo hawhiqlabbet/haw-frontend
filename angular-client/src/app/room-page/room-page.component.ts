@@ -130,25 +130,41 @@ export class RoomPageComponent {
     )
   }
 
+
+  findUserByUsername(userList: User[] , tempUsername: string) {
+    for (let i = 0; i < userList.length; i++) {
+        if (userList[i].username === tempUsername) {
+            return userList[i];
+        }
+    }
+    // If the username is not found, return null or handle it as needed.
+    return null;
+}
+
   getGameData(gameId: string): void {
     this.subscriptions.push(
       this.userService.getGameData(gameId).subscribe({
         next: (response) => {
           const { message } = response
           if (message === 'getGameDataSuccess') {
+            var tempUsers: User[] = this.users;
             this.users = []
             const usernames: string[] = response.data.players;
             const hostUsername: string = response.data.host;
 
             // Use the usernames to create User objects
-            const gameUsers: User[] = usernames.map((username) => ({
-              username: username,
-              imageUrl: `https://api.multiavatar.com/${username}.png`, // Add default or empty values as needed
-              cx: this.getRandomX(),
-              cy: this.getRandomY(),
-              fill: 'green',
-              isHost: username === hostUsername,
-            })).filter((newUser) => !this.users.some((existingUser) => existingUser.username === newUser.username));;
+            const gameUsers: User[] = usernames.map((username) => {
+              const existingUser = this.findUserByUsername(tempUsers, username);
+          
+              return {
+                  username: username,
+                  imageUrl: `https://api.multiavatar.com/${username}.png`,
+                  cx: existingUser ? existingUser.cx : this.getRandomX(),
+                  cy: existingUser ? existingUser.cy : this.getRandomY(),
+                  fill: 'green',
+                  isHost: username === hostUsername,
+              };
+          });
             this.users.push(...gameUsers);
           }
         },

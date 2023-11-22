@@ -29,3 +29,13 @@
     box-shadow: rgba($primary, 0.5);
 }
 
+.link-style {
+    text-decoration: none;
+    color: $secondary;
+    &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        color: rgb($secondary, 0.5);
+    }
+}
+

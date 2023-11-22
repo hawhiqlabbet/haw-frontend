@@ -9,19 +9,39 @@
 
     <div class="svg-container">
         <svg class="circle-svg" style="height: 70vh; width: 100%;">
-                <circle *ngFor="let user of users; let i = index" 
+            <ng-container *ngFor="let user of users; let i = index">
+                <text 
+                    *ngIf="user.isHost"
+                    [attr.x]="user.cx" 
+                    [attr.y]="user.cy-circleRadius*1.3" 
+                    class="user-name"
+                    text-anchor="middle" 
+            dominant-baseline="middle">
+                    HOST
+                </text>
+                <circle 
                     [attr.cx]="user.cx" 
                     [attr.cy]="user.cy" 
                     [attr.fill]="user.fill" 
                     opacity="0.45" 
-                    r="21.5">
+                    [attr.r]="circleRadius" >
                 </circle>
-                <image *ngFor="let user of users; let i = index"  
-                    [attr.x]="getAdjustedDiameter(user.cx)" 
-                    [attr.y]="getAdjustedDiameter(user.cy)" 
-                    [attr.width]="42" 
-                    [attr.height]="42" 
+                <image 
+                    [attr.x]="user.cx-circleRadius" 
+                    [attr.y]="user.cy-circleRadius" 
+                    [attr.width]="circleRadius*2" 
+                    [attr.height]="circleRadius*2" 
                     [attr.href]="user.imageUrl" />
+
+                <text 
+                    [attr.x]="user.cx" 
+                    [attr.y]="user.cy+circleRadius*1.3" 
+                    class="user-name" 
+                    text-anchor="middle" 
+                    dominant-baseline="middle">
+                    {{ user.username }}
+                </text>
+            </ng-container>
         </svg>
     </div>
 </div> 

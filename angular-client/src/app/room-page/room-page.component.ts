@@ -8,9 +8,10 @@ import { Subscription } from 'rxjs';
 interface User {
   username: string;
   imageUrl: string;
-  cx: string;
-  cy: string;
+  cx: number;
+  cy: number;
   fill: string;
+  isHost: boolean;
 }
 
 @Component({
@@ -29,7 +30,6 @@ export class RoomPageComponent {
   gameChoice: string = ''
   joining: boolean = localStorage.getItem('joining') === 'true' ? true : false
 
-
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.subscriptions.push(
       this.activatedRoute.params.subscribe(params => {
@@ -40,7 +40,7 @@ export class RoomPageComponent {
     // this.subscriptions.push(this.userService.getUsername.subscribe(username => this.username = username))
     // this.subscriptions.push(this.userService.getJoining.subscribe(joining => this.joining = joining))
 
-    if(this.joining)
+    if (this.joining)
       this.gameService.joinGameSocketConnect(this.gameId, this.username, `https://api.multiavatar.com/${this.username}.png`)
     else
       this.gameService.hostGameSocketConnect(this.gameId, this.username, this.gameChoice)
@@ -130,53 +130,51 @@ export class RoomPageComponent {
     )
   }
 
-getGameData(gameId: string): void {
-  this.subscriptions.push(
-    this.userService.getGameData(gameId).subscribe({
-      next: (response) => {
-        const { message } = response
-        if (message === 'getGameDataSuccess') {
-          this.users = []
-          const usernames: string[] = response.data.players;
+  getGameData(gameId: string): void {
+    this.subscriptions.push(
+      this.userService.getGameData(gameId).subscribe({
+        next: (response) => {
+          const { message } = response
+          if (message === 'getGameDataSuccess') {
+            this.users = []
+            const usernames: string[] = response.data.players;
+            const hostUsername: string = response.data.host;
 
-          // Use the usernames to create User objects
-          const gameUsers: User[] = usernames.map((username) => ({
-            username: username,
-            imageUrl: `https://api.multiavatar.com/${username}.png`, // Add default or empty values as needed
-            cx: this.getRandomX(),
-            cy: this.getRandomY(),
-            fill: 'green',
-          })).filter((newUser) => !this.users.some((existingUser) => existingUser.username === newUser.username));;
-
-          this.users.push(...gameUsers);
+            // Use the usernames to create User objects
+            const gameUsers: User[] = usernames.map((username) => ({
+              username: username,
+              imageUrl: `https://api.multiavatar.com/${username}.png`, // Add default or empty values as needed
+              cx: this.getRandomX(),
+              cy: this.getRandomY(),
+              fill: 'green',
+              isHost: username === hostUsername,
+            })).filter((newUser) => !this.users.some((existingUser) => existingUser.username === newUser.username));;
+            this.users.push(...gameUsers);
+          }
+        },
+        error: (err) => {
+          console.log(err)
         }
-      },
-      error: (err) => {
-        console.log(err)
-      }
-    })
-  )
-}
+      })
+    )
+  }
+
 
   startGame(): void {
     console.log('Starting game...')
     this.gameService.startGameSocket(this.gameId, this.username)
   }
 
-  getRandomX(): string {
+  getRandomX(): number {
     const minX = 2 * this.circleRadius;
     const maxX = window.innerWidth - minX;
-    return `${Math.random() * (maxX - minX) + minX}`;
+    return Math.random() * (maxX - minX) + minX;
   }
 
-  getRandomY(): string {
+  getRandomY(): number {
     const minY = 2 * this.circleRadius;
     const maxY = (window.innerHeight * 0.7) - minY;
-    return `${Math.random() * (maxY - minY) + minY}`;
-  }
-
-  getAdjustedDiameter(value: any): string {
-    return `${Number(value) - this.circleRadius}`;
+    return Math.random() * (maxY - minY) + minY;
   }
 
 }

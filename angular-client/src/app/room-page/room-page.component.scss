@@ -38,7 +38,12 @@
 .room-sub-heading{
   color: $primary;
   font-family: 'Roboto Mono', monospace;
+}
 
+.user-name{
+  font-family: 'Roboto Mono', monospace;
+  fill: $primary; 
+  font-size: 15px;
 }
 
 .room-button-primary {
@@ -51,19 +56,6 @@
   font-weight: bold;
   margin-bottom: 5px;
   margin-top: 10px;
-}
-
-
-.room-button-third {
-  z-index: 2;
-  position: relative; 
-  color: white; 
-  width: 90%;
-  background: $primary;
-  border-color: $primary;
-  font-weight: bold;
-  margin-bottom: 5px;
-
 }
 
 .room-button-secondary {

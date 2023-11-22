@@ -3,8 +3,6 @@ import { Component } from '@angular/core'
 import { GameService } from '../services/game.service'
 import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
-import { environment } from 'src/environments/environment'
-import { io } from 'socket.io-client'
 
 interface User {
   username: string;
@@ -98,7 +96,7 @@ export class RoomPageComponent {
 
   // BARA HOST SKA KUNNA KÖRA DENNA
   closeLobby(): void {
-    this.gameService.closeLobby(this.gameId).subscribe({
+    this.userService.closeLobby(this.gameId).subscribe({
       next: (response) => {
         console.log(response)
         const { message } = response
@@ -114,7 +112,7 @@ export class RoomPageComponent {
   }
 
   leaveGame(): void {
-    this.gameService.leaveGame(this.gameId).subscribe({
+    this.userService.leaveGame(this.gameId).subscribe({
       next: (response) => {
         console.log(response)
         const { message } = response
@@ -130,7 +128,7 @@ export class RoomPageComponent {
   }
 
 getGameData(gameId: string): void {
-  this.gameService.getGameData(gameId).subscribe({
+  this.userService.getGameData(gameId).subscribe({
     next: (response) => {
       console.log(response)
       const { message } = response

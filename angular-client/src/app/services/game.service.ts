@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment'
@@ -12,7 +11,7 @@ export class GameService {
 
   private socket: any
 
-  constructor(private http: HttpClient, private router: Router) { 
+  constructor(private router: Router) { 
     this.socket = io(environment.apiUrl) 
   }
 
@@ -25,11 +24,6 @@ export class GameService {
     this.socket.emit('hostGame', { gameChoice })
   }
   */
-
-  getGameData(gameId: string): Observable<any> {
-    const options = { withCredentials: true }
-    return this.http.get(`${environment.apiUrl}/api/game/gameData?gameId=${gameId}`, options);
-  }
 
   joinGameSocketConnect(gameId: string, username: string, imageUrl: string) {
     if (!this.socket) {
@@ -47,21 +41,6 @@ export class GameService {
       console.log('List of users:', data.players);
     })
 
-  }
-
-  closeLobby(gameId: string): Observable<any> {
-    const options = {
-      withCredentials: true,
-      body: {
-        gameId: gameId,
-      }
-    }
-    return this.http.delete(`${environment.apiUrl}/api/game/close`, options)
-  }
-
-  leaveGame(gameId: string): Observable<any> {
-    const options = { withCredentials: true }
-    return this.http.post(`${environment.apiUrl}/api/game/leave`, { gameId: gameId }, options)
   }
 
   closeLobbySocket(gameId: string, username: string) {

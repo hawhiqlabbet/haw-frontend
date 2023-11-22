@@ -41,4 +41,19 @@ export class UserService {
     return this.http.post(`${environment.apiUrl}/api/game/join`, { gameId: gameId }, options)
   }
 
+  leaveGame(gameId: string): Observable<any> {
+    const options = { withCredentials: true }
+    return this.http.post(`${environment.apiUrl}/api/game/leave`, { gameId: gameId }, options)
+  }
+
+  closeLobby(gameId: string): Observable<any> {
+    const options = { withCredentials: true, body: { gameId: gameId, } }
+    return this.http.delete(`${environment.apiUrl}/api/game/close`, options)
+  }
+
+  getGameData(gameId: string): Observable<any> {
+    const options = { withCredentials: true }
+    return this.http.get(`${environment.apiUrl}/api/game/gameData?gameId=${gameId}`, options);
+  }
+
 }

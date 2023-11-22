@@ -7,10 +7,9 @@ import { UserService } from '../services/user.service';
 })
 export class TabBarComponent {
 
-  imageUrl: string = ''
+  username: string = localStorage.getItem('username') ?? ''
+  imageUrl: string = `https://api.multiavatar.com/${this.username}.png`
   
-  constructor(private userService: UserService) {
-    this.userService.getImageUrl.subscribe(imageUrl => this.imageUrl = imageUrl)
-  }
+  constructor(private userService: UserService) {}
 
 }

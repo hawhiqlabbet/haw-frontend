@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { GameService } from '../services/game.service';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 
@@ -10,13 +9,11 @@ import { UserService } from '../services/user.service';
 })
 export class HomeComponent {
 
-  username: string = ''
+  username: string = localStorage.getItem('username') ?? ''
   lobbyNotFound: boolean = false
   gameIdRequired: boolean = false
 
-  constructor(private router: Router, private userService: UserService) {
-    this.userService.getUsername.subscribe(username => this.username = username)
-  }
+  constructor(private router: Router, private userService: UserService) {}
 
   handleValueChange(value: string) {
 

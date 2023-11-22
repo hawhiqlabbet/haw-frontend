@@ -9,7 +9,7 @@
     </div>
 
     <div class="gradient-heading">Logga in</div>
-    <form style="width: 90%;" (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
+    <form style="width: 90%; max-width: 340px;" (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
         <input type="text" class="form-control custom-input form-margin" placeholder="Användarnamn" name="username" ngModel >
         <input type="password" class="form-control custom-input form-margin mb-5" placeholder="Lösenord" name="password" ngModel >
         <button type="submit" type="inputPassword3" class="btn gradient-button btn-secondary">LOGGA IN</button>

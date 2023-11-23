@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import { Component, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
-=======
 import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
->>>>>>> a25121ba994a176c3c54b4e550716136aa3df1c8
+import { Router } from '@angular/router';
 import anime from 'animejs/lib/anime.es';
 
 @Component({

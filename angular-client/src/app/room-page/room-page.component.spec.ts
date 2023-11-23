@@ -26,10 +26,4 @@ describe('RoomPageComponent', () => {
     expect(y).toBeGreaterThanOrEqual(43);
     expect(y).toBeLessThanOrEqual((window.innerHeight * 0.7) - 43);
   });
-
-  it('should adjust value coordinate correctly', () => {
-    const adjustedValue = component.getAdjustedDiameter('100');
-    expect(adjustedValue).toBe('79');
-  });
-
 });

@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { Component, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+=======
+import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
+>>>>>>> a25121ba994a176c3c54b4e550716136aa3df1c8
 import anime from 'animejs/lib/anime.es';
 
 @Component({
@@ -8,6 +12,9 @@ import anime from 'animejs/lib/anime.es';
   styleUrls: ['./animated-game-text.component.scss']
 })
 export class AnimatedGameTextComponent implements AfterViewInit {
+
+  @Output() animationDone: EventEmitter<boolean> = new EventEmitter<boolean>
+
 
   ngAfterViewInit(): void {
     const animation = {
@@ -19,7 +26,7 @@ export class AnimatedGameTextComponent implements AfterViewInit {
       delay: 500
     };
 
-    anime.timeline({ loop: true })
+    anime.timeline({ loop: false })
       .add({
         targets: '.white-heading .text-object-1',
         opacity: animation.opacityIn,
@@ -62,8 +69,8 @@ export class AnimatedGameTextComponent implements AfterViewInit {
         duration: 500,
         delay: 500,
         complete: () => {
-          // What do when done?
-          console.log("weeee")
+          this.animationDone.emit(true);
+          console.log('done')
         }
       })
   }

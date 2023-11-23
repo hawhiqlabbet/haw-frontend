@@ -14,6 +14,7 @@ import { RegisterPageComponent } from './register-page/register-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RoomPageComponent } from './room-page/room-page.component';
 import { UserCircleComponent } from './user-circle/user-circle.component';
+import { AnimatedGameTextComponent } from './animated-game-text/animated-game-text.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { UserCircleComponent } from './user-circle/user-circle.component';
     LoginPageComponent,
     RoomPageComponent,
     UserCircleComponent,
+    AnimatedGameTextComponent,
   ],
   imports: [
     BrowserModule,

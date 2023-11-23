@@ -28,7 +28,6 @@ body {
   margin-bottom: 30px;
   color: white;
 }
-
   
 /* Primary Button Styles */
 
@@ -128,6 +127,11 @@ body {
     background-color: $secondary;
     color: $primary; 
   }
+
+.linear-background{
+    background: linear-gradient(to top, white, $primary);
+    position: relative; 
+}
 
 .secondary-icon {
     color: white; 

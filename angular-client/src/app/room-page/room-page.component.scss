@@ -1,10 +1,5 @@
 @import '../../styles.scss';
 
-.room-background {
-  /* Your existing styles */
-  position: relative; /* Ensure relative positioning */
-}
-
 .svg-container {
   position: relative;
   width: 100%;
@@ -24,11 +19,6 @@
 .circle-group {
   position: absolute;
 
-}
-
-.room-background{
-    background: linear-gradient(to top, white, $primary);
-    position: relative; 
 }
 
 .white-heading {

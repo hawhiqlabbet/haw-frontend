@@ -28,6 +28,7 @@ export class RoomPageComponent {
   circleRadius = 21.5
   gameId: string = ''
   gameChoice: string = ''
+  gameStarted = false
   joining: boolean = localStorage.getItem('joining') === 'true' ? true : false
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
@@ -36,10 +37,6 @@ export class RoomPageComponent {
         this.gameId = params['gameId']
       })
     )
-
-    // this.subscriptions.push(this.userService.getUsername.subscribe(username => this.username = username))
-    // this.subscriptions.push(this.userService.getJoining.subscribe(joining => this.joining = joining))
-
     if (this.joining)
       this.gameService.joinGameSocketConnect(this.gameId, this.username, `https://api.multiavatar.com/${this.username}.png`)
     else
@@ -48,16 +45,14 @@ export class RoomPageComponent {
     this.gameService.lobbyClosedEvent()
 
     this.subscriptions.push(
-        this.gameService.playerJoinedEvent().subscribe((data: any) => {
+      this.gameService.playerJoinedEvent().subscribe((data: any) => {
         this.getGameData(this.gameId);
         setTimeout(() => {
-          if(localStorage.getItem('username') !== data.username)
+          if (localStorage.getItem('username') !== data.username)
             console.log('player joined new users list: ', this.users)
         }, 2500)
       })
     )
-
-    this.gameService.playerJoinedEvent();
 
     this.subscriptions.push(
       this.gameService.playerLeftEvent().subscribe((data: any) => {
@@ -67,7 +62,14 @@ export class RoomPageComponent {
         }, 2500)
       })
     )
-    this.gameService.hostStartedEvent();
+
+    this.subscriptions.push(
+      this.gameService.hostStartedEvent().subscribe((data: any) => {
+        const { username, gameChoice } = data;
+        console.log(`Host ${username} started the game with mode ${gameChoice}`);
+        this.gameStarted = true;
+      })
+    )
 
     // Attach the beforeunload event listener to handle disconnection on window close/refresh
     window.addEventListener('beforeunload', () => {
@@ -89,7 +91,6 @@ export class RoomPageComponent {
     this.getGameData(this.gameId);
   }
 
-  // BARA HOST SKA KUNNA KÖRA DENNA
   closeLobby(): void {
     this.subscriptions.push(
       this.userService.closeLobby(this.gameId).subscribe({
@@ -131,15 +132,15 @@ export class RoomPageComponent {
   }
 
 
-  findUserByUsername(userList: User[] , tempUsername: string) {
+  findUserByUsername(userList: User[], tempUsername: string) {
     for (let i = 0; i < userList.length; i++) {
-        if (userList[i].username === tempUsername) {
-            return userList[i];
-        }
+      if (userList[i].username === tempUsername) {
+        return userList[i];
+      }
     }
     // If the username is not found, return null or handle it as needed.
     return null;
-}
+  }
 
   getGameData(gameId: string): void {
     this.subscriptions.push(
@@ -155,16 +156,16 @@ export class RoomPageComponent {
             // Use the usernames to create User objects
             const gameUsers: User[] = usernames.map((username) => {
               const existingUser = this.findUserByUsername(tempUsers, username);
-          
+
               return {
-                  username: username,
-                  imageUrl: `https://api.multiavatar.com/${username}.png`,
-                  cx: existingUser ? existingUser.cx : this.getRandomX(),
-                  cy: existingUser ? existingUser.cy : this.getRandomY(),
-                  fill: 'green',
-                  isHost: username === hostUsername,
+                username: username,
+                imageUrl: `https://api.multiavatar.com/${username}.png`,
+                cx: existingUser ? existingUser.cx : this.getRandomX(),
+                cy: existingUser ? existingUser.cy : this.getRandomY(),
+                fill: 'green',
+                isHost: username === hostUsername,
               };
-          });
+            });
             this.users.push(...gameUsers);
           }
         },

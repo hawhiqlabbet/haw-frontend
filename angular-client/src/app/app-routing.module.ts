@@ -7,6 +7,7 @@ import { LaunchPageComponent } from './launch-page/launch-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { RoomPageComponent } from './room-page/room-page.component';
 // import { AuthGuard } from './auth.guard';
+import { AnimatedGameTextComponent } from './animated-game-text/animated-game-text.component';
 
 const routes: Routes = [
   { path: '', component: LaunchPageComponent },
@@ -18,6 +19,8 @@ const routes: Routes = [
   //{ path: 'room', component: RoomPageComponent },
 
   // { path: 'home', redirectTo: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'anime', component: AnimatedGameTextComponent },
+
 ];
 
 @NgModule({

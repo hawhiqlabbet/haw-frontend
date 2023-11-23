@@ -11,8 +11,8 @@ export class GameService {
 
   private socket: any
 
-  constructor(private router: Router) { 
-    this.socket = io(environment.apiUrl) 
+  constructor(private router: Router) {
+    this.socket = io(environment.apiUrl)
   }
 
   hostGameSocketConnect(gameId: string, username: string, gameChoice: string): void {
@@ -20,14 +20,14 @@ export class GameService {
       this.socket = io(environment.apiUrl)
     }
     this.socket.connect()
-    const data ={
+    const data = {
       gameId: gameId,
       username: username,
       gameChoice: gameChoice
     }
     this.socket.emit('hostGame', data)
   }
-  
+
 
   joinGameSocketConnect(gameId: string, username: string, imageUrl: string) {
     if (!this.socket) {
@@ -39,7 +39,7 @@ export class GameService {
       username: username,
       imageUrl: imageUrl,
     }
-    
+
     this.socket.emit('joinGame', data)
 
     this.socket.on('userList', (data: any) => {
@@ -57,7 +57,7 @@ export class GameService {
     this.socket.disconnect()
   }
 
-  startGameSocket(gameId: string, username: string){
+  startGameSocket(gameId: string, username: string) {
     this.socket.emit('startGame', { gameId, username })
   }
 
@@ -79,7 +79,7 @@ export class GameService {
     return new Observable((observer) => {
       this.socket.on('playerJoined', (data: any) => {
         const { username, imageUrl, players } = data;
-        if(localStorage.getItem('username') !== username) {
+        if (localStorage.getItem('username') !== username) {
           console.log(`User ${username} joined the game! With profile picture: ${imageUrl} and the players are ${players}`);
         }
         observer.next({ username, imageUrl });
@@ -91,7 +91,7 @@ export class GameService {
     return new Observable((observer) => {
       this.socket.on('playerLeft', (data: any) => {
         const { username } = data
-        if(localStorage.getItem('username') !== username)
+        if (localStorage.getItem('username') !== username)
           console.log(`User ${username} left the game!`)
         observer.next({ username })
       });
@@ -99,10 +99,12 @@ export class GameService {
 
   }
 
-  hostStartedEvent(){
-    this.socket.on('hostStarted', (data: any) => {
-      const { username, gameChoice } = data
-      console.log(`Host ${username} started the game with mode ${gameChoice}`)
-    })
+  hostStartedEvent() {
+    return new Observable((observer) => {
+      this.socket.on('hostStarted', (data: any) => {
+        const { username, gameChoice } = data
+        observer.next({ username, gameChoice });
+      })
+    });
   }
 }

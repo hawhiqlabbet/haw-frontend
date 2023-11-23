@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import anime from 'animejs/lib/anime.es';
 
 @Component({
@@ -59,9 +60,12 @@ export class AnimatedGameTextComponent implements AfterViewInit {
         targets: '.white-heading ',
         opacity: 0,
         duration: 500,
-        delay: 500
+        delay: 500,
+        complete: () => {
+          // What do when done?
+          console.log("weeee")
+        }
       })
-
   }
 
 }

@@ -176,10 +176,27 @@ export class RoomPageComponent {
     )
   }
 
-
+/*
   startGame(): void {
     console.log('Starting game...')
+    this.userService.startGame(this.gameId)
     this.gameService.startGameSocket(this.gameId, this.username)
+  }
+*/
+  startGame(): void {
+    console.log(this.gameId)
+    this.userService.startGame(this.gameId).subscribe({
+      next: (response) => {
+        const { gameId, username, message } = response
+        if (message === 'startGameSuccess') {
+          this.gameService.startGameSocket(this.gameId, this.username)
+          console.log(response)
+        }
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    })
   }
 
   getRandomX(): number {

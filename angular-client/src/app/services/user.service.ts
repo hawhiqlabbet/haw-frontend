@@ -56,4 +56,9 @@ export class UserService {
     return this.http.get(`${environment.apiUrl}/api/game/gameData?gameId=${gameId}`, options);
   }
 
+  startGame(gameId: string): Observable<any> {
+    const options = { withCredentials: true }
+    return this.http.get(`${environment.apiUrl}/api/game/startGame?gameId=${gameId}`, options);
+  }
+
 }

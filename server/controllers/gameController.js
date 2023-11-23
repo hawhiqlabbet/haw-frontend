@@ -1,6 +1,7 @@
 const { generateGameId } = require('../utils/gameUtils');
 const { activeLobbies } = require('../socketEvents');
 const { extractUsernameFromJwt } = require('../utils/jwtUtils');
+const https = require('https')
 
 function hostGame(req, res) {
 
@@ -124,12 +125,11 @@ function startGame(req, res) {
 
     const token = req.cookies.jwt;
     const username = extractUsernameFromJwt(token);
+    const gameId = req.query.gameId
 
     if (!username) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
-
-    const gameId = req.body.gameId;
 
     if (!activeLobbies.has(gameId)) {
         return res.status(404).json({ message: `Game with ID: ${gameId} not found` });
@@ -137,7 +137,7 @@ function startGame(req, res) {
 
     const lobby = activeLobbies.get(gameId);
 
-    if (lobby.host === username) {
+    if (lobby.host !== username) {
         return res.status(400).json({ message: 'Non host player cannot start the game' });
     }
 
@@ -147,7 +147,51 @@ function startGame(req, res) {
 
     // Do stuff
     console.log(activeLobbies);
-    res.status(200).json({ message: 'startGameSuccess' });
+
+    var country = ''
+    if(lobby.gameChoice === 'SpyQ') {
+        const options = {
+            hostname: 'restcountries.com',
+            path: '/v3.1/region/europe',
+            method: 'GET',
+          };
+        
+          const request = https.request(options, (response) => {
+            let data = '';
+        
+            // A chunk of data has been received.
+            response.on('data', (chunk) => {
+                    data += chunk;
+            });
+        
+            // The whole response has been received.
+            response.on('end', () => {
+            try {
+                // Parse the data into a JavaScript object
+                const jsonData = JSON.parse(data)
+                //console.log(jsonData)
+                const randomIndex = Math.floor(Math.random() * jsonData.length);
+                countryField = jsonData[randomIndex].name
+                //console.log(countryField.common)
+                country = countryField.common
+
+                console.log("LOOK HERE ", country)
+                res.status(200).json({ message: 'startGameSuccess' , country: country});
+                } catch (error) {
+                    console.error('Error parsing JSON:', error.message);
+                }
+            });
+          });
+        
+          // Handle errors
+          request.on('error', (error) => {
+            console.error('Error making request:', error.message);
+            response.status(500).send('Internal Server Error');
+          });
+        
+          // End the request
+          request.end();
+    }
 }
 
 function getGameData(req, res) {

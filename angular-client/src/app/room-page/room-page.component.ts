@@ -29,6 +29,7 @@ export class RoomPageComponent {
   gameId: string = ''
   gameChoice: string = ''
   gameStarted = false
+  animationDone = false
   joining: boolean = localStorage.getItem('joining') === 'true' ? true : false
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
@@ -179,6 +180,7 @@ export class RoomPageComponent {
 
   startGame(): void {
     console.log('Starting game...')
+    this.animationDone = false
     this.gameService.startGameSocket(this.gameId, this.username)
   }
 
@@ -192,6 +194,10 @@ export class RoomPageComponent {
     const minY = 2 * this.circleRadius;
     const maxY = (window.innerHeight * 0.7) - minY;
     return Math.random() * (maxY - minY) + minY;
+  }
+
+  handleAnimationDone(value: boolean) {
+    this.animationDone = value
   }
 
 }

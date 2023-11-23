@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import anime from 'animejs/lib/anime.es';
 
 @Component({
@@ -7,6 +7,9 @@ import anime from 'animejs/lib/anime.es';
   styleUrls: ['./animated-game-text.component.scss']
 })
 export class AnimatedGameTextComponent implements AfterViewInit {
+
+  @Output() animationDone: EventEmitter<boolean> = new EventEmitter<boolean>
+
 
   ngAfterViewInit(): void {
     const animation = {
@@ -18,7 +21,7 @@ export class AnimatedGameTextComponent implements AfterViewInit {
       delay: 500
     };
 
-    anime.timeline({ loop: true })
+    anime.timeline({ loop: false })
       .add({
         targets: '.white-heading .text-object-1',
         opacity: animation.opacityIn,
@@ -59,7 +62,12 @@ export class AnimatedGameTextComponent implements AfterViewInit {
         targets: '.white-heading ',
         opacity: 0,
         duration: 500,
-        delay: 500
+        delay: 500,
+        complete: () => {
+          this.animationDone.emit(true);
+
+          console.log('done')
+        }
       })
 
   }

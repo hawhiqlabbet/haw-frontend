@@ -74,9 +74,8 @@ function handleHostStartGame(io, socket) {
         const { gameId, username } = data;
         const lobby         = activeLobbies.get(gameId);
         const gameChoice    = lobby.gameChoice
-        const gameData      = lobbyData.get(gameId).gameData.country
-
-        //io.to(gameId).emit('hostStarted', { username, gameChoice, gameData });
+        const country      = lobbyData.get(gameId).gameData.country
+        const endTime       = lobbyData.get(gameId).gameData.endTime
 
         if(lobby.gameChoice === 'SpyQ') {
             // Conditional emit depending on if spy
@@ -87,9 +86,11 @@ function handleHostStartGame(io, socket) {
                     const socket = io.sockets.sockets.get(id);
                     
                     if (socketToUser.get(id) !== spy) {
+                        const gameData = {country, endTime}
                         socket.emit('hostStarted', { username, gameChoice, gameData });
                     } else {
-                        socket.emit('hostStarted', { username, gameChoice });
+                        const gameData = {endTime}
+                        socket.emit('hostStarted', { username, gameChoice, gameData });
                     }
                 }
             } else {

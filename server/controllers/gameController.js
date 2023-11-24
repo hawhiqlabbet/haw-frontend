@@ -178,7 +178,11 @@ function startGame(req, res) {
                 const spyName       = lobby.players[spyIndex]
                 const votingObject  = lobby.players.map((player) => ({ player: player, votes: 0 }))
                 const hasVoted      = lobby.players.map((player) => ({ player: player, hasVoted: false }))
-                lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted } } );
+                // 2 minutes game time
+                const currentTime = new Date(); 
+                endTime = new Date(currentTime.getTime() + 2 * 60000);
+
+                lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted, endTime } } );
 
                 res.status(200).json({ message: 'startGameSuccess' });
                 } catch (error) {

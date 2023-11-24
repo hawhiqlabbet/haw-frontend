@@ -3,7 +3,7 @@ import { Component } from '@angular/core'
 import { GameService } from '../services/game.service'
 import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 
 interface User {
   username: string;
@@ -30,6 +30,8 @@ export class RoomPageComponent {
   gameChoice: string = ''
   gameStarted = false
   gameData = ''
+  endTime: Date = new Date()
+  timeDifference: number = 0
   animationDone = false
   joining: boolean = localStorage.getItem('joining') === 'true' ? true : false
 
@@ -39,6 +41,7 @@ export class RoomPageComponent {
         this.gameId = params['gameId']
       })
     )
+
     if (this.joining)
       this.gameService.joinGameSocketConnect(this.gameId, this.username, `https://api.multiavatar.com/${this.username}.png`)
     else
@@ -68,11 +71,21 @@ export class RoomPageComponent {
     this.subscriptions.push(
       this.gameService.hostStartedEvent().subscribe((data: any) => {
         const { username, gameChoice, gameData } = data;
-        console.log(`Host ${username} started the game with mode ${gameChoice} containing gameData: ${gameData}`);
-        this.gameStarted = true;
-        this.gameData = gameData ?? 'spy' 
+        console.log(`Host ${username} started the game with mode ${gameChoice}`);
+        this.gameStarted  = true;
+        this.gameData     = gameData.country ?? 'spy'
+        this.endTime      = new Date(gameData.endTime)
       })
     )
+
+    // Update the timer every second
+    this.subscriptions.push(
+      interval(1000).subscribe(() => {
+      const currentTime = new Date();
+      this.timeDifference = Math.floor((this.endTime.getTime() - currentTime.getTime()) / 1000);
+      })
+    );
+    
 
     // Attach the beforeunload event listener to handle disconnection on window close/refresh
     window.addEventListener('beforeunload', () => {

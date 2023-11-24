@@ -10,6 +10,7 @@ export class SpyqGameComponent {
 
   @Input() data: any;
   @Input() username: string | null = '';
+  @Input() timeDifference: number = 0
   isSpy: boolean = false
 
   ngOnInit(): void {

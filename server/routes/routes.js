@@ -14,7 +14,7 @@ router.post('/game/join', gameController.joinGame);
 router.delete('/game/close', gameController.closeLobby);
 router.post('/game/leave', gameController.leaveGame);
 router.get('/game/gameData', gameController.getGameData)
-router.get('/game/startGame', gameController.startGame)
+router.post('/game/startGame', gameController.startGame)
 
 // SpyQ
 router.post('/game/spyQVote', gameController.spyQVote);

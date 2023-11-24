@@ -74,7 +74,7 @@ function handleHostStartGame(io, socket) {
         const { gameId, username } = data;
         const lobby         = activeLobbies.get(gameId);
         const gameChoice    = lobby.gameChoice
-        const country      = lobbyData.get(gameId).gameData.country
+        const country       = lobbyData.get(gameId).gameData.country
         const endTime       = lobbyData.get(gameId).gameData.endTime
 
         if(lobby.gameChoice === 'SpyQ') {

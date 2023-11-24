@@ -150,6 +150,8 @@ function startGame(req, res) {
 
     var country = ''
     if(lobby.gameChoice === 'SpyQ') {
+        const gameTimeInS = req.body.gameTimeInS;
+
         const options = {
             hostname: 'restcountries.com',
             path: '/v3.1/region/europe',
@@ -178,11 +180,18 @@ function startGame(req, res) {
                 const spyName       = lobby.players[spyIndex]
                 const votingObject  = lobby.players.map((player) => ({ player: player, votes: 0 }))
                 const hasVoted      = lobby.players.map((player) => ({ player: player, hasVoted: false }))
-                // 2 minutes game time
-                const currentTime = new Date(); 
-                endTime = new Date(currentTime.getTime() + 2 * 60000);
 
-                lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted, endTime } } );
+                // Default 2 minutes game time
+                const currentTime = new Date();
+                var endTime = new Date()
+                if(gameTimeInS)
+                    endTime = new Date(currentTime.getTime() + gameTimeInS);
+                else
+                    endTime = new Date(currentTime.getTime() + 2 * 60000);
+
+                const endVoteTime = endTime + 60000
+
+                lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted, endTime, endVoteTime } } );
 
                 res.status(200).json({ message: 'startGameSuccess' });
                 } catch (error) {

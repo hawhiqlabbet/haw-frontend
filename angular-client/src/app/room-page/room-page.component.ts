@@ -30,8 +30,11 @@ export class RoomPageComponent {
   gameChoice: string = ''
   gameStarted = false
   gameData = ''
+  gameTimeInS = undefined
   endTime: Date = new Date()
+  endVoteTime: Date = new Date()
   timeDifference: number = 0
+  timeDifferenceVote: number = 0
   animationDone = false
   joining: boolean = localStorage.getItem('joining') === 'true' ? true : false
 
@@ -70,11 +73,12 @@ export class RoomPageComponent {
 
     this.subscriptions.push(
       this.gameService.hostStartedEvent().subscribe((data: any) => {
-        const { username, gameChoice, gameData } = data;
+        const { username, gameChoice, gameData, endVoteTime } = data;
         console.log(`Host ${username} started the game with mode ${gameChoice}`);
         this.gameStarted  = true;
         this.gameData     = gameData.country ?? 'spy'
         this.endTime      = new Date(gameData.endTime)
+        this.endVoteTime  = new Date(endVoteTime)
       })
     )
 
@@ -82,7 +86,8 @@ export class RoomPageComponent {
     this.subscriptions.push(
       interval(1000).subscribe(() => {
       const currentTime = new Date();
-      this.timeDifference = Math.floor((this.endTime.getTime() - currentTime.getTime()) / 1000);
+      this.timeDifference     = Math.floor((this.endTime.getTime() - currentTime.getTime()) / 1000);
+      this.timeDifferenceVote = Math.floor((this.endVoteTime.getTime() - currentTime.getTime()) / 1000);
       })
     );
     
@@ -194,7 +199,7 @@ export class RoomPageComponent {
 
   startGame(): void {
     console.log(this.gameId)
-    this.userService.startGame(this.gameId).subscribe({
+    this.userService.startGame(this.gameId, this.gameTimeInS).subscribe({
       next: (response) => {
         const { message } = response
         if (message === 'startGameSuccess') {

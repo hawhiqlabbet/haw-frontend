@@ -1,5 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { GameService } from '../services/game.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-spyq-game',
@@ -7,14 +10,41 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./spyq-game.component.scss']
 })
 export class SpyqGameComponent {
+  subscriptions: Subscription[] = []
 
+  
   @Input() data: any;
-  @Input() username: string | null = '';
+  @Input() gameId: string = ''
+  @Input() username: string = '';
   @Input() timeDifference: number = 0;
   @Input() timeDifferenceVote: number = 0;
 
-  isSpy: boolean = false
+  votingDone: boolean = false
+  votedFor: string    = ''
+  isSpy: boolean      = false
+  
+  constructor(private gameService: GameService, private userService: UserService) {
+    this.subscriptions.push(
+      this.gameService.votingDoneEvent().subscribe((data: any) => {
+      this.votingDone = true
+      })
+    )
+  }
 
+  vote(): void {
+    this.subscriptions.push(
+      this.userService.spyQVote(this.gameId, this.username, this.votedFor).subscribe((data: any) => {
+        const { message } = data
+        if(message === 'spyQVoteSuccessDone') {
+          this.gameService.reportSpyQVotingDone(this.gameId)
+          console.log('Voting done')
+        }
+        setTimeout(() => {
+          console.log("Voted")
+        })
+      })
+    )
+  }
   ngOnInit(): void {
     console.log(this.username)
 
@@ -24,5 +54,4 @@ export class SpyqGameComponent {
       this.isSpy = true
     }
   }
-
 }

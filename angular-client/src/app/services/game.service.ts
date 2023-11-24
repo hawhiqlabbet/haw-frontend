@@ -66,6 +66,10 @@ export class GameService {
     //this.socket.disconnect();
   }
 
+  reportSpyQVotingDone(gameId: string) {
+    this.socket.emit('reportVotingDone', { gameId })
+  }
+
   lobbyClosedEvent() {
     this.socket.on('lobbyClosed', (data: any) => {
       const { gameId, username } = data
@@ -107,5 +111,13 @@ export class GameService {
         observer.next({ username, gameChoice, gameData });
       })
     });
+  }
+
+  votingDoneEvent() {
+    return new Observable((observer) => {
+      this.socket.on('votingDone', (data: any) => {
+        console.log('voting done')
+      })
+    })
   }
 }

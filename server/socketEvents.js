@@ -15,6 +15,7 @@ function socketEvents(io) {
         handleHostStartGame(io, socket);
         handleDisconnectUsername(io, socket);
         handleReconnect(io, socket);
+        handleVotingDone(io, socket);
     })
 }
 
@@ -115,6 +116,14 @@ function handleReconnect(io, socket) {
         console.log("Reconnecting")
         const { gameId } = data;
         socket.join(gameId)
+    })
+}
+
+function handleVotingDone(io, socket) {
+    socket.on('reportVotingDone', (data) => {
+        const { gameId } = data;
+        console.log(`Voting done for lobby ${gameId}`)
+        io.to(gameId).emit('votingDone', { gameId });
     })
 }
 

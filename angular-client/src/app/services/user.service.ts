@@ -61,4 +61,9 @@ export class UserService {
     return this.http.post(`${environment.apiUrl}/api/game/startGame?gameId=${gameId}`, { gameTimeInS: gameTimeInS }, options);
   }
 
+  spyQVote(gameId: string, username: string, votedFor: string) {
+    const options = { withCredentials: true }
+    return this.http.post(`${environment.apiUrl}/api/game/spyQVote?gameId=${gameId}`, { username: username, votedFor: votedFor }, options)
+  }
+
 }

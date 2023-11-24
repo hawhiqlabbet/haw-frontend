@@ -1,5 +1,4 @@
-import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import anime from 'animejs/lib/anime.es';
 
 @Component({
@@ -10,7 +9,6 @@ import anime from 'animejs/lib/anime.es';
 export class AnimatedGameTextComponent implements AfterViewInit {
 
   @Output() animationDone: EventEmitter<boolean> = new EventEmitter<boolean>
-
 
   ngAfterViewInit(): void {
     const animation = {
@@ -66,7 +64,6 @@ export class AnimatedGameTextComponent implements AfterViewInit {
         delay: 500,
         complete: () => {
           this.animationDone.emit(true);
-          console.log('done')
         }
       })
   }

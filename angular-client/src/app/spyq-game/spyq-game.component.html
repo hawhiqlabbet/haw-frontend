@@ -1,1 +1,29 @@
-<p>spyq-game works!</p>
+<!-- <div class="d-flex flex-column align-items-center vh-100 vv-100 grey-background"> -->
+    <div class="d-flex vh-100 align-items-center ">
+        <div class="card">
+            <div class="card-inner">
+                <div class="front">
+                    <div class="heading">{{username}}</div>
+                    <h6 class="card-title text-center">Klicka här för att se din roll</h6>
+                </div>
+            
+                <div class="back">
+                    <ng-container *ngIf="!isSpy; else spyBlock">
+                        <i class="bi bi-geo-alt-fill" style="font-size: 4rem;"></i>                    
+                        <h6 class="card-title text-center">{{data}}</h6>
+                    </ng-container>
+
+                    <ng-template #spyBlock>
+
+                        <i class="bi bi-incognito" style="font-size: 4rem;"></i>
+                        <h5 class="card-title text-center">SPY</h5>
+
+                        <h6 class="card-text text-center"><i class="bi bi-info-circle"></i> Du vet inte om det hemliga ordet utan behöver smälta in bland de andra deltagarna.</h6>
+
+                    </ng-template>
+                    
+                </div> 
+            </div>   
+        </div>   
+    </div>
+<!-- </div> -->

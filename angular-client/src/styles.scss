@@ -7,7 +7,7 @@
 // Override Bootstrap variables 
 $primary: #FF4D6D; 
 $secondary: #B241B4;
-
+$third: #0000008a;
 
 body { 
   // background: linear-gradient(to top, white, $secondary, $primary);
@@ -128,6 +128,19 @@ body {
     color: $primary; 
   }
 
+.grey-background {
+    background: $third;
+  }
+
+  .white-background {
+    background: white;
+  }
+
+  .pink-background {
+    background: $primary;
+  }
+
+
 .linear-background{
     background: linear-gradient(to top, white, $primary);
     position: relative; 
@@ -162,13 +175,6 @@ body {
     border-color: #FF4D6D; /* Set border color to pink on focus */
   }
 
-  .white-background {
-    background: white;
-  }
-
-  .pink-background {
-    background: $primary;
-  }
 
   .form-control::focus {
     border-color: $primary;

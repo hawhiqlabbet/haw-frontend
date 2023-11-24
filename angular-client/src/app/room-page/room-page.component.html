@@ -54,7 +54,7 @@
         </ng-container>
 
         <ng-container *ngIf="animationDone">
-            <h1>{{ gameData }}</h1>
+            <app-spyq-game [data]="gameData" [username]="username"></app-spyq-game>
         </ng-container>
     </ng-template>
 

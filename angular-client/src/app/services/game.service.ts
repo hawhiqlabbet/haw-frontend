@@ -102,8 +102,9 @@ export class GameService {
   hostStartedEvent() {
     return new Observable((observer) => {
       this.socket.on('hostStarted', (data: any) => {
-        const { username, gameChoice } = data
-        observer.next({ username, gameChoice });
+        const { username, gameChoice, gameData } = data
+        console.log(data)
+        observer.next({ username, gameChoice, gameData });
       })
     });
   }

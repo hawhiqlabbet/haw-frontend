@@ -29,6 +29,7 @@ export class RoomPageComponent {
   gameId: string = ''
   gameChoice: string = ''
   gameStarted = false
+  gameData = ''
   animationDone = false
   joining: boolean = localStorage.getItem('joining') === 'true' ? true : false
 
@@ -66,9 +67,10 @@ export class RoomPageComponent {
 
     this.subscriptions.push(
       this.gameService.hostStartedEvent().subscribe((data: any) => {
-        const { username, gameChoice } = data;
-        console.log(`Host ${username} started the game with mode ${gameChoice}`);
+        const { username, gameChoice, gameData } = data;
+        console.log(`Host ${username} started the game with mode ${gameChoice} containing gameData: ${gameData}`);
         this.gameStarted = true;
+        this.gameData = gameData
       })
     )
 
@@ -181,7 +183,7 @@ export class RoomPageComponent {
     console.log(this.gameId)
     this.userService.startGame(this.gameId).subscribe({
       next: (response) => {
-        const { gameId, username, message } = response
+        const { message } = response
         if (message === 'startGameSuccess') {
           this.animationDone = false
           this.gameService.startGameSocket(this.gameId, this.username)

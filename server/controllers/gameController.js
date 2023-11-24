@@ -1,5 +1,5 @@
 const { generateGameId } = require('../utils/gameUtils');
-const { activeLobbies } = require('../socketEvents');
+const { activeLobbies, lobbyData } = require('../socketEvents');
 const { extractUsernameFromJwt } = require('../utils/jwtUtils');
 const https = require('https')
 
@@ -169,14 +169,16 @@ function startGame(req, res) {
             try {
                 // Parse the data into a JavaScript object
                 const jsonData = JSON.parse(data)
-                //console.log(jsonData)
                 const randomIndex = Math.floor(Math.random() * jsonData.length);
                 countryField = jsonData[randomIndex].name
-                //console.log(countryField.common)
                 country = countryField.common
 
-                console.log("LOOK HERE ", country)
-                res.status(200).json({ message: 'startGameSuccess' , country: country});
+                // Spy game logic
+                const spyIndex = Math.floor(Math.random() * lobby.players.length);
+                const spyName = lobby.players[spyIndex]
+                lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country } } );
+
+                res.status(200).json({ message: 'startGameSuccess' });
                 } catch (error) {
                     console.error('Error parsing JSON:', error.message);
                 }

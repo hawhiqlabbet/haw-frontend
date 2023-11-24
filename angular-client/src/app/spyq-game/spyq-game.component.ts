@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-spyq-game',
@@ -6,5 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./spyq-game.component.scss']
 })
 export class SpyqGameComponent {
+
+  @Input() data: any;
+  @Input() username: string | null = '';
+  isSpy: boolean = false
+
+  ngOnInit(): void {
+    console.log(this.username)
+
+    console.log(this.data)
+
+    if (this.data === 'spy') {
+      this.isSpy = true
+    }
+  }
 
 }

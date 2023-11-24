@@ -12,8 +12,8 @@ export class HostingCardComponent {
 
   @Output() valueChange: EventEmitter<string> = new EventEmitter<string>
 
-  isFlipped: boolean = false;
-  gameId: string = '';
+  isFlipped: boolean = false
+  gameId: string = ''
   imageUrl: string = ''
 
   constructor(private router: Router, private userService: UserService) {

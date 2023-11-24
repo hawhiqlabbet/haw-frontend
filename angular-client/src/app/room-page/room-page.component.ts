@@ -70,7 +70,7 @@ export class RoomPageComponent {
         const { username, gameChoice, gameData } = data;
         console.log(`Host ${username} started the game with mode ${gameChoice} containing gameData: ${gameData}`);
         this.gameStarted = true;
-        this.gameData = gameData
+        this.gameData = gameData ?? 'spy' 
       })
     )
 

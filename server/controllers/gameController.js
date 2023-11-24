@@ -174,9 +174,11 @@ function startGame(req, res) {
                 country = countryField.common
 
                 // Spy game logic
-                const spyIndex = Math.floor(Math.random() * lobby.players.length);
-                const spyName = lobby.players[spyIndex]
-                lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country } } );
+                const spyIndex      = Math.floor(Math.random() * lobby.players.length);
+                const spyName       = lobby.players[spyIndex]
+                const votingObject  = lobby.players.map((player) => ({ player: player, votes: 0 }))
+                const hasVoted      = lobby.players.map((player) => ({ player: player, hasVoted: false }))
+                lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted } } );
 
                 res.status(200).json({ message: 'startGameSuccess' });
                 } catch (error) {
@@ -221,11 +223,90 @@ function getGameData(req, res) {
     res.status(200).json({ message: 'getGameDataSuccess', data: lobby });
 }
 
+// SPYQ
+
+// Function to increment votes for a specific option
+const incrementVotes = (list, optionName) => {
+    return list.map(option => {
+      if (option.player === optionName) {
+        // Increment the votes for the specified option
+        return { ...option, votes: option.votes + 1 };
+      }
+      // For other options, keep the object unchanged
+      return option;
+    });
+  };
+
+// Function to check if a player has voted
+const hasPlayerVoted = (list, currPlayer) => {
+    return list.some(player => player.player === currPlayer && player.hasVoted);
+  };
+
+// Function to set a player to hasVoted
+const setVoted = (list, player) => {
+    return list.map(option => {
+      if (option.player === player) {
+        return { ...option, hasVoted: true };
+      }
+      return option;
+    });
+  };
+
+// Function to check if everyone has voted
+const everyoneHasVoted = (list) => {
+    return list.every(player => player.hasVoted);
+  };
+
+function spyQVote(req, res) {
+
+    //const token = req.cookies.jwt;
+    //const username = extractUsernameFromJwt(token);
+    const gameId = req.query.gameId
+
+    const votedFor = req.body.votedFor;
+    const username = req.body.username;
+
+    /*
+    if (!username) {
+        return res.status(401).json({ message: 'Error verifying JWT' });
+    }
+
+    if (!activeLobbies.has(gameId)) {
+        return res.status(404).json({ message: `Game with ID: ${gameId} not found` });
+    }
+
+    if (!lobby.players.includes(username)) {
+        return res.status(400).json({ message: 'User is not in the game' });
+    }
+    */
+
+    const lobby         = activeLobbies.get(gameId);
+    const currLobbyData = lobbyData.get(gameId);
+
+   // Checking if player has voted
+    if(hasPlayerVoted(currLobbyData.gameData.hasVoted, username)) {
+        res.status(404).json({ message: `Player ${username} has already voted` })
+    }
+    else {
+    lobbyData.get(gameId).gameData.hasVoted = setVoted(currLobbyData.gameData.hasVoted, username)
+    lobbyData.get(gameId).gameData.votingObject = incrementVotes(currLobbyData.gameData.votingObject, votedFor)
+
+    if(everyoneHasVoted(currLobbyData.gameData.hasVoted)) 
+        res.status(200).json({ message: 'spyQVoteSuccessDone', data: lobby });
+    else
+        res.status(200).json({ message: 'spyQVoteSuccess', data: lobby });
+    }
+
+    console.log(currLobbyData.gameData.hasVoted)
+    console.log(currLobbyData.gameData.votingObject);
+}
+
 module.exports = {
     hostGame,
     joinGame,
     closeLobby,
     leaveGame,
     startGame,
-    getGameData
+    getGameData,
+    spyQVote
 };

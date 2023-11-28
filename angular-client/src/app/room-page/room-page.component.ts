@@ -73,12 +73,12 @@ export class RoomPageComponent {
 
     this.subscriptions.push(
       this.gameService.hostStartedEvent().subscribe((data: any) => {
-        const { username, gameChoice, gameData, endVoteTime } = data;
+        const { username, gameChoice, gameData } = data;
         console.log(`Host ${username} started the game with mode ${gameChoice}`);
         this.gameStarted = true;
         this.gameData = gameData.country ?? 'spy'
         this.endTime = new Date(gameData.endTime)
-        this.endVoteTime = new Date(endVoteTime)
+        this.endVoteTime = new Date(gameData.endVoteTime)
       })
     )
 

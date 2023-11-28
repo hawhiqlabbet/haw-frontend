@@ -187,9 +187,11 @@ function startGame(req, res) {
                 if(gameTimeInS)
                     endTime = new Date(currentTime.getTime() + gameTimeInS);
                 else
-                    endTime = new Date(currentTime.getTime() + 2 * 60000);
+                    endTime = new Date(currentTime.getTime() + 10000); // Faster testing
+                    //endTime = new Date(currentTime.getTime() + 2 * 60000);
 
-                const endVoteTime = endTime + 60000
+                //const endVoteTime = endTime + 60000
+                const endVoteTime = endTime + 20000 // Faster testing
 
                 lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted, endTime, endVoteTime } } );
 
@@ -233,16 +235,17 @@ function getGameData(req, res) {
     }
 
     if(gameChoice === 'SpyQ') {
-        if(!lobbyData.get(gameId)){
+        const currLobbyData = lobbyData.get(gameId)
+        if(!currLobbyData){
             res.status(200).json({ message: 'getGameDataSuccess', data: lobby });
             return
         }
 
-        const country       = lobbyData.get(gameId).gameData.country
-        const endTime       = lobbyData.get(gameId).gameData.endTime
-        const endVoteTime   = lobbyData.get(gameId).gameData.endVoteTime
+        const country       = currLobbyData.gameData.country
+        const endTime       = currLobbyData.gameData.endTime
+        const endVoteTime   = currLobbyData.gameData.endVoteTime
 
-        const spy = lobbyData.get(gameId).gameData.spyName
+        const spy = currLobbyData.gameData.spyName
         
         console.log(username, " ", spy)
         if (username !== spy) {
@@ -329,7 +332,7 @@ function spyQVote(req, res) {
     lobbyData.get(gameId).gameData.votingObject = incrementVotes(currLobbyData.gameData.votingObject, votedFor)
 
     if(everyoneHasVoted(currLobbyData.gameData.hasVoted)) { 
-        const currLobbyData = lobbyData(gameId)
+        const currLobbyData = lobbyData.get(gameId)
         res.status(200).json({ message: 'spyQVoteSuccessDone', data: lobby });
     }
     else

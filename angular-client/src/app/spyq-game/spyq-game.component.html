@@ -14,6 +14,8 @@
                     <ng-container *ngIf="gameData !== 'spy'; else spyBlock">
                         <i class="bi bi-geo-alt-fill" style="font-size: 4rem;"></i>                    
                         <h6 class="card-title text-center">{{gameData}}</h6>
+
+                        <h3>{{timeDifference}}</h3>
                     </ng-container>
 
                     <ng-template #spyBlock>
@@ -33,16 +35,25 @@
     </ng-container>
     
     <ng-template #votingBlock>
-        <div class="flex-column">
-            <div class="white-heading">Vem är SpyQ?</div>
-            <div class="voting-box">
-                <ng-container *ngFor="let user of users; let i = index">
-                    <ng-container *ngIf="user.username !== username">   
-                        <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
+        <ng-container *ngIf="timeDifferenceVote > 0 || !votingDone; else votingResultBlock">
+            <div class="flex-column">
+                <div class="white-heading">Vem är SpyQ?</div>
+                <div class="voting-box">
+                    <ng-container *ngFor="let user of users; let i = index">
+                        <ng-container *ngIf="user.username !== username">   
+                            <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
+                        </ng-container>
                     </ng-container>
-                </ng-container>
+                    <h3>{{timeDifferenceVote}}</h3>
+                </div>
             </div>
-        </div>
+        </ng-container>
+
+        <ng-template #votingResultBlock>
+            <ng-container *ngFor="let user of votingData; let i = index">  
+                <div>{{user.player}}: {{user.votes}} </div>
+            </ng-container>
+        </ng-template>
     </ng-template>
 
 </div>

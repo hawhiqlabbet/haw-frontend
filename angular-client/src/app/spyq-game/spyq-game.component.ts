@@ -22,11 +22,13 @@ export class SpyqGameComponent {
   @Input() timeDifferenceVote: number = 0;
 
   votingDone: boolean = false
+  votingData: any = []
   isSpy: boolean = false
 
   constructor(private gameService: GameService, private userService: UserService) {
     this.subscriptions.push(
-      this.gameService.votingDoneEvent().subscribe((data: any) => {
+      this.gameService.votingDoneEvent().subscribe((votingData: any) => {
+        this.votingData = votingData.votingData
         this.votingDone = true
       })
     )

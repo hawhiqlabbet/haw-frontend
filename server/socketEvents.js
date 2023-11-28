@@ -79,6 +79,7 @@ function handleHostStartGame(io, socket) {
         if(lobby.gameChoice === 'SpyQ') {
             const country       = lobbyData.get(gameId).gameData.country
             const endTime       = lobbyData.get(gameId).gameData.endTime
+            const endVoteTime   = lobbyData.get(gameId).gameData.endVoteTime
 
             // Conditional emit depending on if spy
             const room = io.sockets.adapter.rooms.get(gameId);
@@ -88,10 +89,10 @@ function handleHostStartGame(io, socket) {
                     const socket = io.sockets.sockets.get(id);
                     
                     if (socketToUser.get(id) !== spy) {
-                        const gameData = {country, endTime}
+                        const gameData = {country, endTime, endVoteTime}
                         socket.emit('hostStarted', { username, gameChoice, gameData });
                     } else {
-                        const gameData = {endTime}
+                        const gameData = {endTime, endVoteTime}
                         socket.emit('hostStarted', { username, gameChoice, gameData });
                     }
                 }
@@ -123,9 +124,9 @@ function handleReconnect(io, socket) {
 function handleVotingDone(io, socket) {
     socket.on('reportVotingDone', (data) => {
         const { gameId } = data;
-        const currLobbyData = lobbyData.get(gameId)
+        const votingData = lobbyData.get(gameId).gameData.votingObject
         console.log(`Voting done for lobby ${gameId}`)
-        io.to(gameId).emit('votingDone', { gameId: gameId, lobbyData: currLobbyData });
+        io.to(gameId).emit('votingDone', { gameId: gameId, votingData: votingData });
     })
 }
 

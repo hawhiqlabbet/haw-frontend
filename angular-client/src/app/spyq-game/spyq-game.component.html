@@ -53,6 +53,10 @@
             <div>{{foundSpy}}</div>
             <ng-container *ngFor="let user of votingData; let i = index">  
                 <div>{{user.player}}: {{user.votes}} </div>
+                <ng-container *ngIf="joining === 'false'">
+                    <button (click)="toLobby()" type="button" class="btn btn-primary">Back To Lobby</button>
+                    <button (click)="closeLobby()" type="button" class="btn btn-primary">Leave Game</button>
+                </ng-container>
             </ng-container>
         </ng-template>
     </ng-template>

@@ -3,6 +3,7 @@ import { UserService } from '../services/user.service';
 import { GameService } from '../services/game.service';
 import { Subscription } from 'rxjs';
 import { User } from '../room-page/room-page.component';
+import { Router } from '@angular/router'
 
 
 @Component({
@@ -25,7 +26,9 @@ export class SpyqGameComponent {
   @Input() votingData: any = []
   @Input() foundSpy: boolean = false
 
-  constructor(private gameService: GameService, private userService: UserService) {
+  joining: string = ""
+
+  constructor(private gameService: GameService, private userService: UserService, private router: Router) {
     this.subscriptions.push(
       this.gameService.votingDoneEvent().subscribe((data: any) => {
         const {votingData, foundSpy} = data
@@ -35,6 +38,10 @@ export class SpyqGameComponent {
         this.votingDone = true
       })
     )
+  }
+
+  ngOnInit() {
+      this.joining = localStorage.getItem('joining') ?? "false"
   }
 
   vote(votedFor: string): void {
@@ -50,5 +57,28 @@ export class SpyqGameComponent {
         })
       })
     )
+  }
+  
+  closeLobby(): void {
+    this.subscriptions.push(
+      this.userService.closeLobby(this.gameId).subscribe({
+        next: (response) => {
+          console.log(response)
+          const { message } = response
+          if (message === 'closeLobbySuccess') {
+            this.gameService.closeLobbySocket(this.gameId, this.username)
+            this.router.navigateByUrl('/home')
+            localStorage.removeItem('joining')
+          }
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
+    )
+  }
+
+  toLobby(): void {
+    console.log("TODO")
   }
 }

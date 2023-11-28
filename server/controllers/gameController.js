@@ -84,6 +84,7 @@ function closeLobby(req, res) {
     }
 
     activeLobbies.delete(gameId);
+    lobbyData.delete(gameId)
     console.log(activeLobbies);
 
     res.status(200).json({ message: 'closeLobbySuccess' });

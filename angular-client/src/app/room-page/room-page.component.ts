@@ -168,11 +168,22 @@ export class RoomPageComponent {
       this.userService.getGameData(gameId).subscribe({
         next: (response) => {
           const { message } = response
+          console.log(response)
           if (message === 'getGameDataSuccess') {
+            const { gameData } = response;
             var tempUsers: User[] = this.users;
             this.users = []
             const usernames: string[] = response.data.players;
             const hostUsername: string = response.data.host;
+
+            // Set current game data
+            if(gameData) {
+              this.gameStarted   = true;
+              this.gameData      = gameData.personalData.country ?? 'spy'
+              this.endTime       = new Date(gameData.personalData.endTime)
+              this.endVoteTime   = new Date(gameData.personalData.endVoteTime)
+              this.animationDone = true
+            }
 
             // Use the usernames to create User objects
             const gameUsers: User[] = usernames.map((username) => {

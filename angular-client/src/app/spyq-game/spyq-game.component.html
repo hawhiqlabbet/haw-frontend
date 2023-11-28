@@ -8,9 +8,9 @@
                 </div>
             
                 <div class="back">
-                    <ng-container *ngIf="!isSpy; else spyBlock">
+                    <ng-container *ngIf="gameData !== 'spy'; else spyBlock">
                         <i class="bi bi-geo-alt-fill" style="font-size: 4rem;"></i>                    
-                        <h6 class="card-title text-center">{{data}}</h6>
+                        <h6 class="card-title text-center">{{gameData}}</h6>
                     </ng-container>
 
                     <ng-template #spyBlock>

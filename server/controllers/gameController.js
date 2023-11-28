@@ -225,15 +225,39 @@ function getGameData(req, res) {
         return res.status(404).json({ message: `Game with ID: ${gameId} not found` });
     }
 
-    const lobby = activeLobbies.get(gameId);
+    const lobby      = activeLobbies.get(gameId);
+    const gameChoice = lobby.gameChoice
 
     if (!lobby.players.includes(username)) {
         return res.status(400).json({ message: 'User is not in the game' });
     }
 
-    // Do stuff
-    console.log(activeLobbies);
-    res.status(200).json({ message: 'getGameDataSuccess', data: lobby });
+    if(gameChoice === 'SpyQ') {
+        if(!lobbyData.get(gameId)){
+            res.status(200).json({ message: 'getGameDataSuccess', data: lobby });
+            return
+        }
+
+        const country       = lobbyData.get(gameId).gameData.country
+        const endTime       = lobbyData.get(gameId).gameData.endTime
+        const endVoteTime   = lobbyData.get(gameId).gameData.endVoteTime
+
+        const spy = lobbyData.get(gameId).gameData.spyName
+        
+        console.log(username, " ", spy)
+        if (username !== spy) {
+            const personalData = { country, endTime, endVoteTime }
+            res.status(200).json({ message: 'getGameDataSuccess', data: lobby, gameData:  { username, gameChoice, personalData }});
+        } else {
+            const personalData = { endTime, endVoteTime }
+            res.status(200).json({ message: 'getGameDataSuccess', data: lobby, gameData:  { username, gameChoice, personalData }});
+        }
+    }
+    else {
+        // Do stuff
+        console.log(activeLobbies);
+        res.status(200).json({ message: 'getGameDataSuccess', data: lobby });
+    }
 }
 
 // SPYQ
@@ -304,8 +328,10 @@ function spyQVote(req, res) {
     lobbyData.get(gameId).gameData.hasVoted = setVoted(currLobbyData.gameData.hasVoted, username)
     lobbyData.get(gameId).gameData.votingObject = incrementVotes(currLobbyData.gameData.votingObject, votedFor)
 
-    if(everyoneHasVoted(currLobbyData.gameData.hasVoted)) 
+    if(everyoneHasVoted(currLobbyData.gameData.hasVoted)) { 
+        const currLobbyData = lobbyData(gameId)
         res.status(200).json({ message: 'spyQVoteSuccessDone', data: lobby });
+    }
     else
         res.status(200).json({ message: 'spyQVoteSuccess', data: lobby });
     }

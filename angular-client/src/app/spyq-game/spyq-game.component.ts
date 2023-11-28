@@ -13,7 +13,7 @@ export class SpyqGameComponent {
   subscriptions: Subscription[] = []
 
   
-  @Input() data: any;
+  @Input() gameData: any;
   @Input() gameId: string = ''
   @Input() username: string = '';
   @Input() timeDifference: number = 0;
@@ -44,14 +44,5 @@ export class SpyqGameComponent {
         })
       })
     )
-  }
-  ngOnInit(): void {
-    console.log(this.username)
-
-    console.log(this.data)
-
-    if (this.data === 'spy') {
-      this.isSpy = true
-    }
   }
 }

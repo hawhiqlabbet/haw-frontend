@@ -75,10 +75,11 @@ function handleHostStartGame(io, socket) {
         const { gameId, username } = data;
         const lobby         = activeLobbies.get(gameId);
         const gameChoice    = lobby.gameChoice
-        const country       = lobbyData.get(gameId).gameData.country
-        const endTime       = lobbyData.get(gameId).gameData.endTime
 
         if(lobby.gameChoice === 'SpyQ') {
+            const country       = lobbyData.get(gameId).gameData.country
+            const endTime       = lobbyData.get(gameId).gameData.endTime
+
             // Conditional emit depending on if spy
             const room = io.sockets.adapter.rooms.get(gameId);
             if (room) {
@@ -122,8 +123,9 @@ function handleReconnect(io, socket) {
 function handleVotingDone(io, socket) {
     socket.on('reportVotingDone', (data) => {
         const { gameId } = data;
+        const currLobbyData = lobbyData.get(gameId)
         console.log(`Voting done for lobby ${gameId}`)
-        io.to(gameId).emit('votingDone', { gameId });
+        io.to(gameId).emit('votingDone', { gameId: gameId, lobbyData: currLobbyData });
     })
 }
 

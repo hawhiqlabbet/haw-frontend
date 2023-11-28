@@ -16,6 +16,7 @@ import { RoomPageComponent } from './room-page/room-page.component';
 import { UserCircleComponent } from './user-circle/user-circle.component';
 import { AnimatedGameTextComponent } from './animated-game-text/animated-game-text.component';
 import { SpyqGameComponent } from './spyq-game/spyq-game.component';
+import { BackgroundStarsComponent } from './background-stars/background-stars.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SpyqGameComponent } from './spyq-game/spyq-game.component';
     UserCircleComponent,
     AnimatedGameTextComponent,
     SpyqGameComponent,
+    BackgroundStarsComponent,
   ],
   imports: [
     BrowserModule,

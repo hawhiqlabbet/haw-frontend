@@ -184,16 +184,22 @@ function startGame(req, res) {
                 const foundSpy      = false
 
                 // Default 2 minutes game time
+                const options = { timeZone: 'Europe/Stockholm' };
                 const currentTime = new Date();
-                var endTime = new Date()
-                if(gameTimeInS)
-                    endTime = new Date(currentTime.getTime() + gameTimeInS);
-                else
+                var endTime;
+                
+                if (gameTimeInS) {
+                    endTime = new Date(currentTime.getTime() + gameTimeInS * 1000);
+                } else {
                     endTime = new Date(currentTime.getTime() + 10000); // Faster testing
-                    //endTime = new Date(currentTime.getTime() + 2 * 60000);
+                    // endTime = new Date(currentTime.getTime() + 2 * 60000);
+                }
 
                 //const endVoteTime = endTime + 60000
-                const endVoteTime = endTime + 20000 // Faster testing
+                const endVoteTime = new Date(endTime.getTime() + 20000).toLocaleString('en-US', options) // Faster testing
+                endTime = endTime.toLocaleString('en-US', options)
+
+                console.log(endTime, " ", endVoteTime)
 
                 lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted, endTime, endVoteTime, foundSpy } } );
 

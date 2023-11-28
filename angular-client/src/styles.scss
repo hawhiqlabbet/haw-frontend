@@ -135,6 +135,7 @@ body {
 .linear-background{
   background: linear-gradient(to top, white, $secondary, $primary);
   position: relative; 
+  overflow-x: hidden; 
 }
 
 .secondary-icon {

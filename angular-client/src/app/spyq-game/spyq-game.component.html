@@ -37,14 +37,14 @@
             <ng-container *ngIf="timeDifferenceVote > 0 || !votingDone; else votingResultBlock">
                 <div class="flex-column">
                     <div class="white-heading">Vem är SpyQ?</div>
-                    <div class="voting-box">
-                        <ng-container *ngFor="let user of users; let i = index">
-                            <ng-container *ngIf="user.username !== username">   
-                                <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
+                        <div class="voting-box">
+                            <ng-container *ngFor="let user of users; let i = index">
+                                <ng-container *ngIf="user.username !== username">   
+                                    <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
+                                </ng-container>
                             </ng-container>
-                        </ng-container>
-                        <h3>{{timeDifferenceVote}}</h3>
-                    </div>
+                            <h3>{{timeDifferenceVote}}</h3>
+                        </div>
                 </div>
             </ng-container>
 

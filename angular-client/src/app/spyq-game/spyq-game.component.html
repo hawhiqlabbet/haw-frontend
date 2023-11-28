@@ -1,64 +1,72 @@
-<!-- <div class="d-flex flex-column align-items-center vh-100 vv-100 linear-background"> -->
+<div class="d-flex flex-column align-items-center vh-100 vv-100 linear-background">
+    <div class="d-flex vh-100 align-items-center ">
 
-<div class="d-flex vh-100 align-items-center ">
+        <ng-container *ngIf="timeDifference>0; else votingBlock">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="front">
+                        <div class="heading">{{username}}</div>
+                        <h6 class="card-title text-center">Klicka här för att se din roll</h6>
+                    </div>
+                
+                    <div class="back">
+                        <ng-container *ngIf="gameData !== 'spy'; else spyBlock">
+                            <i class="bi bi-geo-alt-fill" style="font-size: 4rem;"></i>                    
+                            <h6 class="card-title text-center">{{gameData}}</h6>
 
-    <ng-container *ngIf="timeDifference>0; else votingBlock">
-        <div class="card">
-            <div class="card-inner">
-                <div class="front">
-                    <div class="heading">{{username}}</div>
-                    <h6 class="card-title text-center">Klicka här för att se din roll</h6>
-                </div>
-            
-                <div class="back">
-                    <ng-container *ngIf="gameData !== 'spy'; else spyBlock">
-                        <i class="bi bi-geo-alt-fill" style="font-size: 4rem;"></i>                    
-                        <h6 class="card-title text-center">{{gameData}}</h6>
-
-                        <h3>{{timeDifference}}</h3>
-                    </ng-container>
-
-                    <ng-template #spyBlock>
-
-                        <i class="bi bi-incognito" style="font-size: 4rem;"></i>
-                        <h5 class="card-title text-center">SPY</h5>
-
-                        <h6 class="card-text text-center"><i class="bi bi-info-circle"></i> Du vet inte om det hemliga ordet utan behöver smälta in bland de andra deltagarna.</h6>
-
-                        <h3>{{timeDifference}}</h3>
-
-                    </ng-template>
-                    
-                </div> 
-            </div>   
-        </div>  
-    </ng-container>
-    
-    <ng-template #votingBlock>
-        <ng-container *ngIf="timeDifferenceVote > 0 || !votingDone; else votingResultBlock">
-            <div class="flex-column">
-                <div class="white-heading">Vem är SpyQ?</div>
-                <div class="voting-box">
-                    <ng-container *ngFor="let user of users; let i = index">
-                        <ng-container *ngIf="user.username !== username">   
-                            <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
+                            <h3>{{timeDifference}}</h3>
                         </ng-container>
-                    </ng-container>
-                    <h3>{{timeDifferenceVote}}</h3>
-                </div>
-            </div>
+
+                        <ng-template #spyBlock>
+
+                            <i class="bi bi-incognito" style="font-size: 4rem;"></i>
+                            <h5 class="card-title text-center">SPY</h5>
+
+                            <h6 class="card-text text-center"><i class="bi bi-info-circle"></i> Du vet inte om det hemliga ordet utan behöver smälta in bland de andra deltagarna.</h6>
+
+                            <h3>{{timeDifference}}</h3>
+
+                        </ng-template>
+                        
+                    </div> 
+                </div>   
+            </div>  
         </ng-container>
-
-        <ng-template #votingResultBlock>
-            <div>{{foundSpy}}</div>
-            <ng-container *ngFor="let user of votingData; let i = index">  
-                <div>{{user.player}}: {{user.votes}} </div>
-                <ng-container *ngIf="joining === 'false'">
-                    <button (click)="toLobby()" type="button" class="btn btn-primary">Back To Lobby</button>
-                    <button (click)="closeLobby()" type="button" class="btn btn-primary">Leave Game</button>
-                </ng-container>
+        
+        <ng-template #votingBlock>
+            <ng-container *ngIf="timeDifferenceVote > 0 || !votingDone; else votingResultBlock">
+                <div class="flex-column">
+                    <div class="white-heading">Vem är SpyQ?</div>
+                    <div class="voting-box">
+                        <ng-container *ngFor="let user of users; let i = index">
+                            <ng-container *ngIf="user.username !== username">   
+                                <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
+                            </ng-container>
+                        </ng-container>
+                        <h3>{{timeDifferenceVote}}</h3>
+                    </div>
+                </div>
             </ng-container>
-        </ng-template>
-    </ng-template>
 
+            <ng-template #votingResultBlock> 
+                
+
+                <app-background-stars></app-background-stars>
+                <div class="result-container">
+                    <div class="white-heading result-heading">RESULTAT</div>
+                <ng-container *ngFor="let user of votingData; let i = index">  
+                    <h6 class="result-info">{{user.player}}: {{user.votes}} röster</h6>
+                </ng-container>
+                    <ng-container *ngIf="joining === 'false'" >
+                        <div class="buttons-container">
+                        <button (click)="newRound()" type="button" class="btn btn-secondary custom-btn">Starta en ny omgång</button>
+                        <button (click)="closeLobby()" type="button" class="btn btn-secondary custom-btn">Avsluta Spelet</button>
+                    </div>
+                </ng-container></div>
+            </ng-template>
+        </ng-template> 
+
+
+
+    </div>
 </div>

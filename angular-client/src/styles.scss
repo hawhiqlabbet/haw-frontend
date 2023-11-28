@@ -6,7 +6,7 @@
 
 // Override Bootstrap variables 
 $primary: #FF4D6D; 
-$secondary: #B241B4;
+$secondary: #9c009f;
 $third: #0000008a;
 
 body { 
@@ -133,8 +133,8 @@ body {
 
 
 .linear-background{
-    background: linear-gradient(to top, white, $primary);
-    position: relative; 
+  background: linear-gradient(to top, white, $secondary, $primary);
+  position: relative; 
 }
 
 .secondary-icon {

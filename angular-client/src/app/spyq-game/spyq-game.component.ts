@@ -14,7 +14,7 @@ import { Router } from '@angular/router'
 export class SpyqGameComponent {
   subscriptions: Subscription[] = []
 
-  
+
   @Input() gameData: any;
   @Input() gameId: string = ''
   @Input() username: string = '';
@@ -23,7 +23,7 @@ export class SpyqGameComponent {
   @Input() timeDifferenceVote: number = 0;
 
   @Input() votingDone: boolean = false
-  @Input() votingData: any = []
+  @Input() votingData: any[] = [];
   @Input() foundSpy: boolean = false
 
   joining: string = ""
@@ -31,17 +31,17 @@ export class SpyqGameComponent {
   constructor(private gameService: GameService, private userService: UserService, private router: Router) {
     this.subscriptions.push(
       this.gameService.votingDoneEvent().subscribe((data: any) => {
-        const {votingData, foundSpy} = data
+        const { votingData, foundSpy } = data
         console.log(data)
         this.votingData = votingData
-        this.foundSpy   = foundSpy
+        this.foundSpy = foundSpy
         this.votingDone = true
       })
     )
   }
 
   ngOnInit() {
-      this.joining = localStorage.getItem('joining') ?? "false"
+    this.joining = localStorage.getItem('joining') ?? "false"
   }
 
   vote(votedFor: string): void {
@@ -58,7 +58,7 @@ export class SpyqGameComponent {
       })
     )
   }
-  
+
   closeLobby(): void {
     this.subscriptions.push(
       this.userService.closeLobby(this.gameId).subscribe({
@@ -78,7 +78,7 @@ export class SpyqGameComponent {
     )
   }
 
-  toLobby(): void {
+  newRound(): void {
     console.log("TODO")
   }
 }

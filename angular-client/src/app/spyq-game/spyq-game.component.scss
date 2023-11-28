@@ -91,3 +91,38 @@
 .show>.btn-secondary.dropdown-toggle:focus {
     box-shadow: rgba($primary, 0.5);
     }
+
+.result-heading{
+    font-size: 50px;
+
+}
+
+.result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-info {
+    color: white;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    }
+
+.custom-btn {
+    flex: 1;
+    margin: 5px 20px;
+    width: 100%;
+    box-shadow: 0 0 0 .1rem rgba(white, 0.5);
+    z-index: 2;
+  }
+

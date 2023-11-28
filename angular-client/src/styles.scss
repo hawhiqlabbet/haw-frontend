@@ -30,7 +30,6 @@ body {
 }
   
 /* Primary Button Styles */
-
 .btn-primary {
   color: $secondary;
   background-color: white;
@@ -75,7 +74,6 @@ body {
   border-width: 2px;
   font-size: 14px;
   letter-spacing: 2px;
-
 }
 
 .btn-secondary:hover {
@@ -102,13 +100,6 @@ body {
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
 .show>.btn-secondary.dropdown-toggle:focus {
   box-shadow: rgba($secondary, 0.5);
-}
-
-.btn-footer:not(:disabled):not(.disabled):active:focus,
-.btn-footer:not(:disabled):not(.disabled).active:focus {
-  background-color: rgb(white, 0.5);
-  color: rgb($secondary, 0.5);
-  box-shadow: none;
 }
 
 /*Background styles*/

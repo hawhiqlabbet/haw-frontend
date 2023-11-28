@@ -50,6 +50,7 @@
         </ng-container>
 
         <ng-template #votingResultBlock>
+            <div>{{foundSpy}}</div>
             <ng-container *ngFor="let user of votingData; let i = index">  
                 <div>{{user.player}}: {{user.votes}} </div>
             </ng-container>

@@ -38,6 +38,10 @@ export class RoomPageComponent {
   animationDone = false
   joining: boolean = localStorage.getItem('joining') === 'true' ? true : false
 
+  votingDone: boolean = false
+  votingData: any = []
+  foundSpy: boolean = false
+
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.subscriptions.push(
       this.activatedRoute.params.subscribe(params => {
@@ -183,6 +187,13 @@ export class RoomPageComponent {
               this.endTime       = new Date(gameData.personalData.endTime)
               this.endVoteTime   = new Date(gameData.personalData.endVoteTime)
               this.animationDone = true
+
+              // If voting is done, then this will set the votes
+              if(gameData.personalData.votingObject) {
+                this.votingDone = true
+                this.votingData = gameData.personalData.votingObject
+                this.foundSpy   = gameData.personalData.foundSpy
+              }
             }
 
             // Use the usernames to create User objects

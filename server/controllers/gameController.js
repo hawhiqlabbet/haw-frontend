@@ -180,6 +180,7 @@ function startGame(req, res) {
                 const spyName       = lobby.players[spyIndex]
                 const votingObject  = lobby.players.map((player) => ({ player: player, votes: 0 }))
                 const hasVoted      = lobby.players.map((player) => ({ player: player, hasVoted: false }))
+                const foundSpy      = false
 
                 // Default 2 minutes game time
                 const currentTime = new Date();
@@ -193,7 +194,7 @@ function startGame(req, res) {
                 //const endVoteTime = endTime + 60000
                 const endVoteTime = endTime + 20000 // Faster testing
 
-                lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted, endTime, endVoteTime } } );
+                lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted, endTime, endVoteTime, foundSpy } } );
 
                 res.status(200).json({ message: 'startGameSuccess' });
                 } catch (error) {
@@ -244,21 +245,25 @@ function getGameData(req, res) {
         const country       = currLobbyData.gameData.country
         const endTime       = currLobbyData.gameData.endTime
         const endVoteTime   = currLobbyData.gameData.endVoteTime
+        const votingObject  = currLobbyData.gameData.votingObject
+        const foundSpy      = currLobbyData.gameData.foundSpy
 
         const spy = currLobbyData.gameData.spyName
         
-        console.log(username, " ", spy)
+        const personalData = {endTime, endVoteTime}
+        if(currLobbyData.gameData.hasVoted && everyoneHasVoted(currLobbyData.gameData.hasVoted)) {
+            personalData.votingObject = votingObject.sort((a, b) => b.votes - a.votes);
+            personalData.foundSpy     = foundSpy 
+        }
+
         if (username !== spy) {
-            const personalData = { country, endTime, endVoteTime }
+            personalData.country = country
             res.status(200).json({ message: 'getGameDataSuccess', data: lobby, gameData:  { username, gameChoice, personalData }});
         } else {
-            const personalData = { endTime, endVoteTime }
             res.status(200).json({ message: 'getGameDataSuccess', data: lobby, gameData:  { username, gameChoice, personalData }});
         }
     }
     else {
-        // Do stuff
-        console.log(activeLobbies);
         res.status(200).json({ message: 'getGameDataSuccess', data: lobby });
     }
 }
@@ -297,6 +302,22 @@ const everyoneHasVoted = (list) => {
     return list.every(player => player.hasVoted);
   };
 
+const getPlayerWithMostVotes = (list) => {
+    if (list.length === 0) {
+        return null; // or handle accordingly if the array is empty
+    }
+
+    let maxVotesPlayer = list[0];
+
+    for (let i = 1; i < list.length; i++) {
+        if (list[i].votes > maxVotesPlayer.votes) {
+        maxVotesPlayer = list[i];
+        }
+    }
+
+    return maxVotesPlayer.player;
+}
+
 function spyQVote(req, res) {
 
     //const token = req.cookies.jwt;
@@ -332,15 +353,15 @@ function spyQVote(req, res) {
     lobbyData.get(gameId).gameData.votingObject = incrementVotes(currLobbyData.gameData.votingObject, votedFor)
 
     if(everyoneHasVoted(currLobbyData.gameData.hasVoted)) { 
-        const currLobbyData = lobbyData.get(gameId)
+        const playerMostVotes = getPlayerWithMostVotes(currLobbyData.gameData.votingObject)
+        if(playerMostVotes == currLobbyData.gameData.spyName)
+            lobbyData.get(gameId).gameData.foundSpy = true
+
         res.status(200).json({ message: 'spyQVoteSuccessDone', data: lobby });
     }
     else
         res.status(200).json({ message: 'spyQVoteSuccess', data: lobby });
     }
-
-    console.log(currLobbyData.gameData.hasVoted)
-    console.log(currLobbyData.gameData.votingObject);
 }
 
 module.exports = {

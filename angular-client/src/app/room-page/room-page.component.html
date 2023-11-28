@@ -54,7 +54,16 @@
         </ng-container>
 
         <ng-container *ngIf="animationDone">
-            <app-spyq-game [gameData]="gameData" [gameId]="gameId" [username]="username" [timeDifference]="timeDifference" [timeDifferenceVote]="timeDifferenceVote" [users]="users"></app-spyq-game>
+            <app-spyq-game 
+                [gameData]="gameData" 
+                [gameId]="gameId" [username]="username" 
+                [timeDifference]="timeDifference" 
+                [timeDifferenceVote]="timeDifferenceVote" 
+                [users]="users"
+                [votingData]="votingData"
+                [votingDone]="votingDone"
+                [foundSpy]="foundSpy">
+            </app-spyq-game>
         </ng-container>
     </ng-template>
 

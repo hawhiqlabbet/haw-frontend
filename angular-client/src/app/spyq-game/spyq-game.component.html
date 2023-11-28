@@ -1,5 +1,8 @@
-<!-- <div class="d-flex flex-column align-items-center vh-100 vv-100 grey-background"> -->
-    <div class="d-flex vh-100 align-items-center ">
+<!-- <div class="d-flex flex-column align-items-center vh-100 vv-100 linear-background"> -->
+
+<div class="d-flex vh-100 align-items-center ">
+
+    <ng-container *ngIf="timeDifference>0; else votingBlock">
         <div class="card">
             <div class="card-inner">
                 <div class="front">
@@ -26,6 +29,20 @@
                     
                 </div> 
             </div>   
-        </div>   
-    </div>
-<!-- </div> -->
+        </div>  
+    </ng-container>
+    
+    <ng-template #votingBlock>
+        <div class="flex-column">
+            <div class="white-heading">Vem är SpyQ?</div>
+            <div class="voting-box">
+                <ng-container *ngFor="let user of users; let i = index">
+                    <ng-container *ngIf="user.username !== username">   
+                        <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </ng-template>
+
+</div>

@@ -5,7 +5,7 @@ import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
 import { Subscription, interval } from 'rxjs';
 
-interface User {
+export interface User {
   username: string;
   imageUrl: string;
   cx: number;
@@ -75,22 +75,22 @@ export class RoomPageComponent {
       this.gameService.hostStartedEvent().subscribe((data: any) => {
         const { username, gameChoice, gameData, endVoteTime } = data;
         console.log(`Host ${username} started the game with mode ${gameChoice}`);
-        this.gameStarted  = true;
-        this.gameData     = gameData.country ?? 'spy'
-        this.endTime      = new Date(gameData.endTime)
-        this.endVoteTime  = new Date(endVoteTime)
+        this.gameStarted = true;
+        this.gameData = gameData.country ?? 'spy'
+        this.endTime = new Date(gameData.endTime)
+        this.endVoteTime = new Date(endVoteTime)
       })
     )
 
     // Update the timer every second
     this.subscriptions.push(
       interval(1000).subscribe(() => {
-      const currentTime = new Date();
-      this.timeDifference     = Math.floor((this.endTime.getTime() - currentTime.getTime()) / 1000);
-      this.timeDifferenceVote = Math.floor((this.endVoteTime.getTime() - currentTime.getTime()) / 1000);
+        const currentTime = new Date();
+        this.timeDifference = Math.floor((this.endTime.getTime() - currentTime.getTime()) / 1000);
+        this.timeDifferenceVote = Math.floor((this.endVoteTime.getTime() - currentTime.getTime()) / 1000);
       })
     );
-    
+
 
     // Attach the beforeunload event listener to handle disconnection on window close/refresh
     window.addEventListener('beforeunload', () => {

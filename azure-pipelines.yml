@@ -11,14 +11,13 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'a6d1bebe-11e4-4ae2-b9c9-77e112f51f47'
-  frontendRepository: 'frontendimage'
-  backendRepository: 'backendimage'
-  containerRegistry: 'awappcr.azurecr.io'
+  dockerRegistryServiceConnection: '4ee07b9d-57ef-4a23-9779-aa60d15ff62d'
+  imageRepository: 'davidangstromawapp'
+  containerRegistry: 'hawcr.azurecr.io'
   frontendDockerfile: 'angular-client/Dockerfile'
   backendDockerfile: 'server/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'awappcr6a17-auth'
+  imagePullSecret: 'hawcr2114ee95-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'

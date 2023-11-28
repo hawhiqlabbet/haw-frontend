@@ -1,4 +1,4 @@
-## AW App - Front- & Backend
+## HaW App - Front- & Backend
 
 ### Content
 - [Frontend](#aw-app---frontend)
@@ -8,7 +8,7 @@
   - [Backend - Technologies](#technologies-used-1)
   - [Backend - Installation](#installation--running-1)
 
-### AW App - Frontend
+### HaW App - Frontend
 
 #### Technologies used
 
@@ -22,7 +22,7 @@ The **technologies** used in the **frontend** are:
 - When the frontend is installed, write `npm run dev` or `npm start` in the terminal.
 - The frontend should now run on [**localhost:4200**](http://localhost:4200).
 
-### AW App - Backend
+### HaW App - Backend
 
 #### Technologies used
 

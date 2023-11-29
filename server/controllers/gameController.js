@@ -183,24 +183,6 @@ function startGame(req, res) {
                 const hasVoted      = lobby.players.map((player) => ({ player: player, hasVoted: false }))
                 const foundSpy      = false
 
-                // Default 2 minutes game time
-                /*
-                const options = { timeZone: 'Europe/Stockholm' };
-                const currentTime = new Date();
-                var endTime;
-                
-                if (gameTimeInS) {
-                    endTime = new Date(currentTime.getTime() + gameTimeInS * 1000);
-                } else {
-                    endTime = new Date(currentTime.getTime() + 10000); // Faster testing
-                    // endTime = new Date(currentTime.getTime() + 2 * 60000);
-                }
-
-                //const endVoteTime = endTime + 60000
-                const endVoteTime = new Date(endTime.getTime() + 20000).toLocaleString('en-US', options) // Faster testing
-                endTime = endTime.toLocaleString('en-US', options)
-                */
-
                 const options = { timeZone: 'Europe/Stockholm' };
                 const currentTime = new Date();
                 let endTime;
@@ -279,13 +261,13 @@ function getGameData(req, res) {
         const endVoteTime   = currLobbyData.gameData.endVoteTime
         const votingObject  = currLobbyData.gameData.votingObject
         const foundSpy      = currLobbyData.gameData.foundSpy
-
         const spy = currLobbyData.gameData.spyName
         
         const personalData = {endTime, endVoteTime}
         if(currLobbyData.gameData.hasVoted && everyoneHasVoted(currLobbyData.gameData.hasVoted)) {
             personalData.votingObject = votingObject.sort((a, b) => b.votes - a.votes);
             personalData.foundSpy     = foundSpy 
+            personalData.spyName      = spy
         }
 
         if (username !== spy) {

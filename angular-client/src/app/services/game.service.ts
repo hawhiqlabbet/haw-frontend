@@ -116,8 +116,8 @@ export class GameService {
   votingDoneEvent() {
     return new Observable((observer) => {
       this.socket.on('votingDone', (data: any) => {
-        const { votingData, foundSpy } = data
-        observer.next({ votingData, foundSpy })
+        const { votingData, foundSpy, spyName } = data
+        observer.next({ votingData, foundSpy, spyName })
       })
     })
   }

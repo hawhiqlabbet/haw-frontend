@@ -150,8 +150,11 @@ function handleVotingDone(io, socket) {
         const { gameId } = data;
         const votingData = lobbyData.get(gameId).gameData.votingObject
         const foundSpy   = lobbyData.get(gameId).gameData.foundSpy
+        const spyName    = lobbyData.get(gameId).gameData.spyName
+        console.log(spyName)
+
         console.log(`Voting done for lobby ${gameId}`)
-        io.to(gameId).emit('votingDone', { gameId: gameId, votingData: votingData, foundSpy: foundSpy });
+        io.to(gameId).emit('votingDone', { gameId: gameId, votingData: votingData, foundSpy: foundSpy, spyName: spyName });
     })
 }
 

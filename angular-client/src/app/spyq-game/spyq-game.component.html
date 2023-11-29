@@ -52,8 +52,11 @@
                 <app-background-stars></app-background-stars>
                 <div class="result-container">
                     <div class="white-heading result-heading">RESULTAT</div>
-                    <ng-container *ngFor="let user of votingData; let i = index">  
-                        <h6 class="result-info">{{user.player}}: {{user.votes}} röster</h6>
+                    <ng-container *ngFor="let user of votingData; let i = index">
+                        <div class="user-result-container">
+                            <ng-container *ngIf="user.player === spyName"> SPY: </ng-container> 
+                            <h6 class="result-info">{{user.player}}: {{user.votes}} röster</h6>
+                        </div>
                     </ng-container>
                     <ng-container *ngIf="!joining;" >
                             <div class="buttons-container">

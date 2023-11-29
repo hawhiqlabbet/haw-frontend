@@ -26,16 +26,18 @@ export class SpyqGameComponent {
   @Output() votingDoneChanged: EventEmitter<boolean> = new EventEmitter<boolean>
   @Input() votingData: any[] = [];
   @Input() foundSpy: boolean = false
+  @Input() spyName: string = ""
 
   joining: boolean = false
+  
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router) {
     this.subscriptions.push(
       this.gameService.votingDoneEvent().subscribe((data: any) => {
-        const { votingData, foundSpy } = data
-        console.log("WEEE", " ", data)
+        const { votingData, foundSpy, spyName } = data
         this.votingData = votingData
         this.foundSpy = foundSpy
+        this.spyName = spyName
         this.votingDoneChanged.emit(true)
       })
     )

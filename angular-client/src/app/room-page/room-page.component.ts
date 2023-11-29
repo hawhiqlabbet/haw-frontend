@@ -41,6 +41,7 @@ export class RoomPageComponent {
   votingDone: boolean = false
   votingData: any = []
   foundSpy: boolean = false
+  spyName: string = ""
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.subscriptions.push(
@@ -211,6 +212,7 @@ export class RoomPageComponent {
                 this.votingDone = true
                 this.votingData = gameData.personalData.votingObject
                 this.foundSpy   = gameData.personalData.foundSpy
+                this.spyName    = gameData.personalData.spyName
               }
             }
 

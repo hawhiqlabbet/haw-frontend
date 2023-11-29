@@ -27,7 +27,7 @@ export class SpyqGameComponent {
   @Input() votingData: any[] = [];
   @Input() foundSpy: boolean = false
 
-  joining: string = ""
+  joining: boolean = false
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router) {
     this.subscriptions.push(
@@ -42,7 +42,8 @@ export class SpyqGameComponent {
   }
 
   ngOnInit() {
-    this.joining = localStorage.getItem('joining') ?? "false"
+    this.joining = localStorage.getItem('joining') === 'true' ? true : false
+    console.log("LOOK HERE ", this.votingData)
   }
 
   vote(votedFor: string): void {

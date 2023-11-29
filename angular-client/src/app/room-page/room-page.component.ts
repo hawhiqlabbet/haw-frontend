@@ -82,7 +82,7 @@ export class RoomPageComponent {
         this.timeDifferenceVote = endVoteTime
 
         if(this.timeDifferenceVote < 0) {
-          this.votingData = true
+          this.votingDone = true
         }
       })
     )

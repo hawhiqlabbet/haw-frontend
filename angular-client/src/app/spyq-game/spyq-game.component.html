@@ -48,21 +48,20 @@
                 </div>
             </ng-container>
 
-            <ng-template #votingResultBlock> 
-                
-
+            <ng-template #votingResultBlock>         
                 <app-background-stars></app-background-stars>
                 <div class="result-container">
                     <div class="white-heading result-heading">RESULTAT</div>
-                <ng-container *ngFor="let user of votingData; let i = index">  
-                    <h6 class="result-info">{{user.player}}: {{user.votes}} röster</h6>
-                </ng-container>
-                    <ng-container *ngIf="joining === 'false'" >
-                        <div class="buttons-container">
-                        <button (click)="newRound()" type="button" class="btn btn-secondary custom-btn">Starta en ny omgång</button>
-                        <button (click)="closeLobby()" type="button" class="btn btn-secondary custom-btn">Avsluta Spelet</button>
-                    </div>
-                </ng-container></div>
+                    <ng-container *ngFor="let user of votingData; let i = index">  
+                        <h6 class="result-info">{{user.player}}: {{user.votes}} röster</h6>
+                    </ng-container>
+                    <ng-container *ngIf="!joining;" >
+                            <div class="buttons-container">
+                                <button (click)="newRound()" type="button" class="btn btn-secondary custom-btn">Starta en ny omgång</button>
+                                <button (click)="closeLobby()" type="button" class="btn btn-secondary custom-btn">Avsluta Spelet</button>
+                            </div>
+                    </ng-container>
+                </div> 
             </ng-template>
         </ng-template> 
 

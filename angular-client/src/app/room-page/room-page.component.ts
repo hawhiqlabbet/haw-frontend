@@ -76,30 +76,48 @@ export class RoomPageComponent {
     )
 
     this.subscriptions.push(
+      this.gameService.timerUpdateEvent().subscribe((data: any) => {
+        const{ endTime, endVoteTime } = data
+        this.timeDifference     = endTime
+        this.timeDifferenceVote = endVoteTime
+
+        if(this.timeDifferenceVote < 0) {
+          this.votingData = true
+        }
+      })
+    )
+
+    this.subscriptions.push(
       this.gameService.hostStartedEvent().subscribe((data: any) => {
         const { username, gameChoice, gameData } = data;
         console.log(`Host ${username} started the game with mode ${gameChoice}`);
         this.gameStarted = true;
         this.gameData = gameData.country ?? 'spy'
-        this.endTime = new Date(gameData.endTime)
-        this.endVoteTime = new Date(gameData.endVoteTime)
+        //this.endTime = new Date(gameData.endTime)
+        //this.endVoteTime = new Date(gameData.endVoteTime)
       })
     )
 
     // Update the timer every second
-    this.subscriptions.push(
+   /* this.subscriptions.push(
       interval(1000).subscribe(() => {
         const currentTime = new Date();
         this.timeDifference = Math.floor((this.endTime.getTime() - currentTime.getTime()) / 1000);
         this.timeDifferenceVote = Math.floor((this.endVoteTime.getTime() - currentTime.getTime()) / 1000);
       })
     );
-
+    */
 
     // Attach the beforeunload event listener to handle disconnection on window close/refresh
     window.addEventListener('beforeunload', () => {
       this.gameService.disconnectBeforeUnload(this.username);
     });
+  }
+
+  handleVotingDoneChanged(value: boolean) {
+    // Do something with the emitted value from the child
+    console.log("LOOK HERE ", value)
+    this.votingDone = value
   }
 
   ngOnDestroy(): void {

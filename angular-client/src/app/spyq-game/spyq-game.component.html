@@ -34,7 +34,7 @@
         </ng-container>
         
         <ng-template #votingBlock>
-            <ng-container *ngIf="timeDifferenceVote > 0 || !votingDone; else votingResultBlock">
+            <ng-container *ngIf="!votingDone; else votingResultBlock">
                 <div class="flex-column">
                     <div class="white-heading">Vem är SpyQ?</div>
                     <div class="voting-box">

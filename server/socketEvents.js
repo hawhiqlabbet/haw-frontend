@@ -1,6 +1,7 @@
 const activeLobbies = new Map();
 const lobbyData     = new Map();
 const socketToUser  = new Map();
+const lastUpdateTimestamps = new Map();
 
 function socketEvents(io) {
     io.on('connection', (socket) => {
@@ -16,6 +17,29 @@ function socketEvents(io) {
         handleDisconnectUsername(io, socket);
         handleReconnect(io, socket);
         handleVotingDone(io, socket);
+
+        // Timer update logic, for example, triggered by a setInterval
+        setInterval(() => {
+        // Update the timer value (replace this with your actual timer logic)
+            for (const gameId of activeLobbies.keys()) {
+                const currentTime = new Date().getTime();
+
+                if (!lastUpdateTimestamps.has(gameId) || currentTime - lastUpdateTimestamps.get(gameId) >= 1000) {
+                    if(lobbyData.get(gameId)) {
+                        lobbyData.get(gameId).gameData.endTime     -= 1
+                        lobbyData.get(gameId).gameData.endVoteTime -= 1
+
+                        // Update the last update timestamp for this gameId
+                        lastUpdateTimestamps.set(gameId, currentTime);
+
+                        // Broadcast the updated timer value to all connected clients
+                        const endTime       = lobbyData.get(gameId).gameData.endTime
+                        const endVoteTime   = lobbyData.get(gameId).gameData.endVoteTime
+                        io.to(gameId).emit('timeUpdateEvent', { endTime: endTime, endVoteTime: endVoteTime });
+                    } 
+                }
+            }
+        }, 1000); // Update every second (adjust this interval based on your needs)
     })
 }
 

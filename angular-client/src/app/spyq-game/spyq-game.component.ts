@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { GameService } from '../services/game.service';
 import { Subscription } from 'rxjs';
@@ -23,6 +23,7 @@ export class SpyqGameComponent {
   @Input() timeDifferenceVote: number = 0;
 
   @Input() votingDone: boolean = false
+  @Output() votingDoneChanged: EventEmitter<boolean> = new EventEmitter<boolean>
   @Input() votingData: any[] = [];
   @Input() foundSpy: boolean = false
 
@@ -32,10 +33,10 @@ export class SpyqGameComponent {
     this.subscriptions.push(
       this.gameService.votingDoneEvent().subscribe((data: any) => {
         const { votingData, foundSpy } = data
-        console.log(data)
+        console.log("WEEE", " ", data)
         this.votingData = votingData
         this.foundSpy = foundSpy
-        this.votingDone = true
+        this.votingDoneChanged.emit(true)
       })
     )
   }

@@ -62,7 +62,8 @@
                 [users]="users"
                 [votingData]="votingData"
                 [votingDone]="votingDone"
-                [foundSpy]="foundSpy">
+                [foundSpy]="foundSpy"
+                (votingDoneChanged)="handleVotingDoneChanged($event)">
             </app-spyq-game>
         </ng-container>
     </ng-template>

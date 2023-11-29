@@ -184,6 +184,7 @@ function startGame(req, res) {
                 const foundSpy      = false
 
                 // Default 2 minutes game time
+                /*
                 const options = { timeZone: 'Europe/Stockholm' };
                 const currentTime = new Date();
                 var endTime;
@@ -198,7 +199,31 @@ function startGame(req, res) {
                 //const endVoteTime = endTime + 60000
                 const endVoteTime = new Date(endTime.getTime() + 20000).toLocaleString('en-US', options) // Faster testing
                 endTime = endTime.toLocaleString('en-US', options)
+                */
 
+                const options = { timeZone: 'Europe/Stockholm' };
+                const currentTime = new Date();
+                let endTime;
+                let endVoteTime;
+
+                if (gameTimeInS) {
+                    endTime = new Date(currentTime.getTime() + gameTimeInS * 20000);
+                } else {
+                    endTime = new Date(currentTime.getTime() + 20000); // Faster testing
+                    // endTime = new Date(currentTime.getTime() + 2 * 60000);
+                }
+
+                // Calculate time left in seconds for endTime
+                const timeLeftInSeconds = Math.floor((endTime.getTime() - currentTime.getTime()) / 1000);
+
+                // Calculate time left in seconds for endVoteTime
+                const voteTimeLeftInSeconds = Math.floor((endTime.getTime() - currentTime.getTime() + 20000) / 1000); // Faster testing
+                // const voteTimeLeftInSeconds = Math.floor((endVoteTime.getTime() - currentTime.getTime()) / 1000);
+
+                // Set endVoteTime in seconds
+                endVoteTime = voteTimeLeftInSeconds;
+                // Set endTime in seconds
+                endTime = timeLeftInSeconds;
                 console.log(endTime, " ", endVoteTime)
 
                 lobbyData.set(gameId, { players: lobby.players, gameData: { spyName, country, votingObject, hasVoted, endTime, endVoteTime, foundSpy } } );

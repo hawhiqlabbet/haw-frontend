@@ -43,7 +43,7 @@ spec:
         - name: backendcontainer
           image: awappcr.azurecr.io/backendimage
           ports:
-          - containerPort: 3001
+            - containerPort: 3001
           envFrom:
-          - configMapRef:
-            name: backendconfig
+            - configMapRef:
+                name: backendconfig

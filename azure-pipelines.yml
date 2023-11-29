@@ -12,7 +12,8 @@ variables:
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '4ee07b9d-57ef-4a23-9779-aa60d15ff62d'
-  imageRepository: 'davidangstromawapp'
+  frontendRepository: 'frontendImage'
+  backendRepository: 'backendImage'
   containerRegistry: 'hawcr.azurecr.io'
   frontendDockerfile: 'angular-client/Dockerfile'
   backendDockerfile: 'server/Dockerfile'

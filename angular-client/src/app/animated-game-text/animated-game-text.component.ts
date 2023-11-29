@@ -15,7 +15,7 @@ export class AnimatedGameTextComponent implements AfterViewInit {
       opacityIn: [0, 1],
       scaleIn: [0.2, 1],
       scaleOut: 3,
-      durationIn: 800,
+      durationIn: 600,
       durationOut: 600,
       delay: 500
     };
@@ -60,8 +60,8 @@ export class AnimatedGameTextComponent implements AfterViewInit {
       }).add({
         targets: '.white-heading ',
         opacity: 0,
-        duration: 500,
-        delay: 500,
+        duration: 100,
+        delay: 0,
         complete: () => {
           this.animationDone.emit(true);
         }

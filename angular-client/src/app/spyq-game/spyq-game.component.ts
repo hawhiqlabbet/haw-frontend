@@ -29,6 +29,7 @@ export class SpyqGameComponent {
 
   joining: boolean = false
   isFlipped: boolean = false
+  userHasVoted: boolean = false
 
   // Mock data to use for testing purpose
   // gameData: any;
@@ -150,6 +151,8 @@ export class SpyqGameComponent {
   }
 
   vote(votedFor: string): void {
+    this.userHasVoted = true
+
     this.subscriptions.push(
       this.userService.spyQVote(this.gameId, this.username, votedFor).subscribe((data: any) => {
         const { message } = data

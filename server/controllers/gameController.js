@@ -64,15 +64,11 @@ function joinGame(req, res) {
 
     const isUserInGame = lobby.players.includes(username) || lobby.host === username;
 
-    /*
-    if (isUserInGame) {
-        return res.status(400).json({ message: 'User is already in the game' });
+    if (!isUserInGame) {
+        //return res.status(400).json({ message: 'User is already in the game' });
+        lobby.players.push(username);
+        activeLobbies.set(gameId, lobby);
     }
-    */
-
-    lobby.players.push(username);
-    console.log(activeLobbies);
-    activeLobbies.set(gameId, lobby);
 
     res.status(200).json({ gameId: gameId, username: username, message: 'joinGameSuccess' });
 }
@@ -216,19 +212,19 @@ function startGame(req, res) {
                 let endTime;
                 let endVoteTime;
 
+                // 2 min default
                 if (gameTimeInS) {
-                    endTime = new Date(currentTime.getTime() + gameTimeInS * 20000);
+                    endTime = process.env.NODE_ENV === 'production' ? new Date(currentTime.getTime() + gameTimeInS * 1000) :  new Date(currentTime.getTime() + gameTimeInS * 1000);
                 } else {
-                    endTime = new Date(currentTime.getTime() + 20000); // Faster testing
-                    // endTime = new Date(currentTime.getTime() + 2 * 60000);
+                    endTime = process.env.NODE_ENV === 'production' ? new Date(currentTime.getTime() + 60000 * 2) :  new Date(currentTime.getTime() * 1000);
                 }
 
                 // Calculate time left in seconds for endTime
                 const timeLeftInSeconds = Math.floor((endTime.getTime() - currentTime.getTime()) / 1000);
 
                 // Calculate time left in seconds for endVoteTime
-                const voteTimeLeftInSeconds = Math.floor((endTime.getTime() - currentTime.getTime() + 20000) / 1000); // Faster testing
-                // const voteTimeLeftInSeconds = Math.floor((endVoteTime.getTime() - currentTime.getTime()) / 1000);
+                // Default 1 min vote time 
+                const voteTimeLeftInSeconds = process.env.NODE_ENV === 'production' ? Math.floor((endTime.getTime() - currentTime.getTime() + 60000) / 1000) : Math.floor((endTime.getTime() - currentTime.getTime() + 20000) / 1000); 
 
                 // Set endVoteTime in seconds
                 endVoteTime = voteTimeLeftInSeconds;

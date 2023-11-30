@@ -16,16 +16,23 @@ function hostGame(req, res) {
     */
    const username = req.body.username;
 
+   /*
     for (const lobby of activeLobbies.values()) {
         if (lobby.host === username) {
             return res.status(400).json({ message: 'User is already hosting a lobby' });
         }
     }
+    */
 
     const gameId = generateGameId();
     const gameChoice = req.body.gameChoice;
 
-    activeLobbies.set(gameId, { host: username, gameChoice: gameChoice, players: [username] });
+    // 30 min timeout for lobby
+    const currentTime = new Date()
+    let timeout = new Date(currentTime.getTime() + 60000 * 30);     
+    const timeLeftInSeconds = Math.floor((timeout.getTime() - currentTime.getTime()) / 1000);
+
+    activeLobbies.set(gameId, { host: username, timeout: timeLeftInSeconds, gameChoice: gameChoice, players: [username] });
     console.log(`User ${username} hosted game ${gameId} with the choice ${gameChoice}`);
     console.log(activeLobbies);
     res.status(200).json({ gameId: gameId, username: username, message: 'hostGameSuccess' });
@@ -57,9 +64,11 @@ function joinGame(req, res) {
 
     const isUserInGame = lobby.players.includes(username) || lobby.host === username;
 
+    /*
     if (isUserInGame) {
         return res.status(400).json({ message: 'User is already in the game' });
     }
+    */
 
     lobby.players.push(username);
     console.log(activeLobbies);

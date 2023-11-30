@@ -20,11 +20,14 @@ function socketEvents(io) {
 
         // Timer update logic, for example, triggered by a setInterval
         setInterval(() => {
-        // Update the timer value (replace this with your actual timer logic)
+            // Update the timeout and gamedata timers for all lobbies
             for (const gameId of activeLobbies.keys()) {
                 const currentTime = new Date().getTime();
 
+                // Every second for every lobby
                 if (!lastUpdateTimestamps.has(gameId) || currentTime - lastUpdateTimestamps.get(gameId) >= 1000) {
+                    activeLobbies.get(gameId).timeout -= 1
+
                     if(lobbyData.get(gameId)) {
                         lobbyData.get(gameId).gameData.endTime     -= 1
                         lobbyData.get(gameId).gameData.endVoteTime -= 1
@@ -38,6 +41,13 @@ function socketEvents(io) {
                         io.to(gameId).emit('timeUpdateEvent', { endTime: endTime, endVoteTime: endVoteTime });
                     } 
                 }
+
+                // Delete lobby if timeouted
+                activeLobbies.forEach((value, key) => {
+                    if (value.timeout <= 0) {
+                      activeLobbies.delete(key);
+                    }
+                });
             }
         }, 1000); // Update every second (adjust this interval based on your needs)
     })

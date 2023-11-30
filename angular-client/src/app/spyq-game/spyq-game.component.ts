@@ -14,7 +14,6 @@ import { Router } from '@angular/router'
 export class SpyqGameComponent {
   subscriptions: Subscription[] = []
 
-
   @Input() gameData: any;
   @Input() gameId: string = ''
   @Input() username: string = '';
@@ -29,7 +28,98 @@ export class SpyqGameComponent {
   @Input() spyName: string = ""
 
   joining: boolean = false
-  
+  isFlipped: boolean = false
+
+  // Mock data to use for testing purpose
+  // gameData: any;
+  // gameId: string = '123';
+  // username: string = 'Emelie';
+  // users: User[] = [
+  //   {
+  //     username: 'Lucas',
+  //     imageUrl: 'https://example.com/image1.png',
+  //     cx: 100,
+  //     cy: 100,
+  //     fill: '#FFA500',
+  //     isHost: true
+  //   },
+  //   {
+  //     username: 'Emelie',
+  //     imageUrl: 'https://example.com/image2.png',
+  //     cx: 200,
+  //     cy: 200,
+  //     fill: '#00FF00',
+  //     isHost: false
+  //   },
+  //   {
+  //     username: 'David',
+  //     imageUrl: 'https://example.com/image1.png',
+  //     cx: 100,
+  //     cy: 100,
+  //     fill: '#FFA500',
+  //     isHost: false
+  //   },
+  //   {
+  //     username: 'Siri',
+  //     imageUrl: 'https://example.com/image2.png',
+  //     cx: 200,
+  //     cy: 200,
+  //     fill: '#00FF00',
+  //     isHost: false
+  //   },
+  //   {
+  //     username: 'Inger',
+  //     imageUrl: 'https://example.com/image1.png',
+  //     cx: 100,
+  //     cy: 100,
+  //     fill: '#FFA500',
+  //     isHost: false
+  //   },
+  //   {
+  //     username: 'Anton',
+  //     imageUrl: 'https://example.com/image2.png',
+  //     cx: 200,
+  //     cy: 200,
+  //     fill: '#00FF00',
+  //     isHost: false
+  //   },
+  //   {
+  //     username: 'Sofie',
+  //     imageUrl: 'https://example.com/image1.png',
+  //     cx: 100,
+  //     cy: 100,
+  //     fill: '#FFA500',
+  //     isHost: false
+  //   },
+  //   {
+  //     username: 'Matthias',
+  //     imageUrl: 'https://example.com/image2.png',
+  //     cx: 200,
+  //     cy: 200,
+  //     fill: '#00FF00',
+  //     isHost: false
+  //   },
+  // ];
+  // timeDifference: number = 100;
+  // timeDifferenceVote: number = 50;
+  // votingDone: boolean = false;
+  // votingData: any[] = [
+  //   { player: 'David', votes: 1 },
+  //   { player: 'emelie', votes: 5 },
+  //   { player: 'lucas', votes: 0 },
+  //   { player: 'Matthidddswdswsddsdsdsas', votes: 1 },
+  //   { player: 'Inger', votes: 1 },
+  //   { player: 'Anton', votes: 1 },
+  //   { player: 'Sofie', votes: 1 },
+  //   { player: 'Matthias', votes: 1 },
+  //   { player: 'Inger', votes: 1 },
+  //   { player: 'Anton', votes: 1 },
+  //   { player: 'Sofie', votes: 1 },
+  //   { player: 'Matthidddswdswsddsdsdsas', votes: 1 },
+  // ];
+  // foundSpy: boolean = true;
+  // joining: boolean = false;
+  // spyName: string = 'emelie'
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router) {
     this.subscriptions.push(
@@ -39,12 +129,23 @@ export class SpyqGameComponent {
         this.foundSpy = foundSpy
         this.spyName = spyName
         this.votingDoneChanged.emit(true)
+
       })
     )
   }
 
+  flipCard(): void {
+    console.log(this.isFlipped)
+    this.isFlipped = !this.isFlipped;
+    if (this.isFlipped) {
+      setTimeout(() => {
+        this.isFlipped = false;
+      }, 1000);
+    }
+  }
+
   ngOnInit() {
-    this.joining = localStorage.getItem('joining') === 'true' ? true : false
+    // this.joining = localStorage.getItem('joining') === 'true' ? true : false
     console.log("LOOK HERE ", this.votingData)
   }
 
@@ -84,5 +185,6 @@ export class SpyqGameComponent {
 
   newRound(): void {
     console.log("TODO")
+    console.log(this.votingData)
   }
 }

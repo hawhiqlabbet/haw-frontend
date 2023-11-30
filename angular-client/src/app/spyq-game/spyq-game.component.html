@@ -15,6 +15,7 @@
                         <ng-container *ngIf="gameData !== 'spy'; else spyBlock">
                             <i class="bi bi-geo-alt-fill" style="font-size: 4rem;"></i>                    
                             <h6 class="card-title text-center">{{gameData}}</h6>
+                            <h6 class="card-text text-center"><i class="bi bi-info-circle"></i> Nu kör vi! Ställ frågor till dina motspelare för att lista ut vem i gänget som inte vet om det hemliga ordet.</h6>
 
                             <h3>{{timeDifference}}</h3>
                         </ng-container>
@@ -23,9 +24,7 @@
 
                             <i class="bi bi-incognito" style="font-size: 4rem;"></i>
                             <h5 class="card-title text-center">SPY</h5>
-
-                            <h6 class="card-text text-center"><i class="bi bi-info-circle"></i> Du vet inte om det hemliga ordet utan behöver smälta in bland de andra deltagarna.</h6>
-
+                            <h6 class="card-text text-center"><i class="bi bi-info-circle"></i> Nu kör vi! Du vet inte om det hemliga ordet utan behöver smälta in bland de andra deltagarna.</h6>
                             <h3>{{timeDifference}}</h3>
 
                         </ng-template>
@@ -45,7 +44,7 @@
                                     <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
                                 </ng-container>
                             </ng-container>
-                            <h3>{{timeDifferenceVote}}</h3>
+                            <h3 class="time-text text-center">{{timeDifferenceVote}}</h3>
                         </div>
                 </div>
             </ng-container>

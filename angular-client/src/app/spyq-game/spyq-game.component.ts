@@ -137,11 +137,11 @@ export class SpyqGameComponent {
   flipCard(): void {
     console.log(this.isFlipped)
     this.isFlipped = !this.isFlipped;
-    if (this.isFlipped) {
-      setTimeout(() => {
-        this.isFlipped = false;
-      }, 1000);
-    }
+    // if (this.isFlipped) {
+    //   setTimeout(() => {
+    //     this.isFlipped = false;
+    //   }, 1000);
+    // }
   }
 
   ngOnInit() {

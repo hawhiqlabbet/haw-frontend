@@ -14,7 +14,7 @@ export class GamesComponent {
   constructor(private router: Router, private userService: UserService) {}
 
   hostGame(gameChoice: string): void {
-    this.userService.hostGame(gameChoice).subscribe({
+    this.userService.hostGame(gameChoice, localStorage.getItem('username') ?? '').subscribe({
       next: (response) => {
         const { gameId, username, message } = response
         if (message === 'hostGameSuccess') {

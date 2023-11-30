@@ -65,7 +65,7 @@ export class SpyqGameComponent {
 
   closeLobby(): void {
     this.subscriptions.push(
-      this.userService.closeLobby(this.gameId).subscribe({
+      this.userService.closeLobby(this.gameId, this.username).subscribe({
         next: (response) => {
           console.log(response)
           const { message } = response

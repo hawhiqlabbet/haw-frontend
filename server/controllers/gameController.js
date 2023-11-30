@@ -5,12 +5,16 @@ const https = require('https')
 
 function hostGame(req, res) {
 
+    /*
     const token = req.cookies.jwt;
     const username = extractUsernameFromJwt(token);
 
+    
     if (!username) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
+    */
+   const username = req.body.username;
 
     for (const lobby of activeLobbies.values()) {
         if (lobby.host === username) {
@@ -29,13 +33,16 @@ function hostGame(req, res) {
 
 function joinGame(req, res) {
 
+    /*
     const token = req.cookies.jwt;
     const username = extractUsernameFromJwt(token);
 
     if (!username) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
+    */
 
+    const username = req.body.username
     const gameId = req.body.gameId;
 
     if (!gameId) {
@@ -64,13 +71,16 @@ function joinGame(req, res) {
 
 function closeLobby(req, res) {
 
+    /*
     const token = req.cookies.jwt;
     const username = extractUsernameFromJwt(token);
 
     if (!username) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
+    */
 
+    const username = req.body.username;
     const gameId = req.body.gameId;
 
     if (!activeLobbies.has(gameId)) {
@@ -92,13 +102,16 @@ function closeLobby(req, res) {
 
 function leaveGame(req, res) {
 
+    /*
     const token = req.cookies.jwt;
     const username = extractUsernameFromJwt(token);
 
     if (!username) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
+    */
 
+    const username = req.body.username;
     const gameId = req.body.gameId;
 
     if (!activeLobbies.has(gameId)) {
@@ -124,21 +137,27 @@ function leaveGame(req, res) {
 
 function startGame(req, res) {
 
+    /*
     const token = req.cookies.jwt;
     const username = extractUsernameFromJwt(token);
-    const gameId = req.query.gameId
+    
 
     if (!username) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
+    */
+
+    const gameId = req.query.gameId
+    const username = req.body.username
 
     if (!activeLobbies.has(gameId)) {
         return res.status(404).json({ message: `Game with ID: ${gameId} not found` });
     }
 
     const lobby = activeLobbies.get(gameId);
-
+    
     if (lobby.host !== username) {
+        console.log("USERNAME TRYING TO HOST: ", username)
         return res.status(400).json({ message: 'Non host player cannot start the game' });
     }
 
@@ -230,13 +249,18 @@ function startGame(req, res) {
 
 function getGameData(req, res) {
 
+    /*
     const token = req.cookies.jwt;
     const username = extractUsernameFromJwt(token);
-    const gameId = req.query.gameId
+    
 
     if (!username) {
         return res.status(401).json({ message: 'Error verifying JWT' });
     }
+    */
+
+    const username = req.query.username
+    const gameId = req.query.gameId
 
     if (!activeLobbies.has(gameId)) {
         return res.status(404).json({ message: `Game with ID: ${gameId} not found` });

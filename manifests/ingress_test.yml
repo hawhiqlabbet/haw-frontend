@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-ingress
+spec:
+  rules:
+    - host: 4.225.37.225.nip.io  # Use the public IP here
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontenddeployment
+                port:
+                  number: 80

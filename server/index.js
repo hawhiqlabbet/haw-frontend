@@ -10,19 +10,15 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: process.env.NODE_ENV === 'production' ? 'ENTER CORRECT IP HERE' : 'http://localhost:4200',
-    credentials: true,
-  }
-});
-socketEvents(io);
-const PORT = 3000;
 
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? 'ENTER CORRECT IP HERE' : 'http://localhost:4200',
+  origin: process.env.NODE_ENV === 'production' ? 'http://4.225.37.225' : 'http://localhost:4200',
   credentials: true,
 }
+
+const io = new Server(server, { cors: corsOptions });
+socketEvents(io);
+const PORT = 3000;
 
 app.use(cors(corsOptions)); // Enable CORS for all routes
 app.use(express.json())

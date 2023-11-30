@@ -29,7 +29,7 @@ export class HostingCardComponent {
   }
 
   joinGame(): void {
-    this.userService.joinGame(this.gameId).subscribe({
+    this.userService.joinGame(this.gameId, localStorage.getItem('username') ?? '').subscribe({
       next: (response) => {
         const { gameId, username, message } = response
         if (message === 'joinGameSuccess') {

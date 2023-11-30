@@ -131,13 +131,14 @@ export class RoomPageComponent {
 
   // Used to request and store necessary data persistently
   ngOnInit(): void {
+    this.username = localStorage.getItem('username') ?? ''
     // On init, refresh the perception of players in the lobby
     this.getGameData(this.gameId);
   }
 
   closeLobby(): void {
     this.subscriptions.push(
-      this.userService.closeLobby(this.gameId).subscribe({
+      this.userService.closeLobby(this.gameId, localStorage.getItem('username') ?? '').subscribe({
         next: (response) => {
           console.log(response)
           const { message } = response
@@ -157,7 +158,7 @@ export class RoomPageComponent {
 
   leaveGame(): void {
     this.subscriptions.push(
-      this.userService.leaveGame(this.gameId).subscribe({
+      this.userService.leaveGame(this.gameId, this.username).subscribe({
         next: (response) => {
           console.log(response)
           const { message } = response
@@ -188,7 +189,7 @@ export class RoomPageComponent {
 
   getGameData(gameId: string): void {
     this.subscriptions.push(
-      this.userService.getGameData(gameId).subscribe({
+      this.userService.getGameData(gameId, localStorage.getItem('username') ?? '').subscribe({
         next: (response) => {
           const { message } = response
           console.log(response)
@@ -241,7 +242,7 @@ export class RoomPageComponent {
 
   startGame(): void {
     console.log(this.gameId)
-    this.userService.startGame(this.gameId, this.gameTimeInS).subscribe({
+    this.userService.startGame(this.gameId, this.gameTimeInS, localStorage.getItem('username') ?? '').subscribe({
       next: (response) => {
         const { message } = response
         if (message === 'startGameSuccess') {

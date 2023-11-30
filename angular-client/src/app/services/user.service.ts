@@ -31,34 +31,35 @@ export class UserService {
     this.joining.next(joining)
   }
 
-  hostGame(gameChoice: string): Observable<any> {
+  hostGame(gameChoice: string, username: string): Observable<any> {
     const options = { withCredentials: true }
-    return this.http.post(`${environment.apiUrl}/api/game/host`,{ gameChoice: gameChoice}, options)
+    return this.http.post(`${environment.apiUrl}/api/game/host`,{ gameChoice: gameChoice, username: username }, options)
   }
 
-  joinGame(gameId: string): Observable<any> {
+  joinGame(gameId: string, username: string): Observable<any> {
     const options = { withCredentials: true }
-    return this.http.post(`${environment.apiUrl}/api/game/join`, { gameId: gameId }, options)
+    return this.http.post(`${environment.apiUrl}/api/game/join`, { gameId: gameId, username: username }, options)
   }
 
-  leaveGame(gameId: string): Observable<any> {
+  leaveGame(gameId: string, username: string): Observable<any> {
     const options = { withCredentials: true }
-    return this.http.post(`${environment.apiUrl}/api/game/leave`, { gameId: gameId }, options)
+    return this.http.post(`${environment.apiUrl}/api/game/leave`, { gameId: gameId, username: username }, options)
   }
 
-  closeLobby(gameId: string): Observable<any> {
-    const options = { withCredentials: true, body: { gameId: gameId, } }
+  closeLobby(gameId: string, username: string): Observable<any> {
+    const options = { withCredentials: true, body: { gameId: gameId, username: username } }
     return this.http.delete(`${environment.apiUrl}/api/game/close`, options)
   }
 
-  getGameData(gameId: string): Observable<any> {
+  getGameData(gameId: string, username: string): Observable<any> {
     const options = { withCredentials: true }
-    return this.http.get(`${environment.apiUrl}/api/game/gameData?gameId=${gameId}`, options);
+    return this.http.get(`${environment.apiUrl}/api/game/gameData?gameId=${gameId}&username=${username}`, options);
   }
 
-  startGame(gameId: string, gameTimeInS: any): Observable<any> {
+  startGame(gameId: string, gameTimeInS: any, username: string): Observable<any> {
     const options = { withCredentials: true }
-    return this.http.post(`${environment.apiUrl}/api/game/startGame?gameId=${gameId}`, { gameTimeInS: gameTimeInS }, options);
+    console.log("LOOOK HERE ", username)
+    return this.http.post(`${environment.apiUrl}/api/game/startGame?gameId=${gameId}`, { gameTimeInS: gameTimeInS, username: username }, options);
   }
 
   spyQVote(gameId: string, username: string, votedFor: string) {

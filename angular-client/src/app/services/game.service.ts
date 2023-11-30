@@ -122,7 +122,7 @@ export class GameService {
     })
   }
 
-  timerUpdateEvent(){
+  timerUpdateEvent() {
     return new Observable((observer) => {
       this.socket.on('timeUpdateEvent', (data: any) => {
         const { endTime, endVoteTime } = data

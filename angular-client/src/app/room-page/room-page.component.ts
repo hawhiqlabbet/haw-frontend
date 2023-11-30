@@ -78,11 +78,11 @@ export class RoomPageComponent {
 
     this.subscriptions.push(
       this.gameService.timerUpdateEvent().subscribe((data: any) => {
-        const{ endTime, endVoteTime } = data
-        this.timeDifference     = endTime
+        const { endTime, endVoteTime } = data
+        this.timeDifference = endTime
         this.timeDifferenceVote = endVoteTime
 
-        if(this.timeDifferenceVote < 0) {
+        if (this.timeDifferenceVote < 0) {
           this.votingDone = true
         }
       })
@@ -100,14 +100,14 @@ export class RoomPageComponent {
     )
 
     // Update the timer every second
-   /* this.subscriptions.push(
-      interval(1000).subscribe(() => {
-        const currentTime = new Date();
-        this.timeDifference = Math.floor((this.endTime.getTime() - currentTime.getTime()) / 1000);
-        this.timeDifferenceVote = Math.floor((this.endVoteTime.getTime() - currentTime.getTime()) / 1000);
-      })
-    );
-    */
+    /* this.subscriptions.push(
+       interval(1000).subscribe(() => {
+         const currentTime = new Date();
+         this.timeDifference = Math.floor((this.endTime.getTime() - currentTime.getTime()) / 1000);
+         this.timeDifferenceVote = Math.floor((this.endVoteTime.getTime() - currentTime.getTime()) / 1000);
+       })
+     );
+     */
 
     // Attach the beforeunload event listener to handle disconnection on window close/refresh
     window.addEventListener('beforeunload', () => {
@@ -201,19 +201,19 @@ export class RoomPageComponent {
             const hostUsername: string = response.data.host;
 
             // Set current game data
-            if(gameData) {
-              this.gameStarted   = true;
-              this.gameData      = gameData.personalData.country ?? 'spy'
-              this.endTime       = new Date(gameData.personalData.endTime)
-              this.endVoteTime   = new Date(gameData.personalData.endVoteTime)
+            if (gameData) {
+              this.gameStarted = true;
+              this.gameData = gameData.personalData.country ?? 'spy'
+              this.endTime = new Date(gameData.personalData.endTime)
+              this.endVoteTime = new Date(gameData.personalData.endVoteTime)
               this.animationDone = true
 
               // If voting is done, then this will set the votes
-              if(gameData.personalData.votingObject) {
+              if (gameData.personalData.votingObject) {
                 this.votingDone = true
                 this.votingData = gameData.personalData.votingObject
-                this.foundSpy   = gameData.personalData.foundSpy
-                this.spyName    = gameData.personalData.spyName
+                this.foundSpy = gameData.personalData.foundSpy
+                this.spyName = gameData.personalData.spyName
               }
             }
 

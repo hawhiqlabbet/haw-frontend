@@ -1,14 +1,16 @@
+
 <div class="d-flex flex-column align-items-center vh-100 vv-100 linear-background">
     <div class="d-flex vh-100 align-items-center ">
 
         <ng-container *ngIf="timeDifference>0; else votingBlock">
-            <div class="card">
+            <div class="card" (click)="flipCard()" [class.flipped]="isFlipped">
                 <div class="card-inner">
+
                     <div class="front">
                         <div class="heading">{{username}}</div>
                         <h6 class="card-title text-center">Klicka här för att se din roll</h6>
                     </div>
-                
+            
                     <div class="back">
                         <ng-container *ngIf="gameData !== 'spy'; else spyBlock">
                             <i class="bi bi-geo-alt-fill" style="font-size: 4rem;"></i>                    
@@ -48,27 +50,23 @@
                 </div>
             </ng-container>
 
-            <ng-template #votingResultBlock>         
+            <ng-template #votingResultBlock>  
                 <app-background-stars></app-background-stars>
-                <div class="result-container">
-                    <div class="white-heading result-heading">RESULTAT</div>
-                    <ng-container *ngFor="let user of votingData; let i = index">
-                        <div class="user-result-container">
-                            <ng-container *ngIf="user.player === spyName"> SPY: </ng-container> 
-                            <h6 class="result-info">{{user.player}}: {{user.votes}} röster</h6>
-                        </div>
+
+                <div>
+                    <div class="white-heading result-heading text-center"> RESULTAT  </div>
+                    <app-result-container [votingData]="votingData" [spyName]="spyName" [foundSpy]="foundSpy"></app-result-container>
+                
+                    <ng-container *ngIf="!joining;">
+                      <div class="buttons-container">
+                        <button (click)="newRound()" type="button" class="btn btn-secondary custom-btn">Starta en ny omgång</button>
+                        <button (click)="closeLobby()" type="button" class="btn btn-secondary custom-btn">Avsluta Spelet</button>
+                      </div>
                     </ng-container>
-                    <ng-container *ngIf="!joining;" >
-                            <div class="buttons-container">
-                                <button (click)="newRound()" type="button" class="btn btn-secondary custom-btn">Starta en ny omgång</button>
-                                <button (click)="closeLobby()" type="button" class="btn btn-secondary custom-btn">Avsluta Spelet</button>
-                            </div>
-                    </ng-container>
-                </div> 
+                  
+                </div>  
+
             </ng-template>
         </ng-template> 
-
-
-
     </div>
 </div>

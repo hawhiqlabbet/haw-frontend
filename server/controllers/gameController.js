@@ -214,9 +214,10 @@ function startGame(req, res) {
 
                 // 2 min default
                 if (gameTimeInS) {
+                    console.log("wee")
                     endTime = process.env.NODE_ENV === 'production' ? new Date(currentTime.getTime() + gameTimeInS * 1000) :  new Date(currentTime.getTime() + gameTimeInS * 1000);
                 } else {
-                    endTime = process.env.NODE_ENV === 'production' ? new Date(currentTime.getTime() + 60000 * 2) :  new Date(currentTime.getTime() * 1000);
+                    endTime = process.env.NODE_ENV === 'production' ? new Date(currentTime.getTime() + 60000 * 2) :  new Date(currentTime.getTime() + 20000);
                 }
 
                 // Calculate time left in seconds for endTime

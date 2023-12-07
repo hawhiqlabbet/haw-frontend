@@ -1,17 +1,42 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
+import { Router } from '@angular/router';
+import { AuthGuard } from './auth.guard';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { authGuard } from './auth.guard';
-
-describe('authGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => authGuard(...guardParameters));
+describe('AuthGuard', () => {
+  let authGuard: AuthGuard
+  let router: Router
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      providers: [AuthGuard]
+    })
 
-  it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
-  });
+    authGuard = TestBed.inject(AuthGuard)
+    router = TestBed.inject(Router)
+
+  })
+
+  it('should allow navigation if username is set', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('username')
+    spyOn(router, 'navigateByUrl')
+
+    const canActivate = authGuard.canActivate()
+
+    expect(canActivate).toBeTrue()
+    expect(localStorage.getItem).toHaveBeenCalledWith('username')
+    expect(router.navigateByUrl).not.toHaveBeenCalled()
+  })
+
+  it('should redirect to root if username not set', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(null)
+    spyOn(router, 'navigateByUrl')
+
+    const canActivate = authGuard.canActivate()
+
+    expect(canActivate).toBeFalse()
+    expect(localStorage.getItem).toHaveBeenCalledWith('username')
+    expect(router.navigateByUrl).not.toHaveBeenCalledWith('/')
+  })
 });

@@ -1,25 +1,21 @@
-import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthGuard {
+  constructor(private router: Router) { }
 
-  constructor(private cookieService: CookieService) { }
 
-  setTokenInCookie(token: string): void {
-    // Set the JWT token in a cookie
-    this.cookieService.set('jwtToken', token);
-  }
+  canActivate(): boolean {
+    const username = localStorage.getItem('username');
 
-  getTokenFromCookie(): string {
-    // Get the JWT token from the cookie
-    return this.cookieService.get('jwtToken');
-  }
+    if (!username) {
+      this.router.navigateByUrl('/');
+      return false;
+    }
+    return true;
 
-  removeTokenFromCookie(): void {
-    // Remove the JWT token from the cookie
-    this.cookieService.delete('jwtToken');
   }
 }

@@ -26,7 +26,7 @@ FROM nginx:latest
 COPY --from=build /usr/local/app/dist/angular-client /usr/share/nginx/html
 
 # Add custom Nginx configuration for JWT cookie handling
-COPY nginx.conf /etc/nginx/nginx.conf
+# COPY nginx.conf /etc/nginx/nginx.conf
 
 # Expose port 80
 EXPOSE 80

@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? 'http://4.225.37.225' : 'http://localhost:4200',
+  origin: process.env.NODE_ENV === 'production' ? /*'http://4.225.37.225'*/'*' : 'http://localhost:4200',
   credentials: true,
 }
 

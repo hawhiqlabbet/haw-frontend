@@ -4,6 +4,13 @@ import { environment } from 'src/environments/environment'
 import { io } from 'socket.io-client'
 import { Router } from '@angular/router'
 
+interface WindowWithEnv extends Window {
+  env?: {
+    API_ENDPOINT?: string;
+    // Add other properties as needed
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,13 +18,16 @@ export class GameService {
 
   private socket: any
 
+  private apiUrlFromEnv = (window as WindowWithEnv).env?.API_ENDPOINT;
+  private apiUrl: string = this.apiUrlFromEnv ?? environment.apiUrl; // Set the API endpoint dynamically
+
   constructor(private router: Router) {
-    this.socket = io(environment.apiUrl)
+    this.socket = io(this.apiUrl)
   }
 
   hostGameSocketConnect(gameId: string, username: string, gameChoice: string): void {
     if (!this.socket) {
-      this.socket = io(environment.apiUrl)
+      this.socket = io(this.apiUrl)
     }
     this.socket.connect()
     const data = {
@@ -31,7 +41,7 @@ export class GameService {
 
   joinGameSocketConnect(gameId: string, username: string, imageUrl: string) {
     if (!this.socket) {
-      this.socket = io(environment.apiUrl)
+      this.socket = io(this.apiUrl)
     }
     this.socket.connect()
     const data = {

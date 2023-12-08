@@ -3,16 +3,19 @@
     <div class="heading">HaW</div>
     <app-animated-header></app-animated-header>
 
-    <div class="white-box fixed-bottom d-flex align-items-center justify-content-around">
-        <button class="btn btn-secondary btn-lg" style="width: 45%;" (click)="onClick('/login')">LOGGA IN</button>
-        <button class="btn btn-primary btn-lg" style="width: 45%;" (click)="onClick('/register')">REGISTRERA</button>
+        <!-- KOD FÖR ATT LOGGA IN/REGISTRERA SIG MED AUTENTISERING -     -->
+        <!-- <button class="btn btn-secondary btn-lg" style="width: 45%;" (click)="onClick('/login')">LOGGA IN</button>
+        <button class="btn btn-primary btn-lg" style="width: 45%;" (click)="onClick('/register')">REGISTRERA</button> -->
 
-    
+      <form #userName="ngForm" (ngSubmit)="chooseUsername(userName.value.username)">
+        <div class="white-box fixed-bottom d-flex justify-content-center">
+          <div class="name-input-group">
+            <input type="text" class="form-control name-input" placeholder="Välj ditt namn" name="username" ngModel required>
+            <button type="submit" class="btn btn-secondary btn-lg name-input"  id="loginButton">BÖRJA SPELA</button>
+          </div>
+        </div>
+      </form>
 
-        <!-- <form #userName="ngForm" (ngSubmit)="onClickSubmit(userName.value.username)">
-            <input type="text" class="form-input" placeholder="Välj ditt namn" name="username" ngModel required>
-            <button type="submit" class="btn btn-secondary btn-lg" id="loginButton">LOGGA IN</button>
-         </form> -->
 
-  </div>
+
 </div>

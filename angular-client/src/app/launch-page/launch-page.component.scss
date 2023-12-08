@@ -18,3 +18,31 @@
     transform: rotate(30deg);
     transition: transform 0.5s;
 }
+
+.form-input{
+    color: $secondary;
+    border: $secondary;
+    background-color: white;
+}
+
+.name-input-group{
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    max-width: 700px;
+    justify-content: center;
+}
+
+.name-input{
+    width: 45%;
+}
+
+.form-control{
+    border-color: $secondary;
+    color: $secondary;
+}
+
+.form-control:focus{
+    border-color: $secondary;
+    box-shadow: 0 0 5px rgba($secondary, 0.7);
+}

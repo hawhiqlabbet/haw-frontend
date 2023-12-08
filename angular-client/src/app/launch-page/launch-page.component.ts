@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,12 +6,24 @@ import { Router } from '@angular/router';
   templateUrl: './launch-page.component.html',
   styleUrls: ['./launch-page.component.scss']
 })
-export class LaunchPageComponent {
+export class LaunchPageComponent implements OnInit {
 
   iconClass: string = 'icon-up bi bi-joystick secondary-icon'
 
   constructor(private router: Router) {
     this.animateIcon();
+  }
+
+  ngOnInit(): void {
+    const username = localStorage.getItem('username');
+    if (username) {
+      this.router.navigate(['/home']);
+    }
+  }
+
+  chooseUsername(username: string) {
+    localStorage.setItem('username', username)
+    this.router.navigate(['/home']);
   }
 
   onClick(route: string): void {

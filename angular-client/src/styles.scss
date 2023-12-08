@@ -145,6 +145,7 @@ body {
   .white-box {
     background-color:  rgba(white, 0.9);
     height: 80px; 
+
   }
 
   .form-input {
@@ -153,7 +154,7 @@ body {
     padding: 6px 12px; 
     border-radius: 5px; 
     border: transparent;
-    color: $primary; 
+    color: $secondary; 
     background-color: #f9f9f9; 
     margin-right: 10px;
   }
@@ -197,9 +198,7 @@ body {
   font-family: 'Unlock', sans-serif;
   font-size: 45px;
   margin-bottom: 30px;
-  /* Apply linear gradient as background */
   background: linear-gradient(to right, $secondary, $primary);
-  /* Ensure text remains visible */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

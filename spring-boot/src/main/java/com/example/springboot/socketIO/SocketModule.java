@@ -67,7 +67,28 @@ public class SocketModule {
 
     private DataListener<SocketMessage> handleVotingDone() {
         return (senderClient, data, ackSender) -> {
+            String gameId = data.getGameId();
+            LobbyData ld = lobbyService.getLobbyData(gameId);
 
+            if(ld != null) {
+                SpyQData lobbyData = (SpyQData)lobbyService.getLobbyData(gameId);
+                List<SpyQData.VotingObject> votingData = lobbyData.getVotingObjectList();
+                boolean foundSpy = lobbyData.foundSpy;
+                String spyName = lobbyData.getSpyName();
+
+                Collection<SocketIOClient> clients = server.getRoomOperations(gameId).getClients();
+                socketService.sendMessageCollection("votingDone", clients, Map.of("gameId", gameId, "votingData", votingData, "foundSpy", foundSpy, "spyName", spyName));
+            }
+        /*
+         const { gameId } = data;
+        const votingData = lobbyData.get(gameId).gameData.votingObject
+        const foundSpy   = lobbyData.get(gameId).gameData.foundSpy
+        const spyName    = lobbyData.get(gameId).gameData.spyName
+        console.log(spyName)
+
+        console.log(`Voting done for lobby ${gameId}`)
+        io.to(gameId).emit('votingDone', { gameId: gameId, votingData: votingData, foundSpy: foundSpy, spyName: spyName });
+         */
         };
     }
 

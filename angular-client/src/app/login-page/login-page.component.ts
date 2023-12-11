@@ -31,10 +31,9 @@ export class LoginPageComponent {
 
     this.authService.login(username, password).subscribe({
       next: (data) => {
-        const { username, imageUrl } = data
+        const { username } = data
         this.userService.setUsername(username)
-        localStorage.setItem('username', username)
-        this.userService.setImageUrl(imageUrl)
+        this.userService.setImageUrl()
         this.router.navigateByUrl('/home');
       },
       error: (error) => {

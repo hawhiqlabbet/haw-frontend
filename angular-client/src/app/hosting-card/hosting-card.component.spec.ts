@@ -2,9 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HostingCardComponent } from './hosting-card.component';
 import { UserService } from '../services/user.service';
-import { of, throwError } from 'rxjs';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 describe('HostingCardComponent', () => {
   let component: HostingCardComponent;
@@ -13,7 +11,6 @@ describe('HostingCardComponent', () => {
 
   beforeEach(async () => {
     userServiceStub = {
-      getImageUrl: of('exampleImageUrl'),
       joinGame: jasmine.createSpy('joinGame').and.returnValue(of({ gameId: 'gameId', message: 'joinGameSucess' }))
     }
 

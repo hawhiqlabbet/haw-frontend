@@ -36,7 +36,6 @@ export class RegisterPageComponent {
       error: (error) => {
         console.log('Register failed:', error);
 
-
         if (error.status === 400) {
           this.userAlreadyExists = true;
           setTimeout(() => {
@@ -49,8 +48,6 @@ export class RegisterPageComponent {
             this.internalServerError = false;
           }, 3000);
         }
-
-
 
       }
     });

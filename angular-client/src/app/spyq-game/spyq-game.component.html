@@ -64,7 +64,7 @@
                     <div class="white-heading result-heading text-center"> RESULTAT  </div>
                     <app-result-container [votingData]="votingData" [spyName]="spyName" [foundSpy]="foundSpy"></app-result-container>
                 
-                    <ng-container *ngIf="!joining;">
+                    <ng-container *ngIf="isHost;">
                       <div class="buttons-container">
                         <button (click)="newRound()" type="button" class="btn btn-secondary custom-btn">Starta en ny omgång</button>
                         <button (click)="closeLobby()" type="button" class="btn btn-secondary custom-btn">Avsluta Spelet</button>

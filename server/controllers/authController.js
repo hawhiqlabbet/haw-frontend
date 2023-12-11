@@ -1,13 +1,11 @@
 const { connectToCluster } = require('../db/conn');
 const jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
-const { activeLobbies } = require('../socketEvents');
-const { extractUsernameFromJwt } = require('../utils/jwtUtils');
 const { generateRandomAvatarString } = require('../utils/authUtils');
 
 async function register(req, res) {
 
-    const { username, password } = req.body;
+    const { username, password, imageUrl } = req.body;
     let mongoClient;
 
     try {
@@ -24,7 +22,7 @@ async function register(req, res) {
         const newUser = {
             username: username,
             password: bcrypt.hashSync(password, 8),
-            imageUrl: `https://api.multiavatar.com/${generateRandomAvatarString()}.png`,
+            imageUrl: imageUrl,
         }
 
         const result = await usersCollection.insertOne(newUser);

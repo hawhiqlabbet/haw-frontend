@@ -14,11 +14,8 @@ export class HostingCardComponent {
 
   isFlipped: boolean = false
   gameId: string = ''
-  imageUrl: string = ''
 
-  constructor(private router: Router, private userService: UserService) {
-    this.userService.getImageUrl.subscribe(imageUrl => this.imageUrl = imageUrl)
-  }
+  constructor(private router: Router) { }
 
   flipCard(): void {
     this.isFlipped = !this.isFlipped;
@@ -29,27 +26,7 @@ export class HostingCardComponent {
   }
 
   joinGame(): void {
-    this.userService.joinGame(this.gameId, localStorage.getItem('username') ?? '').subscribe({
-      next: (response) => {
-        const { gameId, username, message } = response
-        if (message === 'joinGameSuccess') {
-          localStorage.setItem('joining', 'true')
-          this.router.navigate(['/room', gameId])
-        }
-      },
-      error: (error) => {
-        console.log(error)
-
-        if (error.status === 400) {
-          this.valueChange.emit('gameIdRequired')
-        }
-
-        if (error.status === 404) {
-          this.valueChange.emit('lobbyNotFound')
-        }
-
-      }
-    })
+    this.valueChange.emit(this.gameId);
   }
 
 }

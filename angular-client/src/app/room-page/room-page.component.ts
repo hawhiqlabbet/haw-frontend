@@ -3,7 +3,7 @@ import { Component } from '@angular/core'
 import { GameService } from '../services/game.service'
 import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
-import { Subscription, interval } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 export interface User {
   username: string;
@@ -24,7 +24,9 @@ export class RoomPageComponent {
   subscriptions: Subscription[] = []
 
   users: User[] = [];
-  username: string = localStorage.getItem('username') ?? ''
+  username = this.userService.getUsername() ?? ''
+  imageUrl = this.userService.getImageUrl() ?? ''
+  isHost = this.userService.getIsHost()
   circleRadius = 21.5
   gameId: string = ''
   gameChoice: string = ''
@@ -36,7 +38,6 @@ export class RoomPageComponent {
   timeDifference: number = 0
   timeDifferenceVote: number = 0
   animationDone = false
-  joining: boolean = localStorage.getItem('joining') === 'true' ? true : false
 
   votingDone: boolean = false
   votingData: any = []
@@ -50,10 +51,10 @@ export class RoomPageComponent {
       })
     )
 
-    if (this.joining)
-      this.gameService.joinGameSocketConnect(this.gameId, this.username, `https://api.multiavatar.com/${this.username}.png`)
-    else
+    if (this.isHost)
       this.gameService.hostGameSocketConnect(this.gameId, this.username, this.gameChoice)
+    else
+      this.gameService.joinGameSocketConnect(this.gameId, this.username, this.imageUrl)
 
     this.gameService.lobbyClosedEvent()
 
@@ -61,7 +62,7 @@ export class RoomPageComponent {
       this.gameService.playerJoinedEvent().subscribe((data: any) => {
         this.getGameData(this.gameId);
         setTimeout(() => {
-          if (localStorage.getItem('username') !== data.username)
+          if (this.username !== data.username)
             console.log('player joined new users list: ', this.users)
         }, 2500)
       })
@@ -100,16 +101,6 @@ export class RoomPageComponent {
       })
     )
 
-    // Update the timer every second
-    /* this.subscriptions.push(
-       interval(1000).subscribe(() => {
-         const currentTime = new Date();
-         this.timeDifference = Math.floor((this.endTime.getTime() - currentTime.getTime()) / 1000);
-         this.timeDifferenceVote = Math.floor((this.endVoteTime.getTime() - currentTime.getTime()) / 1000);
-       })
-     );
-     */
-
     // Attach the beforeunload event listener to handle disconnection on window close/refresh
     window.addEventListener('beforeunload', () => {
       this.gameService.disconnectBeforeUnload(this.username);
@@ -117,8 +108,6 @@ export class RoomPageComponent {
   }
 
   handleVotingDoneChanged(value: boolean) {
-    // Do something with the emitted value from the child
-    console.log("LOOK HERE ", value)
     this.votingDone = value
   }
 
@@ -132,7 +121,9 @@ export class RoomPageComponent {
 
   // Used to request and store necessary data persistently
   ngOnInit(): void {
-    this.username = localStorage.getItem('username') ?? ''
+    this.username = this.userService.getUsername() ?? ''
+    this.imageUrl = this.userService.getImageUrl() ?? ''
+    this.isHost = this.userService.getIsHost()
     // On init, refresh the perception of players in the lobby
     this.getGameData(this.gameId);
   }
@@ -146,8 +137,7 @@ export class RoomPageComponent {
           if (message === 'closeLobbySuccess') {
             this.gameService.closeLobbySocket(this.gameId, this.username)
             this.router.navigateByUrl('/home')
-
-            localStorage.removeItem('joining')
+            this.userService.removeIsHost()
           }
         },
         error: (err) => {
@@ -166,8 +156,7 @@ export class RoomPageComponent {
           if (message === 'leaveGameSuccess') {
             this.gameService.leaveGameSocket(this.gameId, this.username)
             this.router.navigateByUrl('/home')
-
-            localStorage.removeItem('joining')
+            this.userService.removeIsHost()
           }
         },
         error: (err) => {
@@ -178,30 +167,39 @@ export class RoomPageComponent {
   }
 
 
-  findUserByUsername(userList: User[], tempUsername: string) {
-    for (let i = 0; i < userList.length; i++) {
-      if (userList[i].username === tempUsername) {
-        return userList[i];
-      }
-    }
-    // If the username is not found, return null or handle it as needed.
-    return null;
+  findUserByUsername(userList: User[], tempUsername: string): User | null {
+    return userList.find(user => user.username === tempUsername) || null;
   }
 
   getGameData(gameId: string): void {
     this.subscriptions.push(
-      this.userService.getGameData(gameId, localStorage.getItem('username') ?? '').subscribe({
+      this.userService.getGameData(gameId, this.username).subscribe({
         next: (response) => {
-          const { message } = response
-          console.log(response)
-          if (message === 'getGameDataSuccess') {
-            const { gameData } = response;
-            var tempUsers: User[] = this.users;
-            this.users = []
-            const usernames: string[] = response.data.players;
-            const hostUsername: string = response.data.host;
+          const { message, data, gameData } = response
 
-            // Set current game data
+          if (message === 'getGameDataSuccess' && data) {
+            const { players } = data;
+            console.log("IMAGE:", players)
+
+
+            this.users = Object.keys(players).map((username) => {
+              const existingUser = this.findUserByUsername(this.users, username);
+              console.log("IMAGE:", players[username])
+
+              if (existingUser) {
+                return existingUser;
+              }
+
+              return {
+                username,
+                imageUrl: players[username],
+                cx: this.getRandomX(),
+                cy: this.getRandomY(),
+                fill: 'green',
+                isHost: username === data.host,
+              };
+            }).filter((user) => players.hasOwnProperty(user.username));
+
             if (gameData) {
               this.gameStarted = true;
               this.gameData = gameData.country === "" ? 'spy' : gameData.country;
@@ -217,21 +215,6 @@ export class RoomPageComponent {
                 this.spyName = gameData.spyName
               }
             }
-
-            // Use the usernames to create User objects
-            const gameUsers: User[] = usernames.map((username) => {
-              const existingUser = this.findUserByUsername(tempUsers, username);
-
-              return {
-                username: username,
-                imageUrl: `https://api.multiavatar.com/${username}.png`,
-                cx: existingUser ? existingUser.cx : this.getRandomX(),
-                cy: existingUser ? existingUser.cy : this.getRandomY(),
-                fill: 'green',
-                isHost: username === hostUsername,
-              };
-            });
-            this.users.push(...gameUsers);
           }
         },
         error: (err) => {
@@ -243,7 +226,7 @@ export class RoomPageComponent {
 
   startGame(): void {
     console.log(this.gameId)
-    this.userService.startGame(this.gameId, this.gameTimeInS, localStorage.getItem('username') ?? '').subscribe({
+    this.userService.startGame(this.gameId, this.gameTimeInS, this.username).subscribe({
       next: (response) => {
         const { message } = response
         if (message === 'startGameSuccess') {

@@ -27,7 +27,7 @@ export class SpyqGameComponent {
   @Input() foundSpy: boolean = false
   @Input() spyName: string = ""
 
-  joining: boolean = false
+  isHost: boolean = localStorage.getItem('joining') === 'true' ? true : false
   isFlipped: boolean = false
   userHasVoted: boolean = false
 
@@ -138,17 +138,9 @@ export class SpyqGameComponent {
   flipCard(): void {
     console.log(this.isFlipped)
     this.isFlipped = !this.isFlipped;
-    // if (this.isFlipped) {
-    //   setTimeout(() => {
-    //     this.isFlipped = false;
-    //   }, 1000);
-    // }
+
   }
 
-  ngOnInit() {
-    // this.joining = localStorage.getItem('joining') === 'true' ? true : false
-    console.log("LOOK HERE ", this.votingData)
-  }
 
   vote(votedFor: string): void {
     this.userHasVoted = true

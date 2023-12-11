@@ -5,9 +5,9 @@
         <div class="room-sub-heading text-center">Här spelar vi ...</div>
         <div class="white-heading text-center ">RUMSKOD: {{gameId}}</div>
         
-        <button *ngIf="!joining" (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
-        <button *ngIf="!joining" (click)="closeLobby()" type="button" class="btn room-button-secondary btn-secondary">Stäng lobbyn</button>
-        <button *ngIf="joining" (click)="leaveGame()" type="button" class="btn room-button-primary btn-secondary">Lämna rummet</button>
+        <button *ngIf="isHost" (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
+        <button *ngIf="isHost" (click)="closeLobby()" type="button" class="btn room-button-secondary btn-secondary">Stäng lobbyn</button>
+        <button *ngIf="!isHost" (click)="leaveGame()" type="button" class="btn room-button-primary btn-secondary">Lämna rummet</button>
 
         <div class="svg-container">
             <svg class="circle-svg" style="height: 70vh; width: 100%;">

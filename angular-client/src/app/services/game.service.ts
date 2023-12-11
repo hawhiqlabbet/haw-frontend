@@ -29,6 +29,8 @@ export class GameService {
     if (!this.socket) {
       this.socket = io(this.apiUrl)
     }
+
+    console.log('hostGameSocketConnect', username)
     this.socket.connect()
     const data = {
       gameId: gameId,
@@ -40,6 +42,10 @@ export class GameService {
 
 
   joinGameSocketConnect(gameId: string, username: string, imageUrl: string) {
+
+    console.log('joinGameSocketConnect', username)
+
+
     if (!this.socket) {
       this.socket = io(this.apiUrl)
     }
@@ -94,7 +100,8 @@ export class GameService {
       this.socket.on('playerJoined', (data: any) => {
         const { username, imageUrl, players } = data;
         if (localStorage.getItem('username') !== username) {
-          console.log(`User ${username} joined the game! With profile picture: ${imageUrl} and the players are ${players}`);
+          console.log(`User ${username} joined the game! With profile picture: ${imageUrl} and the players are:`);
+
         }
         observer.next({ username, imageUrl });
       });

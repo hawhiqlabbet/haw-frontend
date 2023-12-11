@@ -33,6 +33,39 @@
   object-fit: cover;
 }
 
+.modal{
+  background: rgba(white, 0.6);
+}
 
+.modal-content {
+  border: none;
+}
 
+.position-relative {
+  position: relative;
+}
+
+.btn-edit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0.2rem;
+  border: none;
+  background-color: $secondary;
+  border-radius: 50%; 
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-edit i {
+  font-size: 1.5rem;
+  color: white; 
+}
+
+.heading{
+  font-size: 20px;
+}
 

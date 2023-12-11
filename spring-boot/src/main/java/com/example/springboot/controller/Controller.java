@@ -35,8 +35,6 @@ public class Controller {
         String gameChoice   = request.get("gameChoice");
         String imageUrl     = request.get("imageUrl");
 
-        System.err.println("WEEEEEE " + imageUrl);
-
         String gameId = generateGameId();
 
         // 30 min timeout for lobby
@@ -232,8 +230,6 @@ public class Controller {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/gameData")
     public ResponseEntity<Map<String, Object>> gameDataHandle(@RequestParam String gameId, @RequestParam String username) {
-
-        System.err.println("USERNAME " + username + " GAME ID " + gameId );
 
         if (!lobbyService.lobbyExists(gameId)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Game with ID: " + gameId + " not found"));

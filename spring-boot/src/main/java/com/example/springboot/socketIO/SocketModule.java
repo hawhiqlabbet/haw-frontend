@@ -81,23 +81,17 @@ public class SocketModule {
 
             if(gameChoice.equals("SpyQ")) {
                 SpyQData spyQData =(SpyQData) lobbyService.getLobbyData(gameId);
+                System.err.println(spyQData);
                 String country      = spyQData.getCountry();
                 long endTime        = spyQData.getEndTime();
                 long endVoteTime    = spyQData.getEndVoteTime();
 
                 // Dont send country to spy
                 String spy = spyQData.getSpyName();
-
-                if(spy.equals(username)) {
-                    StartGameMessage testSpy = new StartGameMessage(username, "", gameChoice, endTime, endVoteTime);
-                    lobbyService.socketToUser.get(spy).sendEvent("hostStarted", Map.of("username", username, "gameChoice", gameChoice, "gameData",testSpy));
-                }
-                else {
-                    StartGameMessage test = new StartGameMessage(username, country, gameChoice, endTime, endVoteTime);
-                    socketService.sendMessage(gameId, "hostStarted", lobbyService.socketToUser.get(spy), Map.of("username", username, "gameChoice", gameChoice, "gameData", test));
-                }
-
-
+                StartGameMessage testSpy = new StartGameMessage(username, "", gameChoice, endTime, endVoteTime);
+                lobbyService.socketToUser.get(spy).sendEvent("hostStarted", Map.of("username", username, "gameChoice", gameChoice, "gameData",testSpy));
+                StartGameMessage test = new StartGameMessage(username, country, gameChoice, endTime, endVoteTime);
+                socketService.sendMessage(gameId, "hostStarted", lobbyService.socketToUser.get(spy), Map.of("username", username, "gameChoice", gameChoice, "gameData", test));
             }
         };
     }

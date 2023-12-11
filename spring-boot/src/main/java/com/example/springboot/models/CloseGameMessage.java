@@ -10,4 +10,9 @@ public class CloseGameMessage {
         this.gameId = gameId;
         this.username = username;
     }
+
+    public CloseGameMessage(){
+        this.gameId = "";
+        this.username = "";
+    }
 }

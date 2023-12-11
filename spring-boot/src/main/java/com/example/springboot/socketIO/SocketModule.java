@@ -140,8 +140,8 @@ public class SocketModule {
             // Socket to user
             lobbyService.socketToUser.remove(username);
 
-            // Getting the list of players from the socketService
-            List<Player> players = lobbyService.activeLobbies.get(gameId).getPlayers();
+            // Just because a Socket message requires players :(
+            List<Player> players = new ArrayList<>();
 
             socketService.sendMessage(gameId, "lobbyClosed", senderClient,new SocketMessage(username, players, gameId, username));
             socketService.closeLobby(gameId, senderClient);

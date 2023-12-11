@@ -1,6 +1,7 @@
 package com.example.springboot.socketIO;
 
 import com.corundumstudio.socketio.SocketIOClient;
+import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
@@ -11,10 +12,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +44,25 @@ public class SocketModule {
         server.addEventListener("joinGame", JoinGameMessage.class, handleJoinGame());
         server.addEventListener("reportVotingDone", SocketMessage.class, handleVotingDone());
 
+    }
 
+    @Scheduled(fixedRate = 1000) // Update every second
+    public void updateTimers() {
+        for(Map.Entry<String, GameLobby> entry: lobbyService.getActiveLobbies().entrySet()) {
+            GameLobby lobby = entry.getValue();
+            lobby.setTimeout(lobby.getTimeout() - 1);
+            if(lobbyService.getLobbyData(entry.getKey()) != null && lobbyService.getGameLobby(entry.getKey()).getGameChoice().equals("SpyQ")) {
+                SpyQData lobbyData = (SpyQData) lobbyService.getLobbyData(entry.getKey());
+                lobbyData.endTime -= 1;
+                lobbyData.endVoteTime -= 1;
+                Collection<SocketIOClient> clients = server.getRoomOperations(entry.getKey()).getClients();
+                socketService.sendMessageCollection("timeUpdateEvent", clients, Map.of("endTime", lobbyData.endTime, "endVoteTime", lobbyData.endVoteTime));
+            }
+            if(lobby.getTimeout() <= 0){
+                lobbyService.removeLobby(entry.getKey());
+                lobbyService.removeLobbyData(entry.getKey());
+            }
+        }
     }
 
     private DataListener<SocketMessage> handleVotingDone() {

@@ -186,6 +186,9 @@ public class Controller {
             // Set vote end time (1 minute by default)
             long endVoteTime = endTime + 30000;
 
+            endTime = endTime / 1000;
+            endVoteTime = endVoteTime / 1000;
+
             // Set game data
             SpyQData lobbyData = new SpyQData(spyName, country, Arrays.asList(votingObject), Arrays.asList(hasVoted), foundSpy, endTime, endVoteTime);
             lobbyService.addLobbyData(gameId, lobbyData);

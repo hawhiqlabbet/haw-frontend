@@ -6,6 +6,7 @@ import com.example.springboot.models.StartGameMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Map;
 
 @Service
@@ -35,6 +36,13 @@ public class SocketService {
             }
         }
     }
+
+    public void sendMessageCollection(String eventName, Collection<SocketIOClient> clients, Map<String, Object> message) {
+        for (SocketIOClient client : clients) {
+                client.sendEvent(eventName, message);
+        }
+    }
+
     public void closeLobby(String room, SocketIOClient senderClient) {
         for (SocketIOClient client : senderClient.getNamespace().getRoomOperations(room).getClients()) {
                 client.leaveRoom(room);

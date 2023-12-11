@@ -1,14 +1,17 @@
 package com.example.springboot.models;
 
 // GameLobby.java
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
-
+@Data
 public class GameLobby {
     private String host;
     private int timeout;
     private String gameChoice;
     private List<String> players;
+
 
     public GameLobby(String host, int timeout, String gameChoice) {
         this.host = host;

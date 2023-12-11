@@ -182,23 +182,23 @@ export class RoomPageComponent {
             console.log("IMAGE:", players)
 
 
-            this.users = Object.keys(players).map((username) => {
-              const existingUser = this.findUserByUsername(this.users, username);
-              console.log("IMAGE:", players[username])
+            this.users = Object.keys(players).map((i) => {
+              const existingUser = this.findUserByUsername(this.users, players[i].username);
+              console.log("username:", players[i].username)
 
               if (existingUser) {
                 return existingUser;
               }
 
               return {
-                username,
-                imageUrl: players[username],
+                username: players[i].username,
+                imageUrl: players[i].imageUrl,
                 cx: this.getRandomX(),
                 cy: this.getRandomY(),
                 fill: 'green',
-                isHost: username === data.host,
+                isHost: players[i].username === data.host,
               };
-            }).filter((user) => players.hasOwnProperty(user.username));
+            }).filter((item) => !(new Set(players).has(item.username)));
 
             if (gameData) {
               this.gameStarted = true;

@@ -111,7 +111,7 @@ public class SocketModule {
             lobbyService.socketToUser.remove(username);
 
             // Getting the list of players from the socketService
-            List<String> players = lobbyService.activeLobbies.get(gameId).getPlayers();
+            List<Player> players = lobbyService.activeLobbies.get(gameId).getPlayers();
 
             socketService.sendMessage(gameId, "playerLeft", senderClient,new SocketMessage(username, players, gameId, username));
         };
@@ -126,7 +126,7 @@ public class SocketModule {
             lobbyService.socketToUser.remove(username);
 
             // Getting the list of players from the socketService
-            List<String> players = lobbyService.activeLobbies.get(gameId).getPlayers();
+            List<Player> players = lobbyService.activeLobbies.get(gameId).getPlayers();
 
             socketService.sendMessage(gameId, "lobbyClosed", senderClient,new SocketMessage(username, players, gameId, username));
             socketService.closeLobby(gameId, senderClient);
@@ -167,7 +167,7 @@ public class SocketModule {
             lobbyService.socketToUser.put(username, senderClient);
 
             // Getting the list of players from the socketService
-            List<String> players = lobbyService.activeLobbies.get(gameId).getPlayers();
+            List<Player> players = lobbyService.activeLobbies.get(gameId).getPlayers();
 
             // Emitting 'playerJoined' event to all clients in the room
             socketService.sendMessage(gameId, "playerJoined", senderClient, new SocketMessage(username, players, gameId, username));

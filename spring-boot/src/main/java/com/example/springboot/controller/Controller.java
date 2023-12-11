@@ -1,8 +1,6 @@
 package com.example.springboot.controller;
 
-import com.example.springboot.models.GameDataMessage;
-import com.example.springboot.models.LobbyData;
-import com.example.springboot.models.SpyQData;
+import com.example.springboot.models.*;
 import com.example.springboot.services.LobbyService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 // Import the GameLobby class
-import com.example.springboot.models.GameLobby;
 
 import static com.example.springboot.services.LobbyService.generateGameId;
 
@@ -34,8 +31,11 @@ public class Controller {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/host")
     public ResponseEntity<Map<String, Object>> hostGame(@RequestBody Map<String, String> request) {
-        String username = request.get("username");
-        String gameChoice = request.get("gameChoice");
+        String username     = request.get("username");
+        String gameChoice   = request.get("gameChoice");
+        String imageUrl     = request.get("imageUrl");
+
+        System.err.println("WEEEEEE " + imageUrl);
 
         String gameId = generateGameId();
 
@@ -46,7 +46,7 @@ public class Controller {
 
         // Create new GameLobby object
         GameLobby newLobby = new GameLobby(username, timeLeftInSeconds, gameChoice);
-        newLobby.addPlayer(username);
+        newLobby.addPlayer(username, imageUrl);
 
         // Add GameLobby to list of game lobbies
         lobbyService.addLobby(gameId, newLobby);
@@ -62,7 +62,8 @@ public class Controller {
     @PostMapping("/join")
     public ResponseEntity<Map<String, Object>> joinGame(@RequestBody Map<String, String> request) {
         String username = request.get("username");
-        String gameId = request.get("gameId");
+        String gameId   = request.get("gameId");
+        String imageUrl = request.get("imageUrl");
 
 
         if (gameId == null) {
@@ -75,13 +76,13 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Game with ID: " + gameId + " not found"));
         }
 
-        boolean isUserInGame = lobby.getPlayers().contains(username) || lobby.getHost().equals(username);
+        boolean isUserInGame = lobby.playerExists(username) || lobby.getHost().equals(username);
 
         if (!isUserInGame) {
             // Uncomment if you want to prevent users from joining the game multiple times
             // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User is already in the game"));
 
-            lobby.addPlayer(username);
+            lobby.addPlayer(username, imageUrl);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -128,7 +129,7 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Host cannot leave the game using this endpoint"));
         }
 
-        if (!lobby.getPlayers().contains(username)) {
+        if (!lobby.playerExists(username)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User is not in the game"));
         }
 
@@ -152,7 +153,7 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Non-host player cannot start the game"));
         }
 
-        if (!lobby.getPlayers().contains(username)) {
+        if (!lobby.playerExists(username)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User is not in the game"));
         }
 
@@ -168,14 +169,15 @@ public class Controller {
             country = jsonData.get(randomIndex).get("name").get("common");
 
             // Spy game logic
-            String spyName = lobby.getPlayers().get(new Random().nextInt(lobby.getPlayers().size()));
+            String spyName = lobby.getPlayers().get(new Random().nextInt(lobby.getPlayers().size())).getUsername();
+
 
             SpyQData.VotingObject[] votingObject = lobby.getPlayers().stream()
-                    .map(player -> new SpyQData.VotingObject(player, 0))
+                    .map(player -> new SpyQData.VotingObject(player.getUsername(), 0))
                     .toArray(SpyQData.VotingObject[]::new);
 
             SpyQData.HasVoted[] hasVoted = lobby.getPlayers().stream()
-                    .map(player -> new SpyQData.HasVoted(player,false))
+                    .map(player -> new SpyQData.HasVoted(player.getUsername(),false))
                     .toArray(SpyQData.HasVoted[]::new);
             boolean foundSpy = false;
 
@@ -240,7 +242,7 @@ public class Controller {
         GameLobby lobby = lobbyService.getGameLobby(gameId);
         String gameChoice = lobby.getGameChoice();
 
-        if (!lobby.getPlayers().contains(username)) {
+        if (!lobby.playerExists(username)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User is not in the game"));
         }
 

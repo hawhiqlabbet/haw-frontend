@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -66,8 +67,16 @@ public class SocketModule {
                 // Dont send country to spy
                 String spy = spyQData.getSpyName();
 
-                socketService.sendMessage(gameId, "hostStarted", lobbyService.socketToUser.get(spy), new StartGameMessage(username, country, gameChoice, endTime, endVoteTime));
-                lobbyService.socketToUser.get(spy).sendEvent("hostStarted", new StartGameMessage(username, "", gameChoice, endTime, endVoteTime));
+                if(spy.equals(username)) {
+                    StartGameMessage testSpy = new StartGameMessage(username, "", gameChoice, endTime, endVoteTime);
+                    lobbyService.socketToUser.get(spy).sendEvent("hostStarted", Map.of("username", username, "gameChoice", gameChoice, "gameData",testSpy));
+                }
+                else {
+                    StartGameMessage test = new StartGameMessage(username, country, gameChoice, endTime, endVoteTime);
+                    socketService.sendMessage(gameId, "hostStarted", lobbyService.socketToUser.get(spy), Map.of("username", username, "gameChoice", gameChoice, "gameData", test));
+                }
+
+
             }
         };
     }
@@ -158,8 +167,6 @@ public class SocketModule {
 
     private ConnectListener onConnected() {
         return (client) -> {
-            String room = client.getHandshakeData().getSingleUrlParam("room");
-            client.joinRoom(room);
             log.info("Socket ID[{}]  Connected to socket", client.getSessionId().toString());
         };
 

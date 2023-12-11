@@ -4,6 +4,8 @@ import com.example.springboot.models.LobbyData;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Data
@@ -18,10 +20,13 @@ public class SpyQData implements LobbyData {
 
     public SpyQData(String spyName, String country, List<VotingObject> votingObject, List<HasVoted> hasVoted,
                     boolean foundSpy, long endTime, long endVoteTime){
-        spyName = "";
-        country = "";
-        votingObjectList = new ArrayList<VotingObject>();
-        hasVotedList     = new ArrayList<HasVoted>();
+        this.spyName            = spyName;
+        this.country            = country;
+        this.votingObjectList   = votingObject;
+        this.hasVotedList       = hasVoted;
+        this.foundSpy           = foundSpy;
+        this.endTime            = endTime;
+        this.endVoteTime        = endVoteTime;
     }
 
     public static class VotingObject {
@@ -88,5 +93,15 @@ public class SpyQData implements LobbyData {
             }
         }
         return mostVotes;
+    }
+
+    public void sortVotingObjectsByVotes() {
+        votingObjectList.sort(new Comparator<VotingObject>() {
+            @Override
+            public int compare(VotingObject vo1, VotingObject vo2) {
+                // Compare based on the number of votes in descending order
+                return vo2.votes - vo1.votes;
+            }
+        });
     }
 }

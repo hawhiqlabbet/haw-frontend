@@ -1,5 +1,6 @@
 package com.example.springboot.controller;
 
+import com.example.springboot.models.GameDataMessage;
 import com.example.springboot.models.LobbyData;
 import com.example.springboot.models.SpyQData;
 import com.example.springboot.services.LobbyService;
@@ -30,7 +31,8 @@ public class Controller {
         this.restTemplate = restTemplate;
     }
 
-    @PostMapping("/hostGame")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/host")
     public ResponseEntity<Map<String, Object>> hostGame(@RequestBody Map<String, String> request) {
         String username = request.get("username");
         String gameChoice = request.get("gameChoice");
@@ -56,7 +58,8 @@ public class Controller {
         );
     }
 
-    @PostMapping("/joinGame")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/join")
     public ResponseEntity<Map<String, Object>> joinGame(@RequestBody Map<String, String> request) {
         String username = request.get("username");
         String gameId = request.get("gameId");
@@ -86,7 +89,8 @@ public class Controller {
         );
     }
 
-    @PostMapping("/closeLobby")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/close")
     public ResponseEntity<Map<String, Object>> closeLobby(@RequestBody Map<String, String> request) {
         String username = request.get("username");
         String gameId = request.get("gameId");
@@ -108,7 +112,8 @@ public class Controller {
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "closeLobbySuccess"));
     }
 
-    @PostMapping("/leaveGame")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/leave")
     public ResponseEntity<Map<String, Object>> leaveGame(@RequestBody Map<String, String> request) {
         String username = request.get("username");
         String gameId = request.get("gameId");
@@ -132,8 +137,9 @@ public class Controller {
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "leaveGameSuccess"));
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/startGame")
-    public ResponseEntity<Map<String, Object>> startGame(@RequestParam String gameId, @RequestBody Map<String, String> request){
+    public ResponseEntity<Map<String, Object>> startGame(@RequestBody Map<String, String> request, @RequestParam String gameId){
         String username = request.get("username");
 
         if (!lobbyService.lobbyExists(gameId)) {
@@ -174,24 +180,25 @@ public class Controller {
             boolean foundSpy = false;
 
             // Set game end time (2 minutes by default)
-            long endTime = System.currentTimeMillis() + 60000 * 2;
+            long currentTime = System.currentTimeMillis();
+            long endTime = System.currentTimeMillis() + 30000 - currentTime;
 
             // Set vote end time (1 minute by default)
-            long endVoteTime = endTime + 60000;
+            long endVoteTime = endTime + 30000;
 
             // Set game data
-            LobbyData lobbyData = new SpyQData(spyName, country, Arrays.asList(votingObject), Arrays.asList(hasVoted), foundSpy, endTime, endVoteTime);
+            SpyQData lobbyData = new SpyQData(spyName, country, Arrays.asList(votingObject), Arrays.asList(hasVoted), foundSpy, endTime, endVoteTime);
             lobbyService.addLobbyData(gameId, lobbyData);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "startGameSuccess"));
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/spyQVote")
-    public ResponseEntity<Map<String, Object>> spyQVote(@RequestBody Map<String, String> request, @RequestHeader HttpHeaders headers, HttpServletRequest httpRequest) {
+    public ResponseEntity<Map<String, Object>> spyQVote(@RequestBody Map<String, String> request, @RequestParam String gameId) {
         String username = request.get("username");
         String votedFor = request.get("votedFor");
-        String gameId   = headers.getFirst("gameId");
 
         if (!lobbyService.lobbyExists(gameId)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Game with ID: " + gameId + " not found"));
@@ -215,6 +222,55 @@ public class Controller {
             }
         }
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "spyQVoteSuccess"));
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/gameData")
+    public ResponseEntity<Map<String, Object>> gameDataHandle(@RequestParam String gameId, @RequestParam String username) {
+
+        System.err.println("USERNAME " + username + " GAME ID " + gameId );
+
+        if (!lobbyService.lobbyExists(gameId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Game with ID: " + gameId + " not found"));
+        }
+
+        GameLobby lobby = lobbyService.getGameLobby(gameId);
+        String gameChoice = lobby.getGameChoice();
+
+        if (!lobby.getPlayers().contains(username)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User is not in the game"));
+        }
+
+        if(gameChoice.equals("SpyQ")) {
+            SpyQData spyQData = (SpyQData) lobbyService.getLobbyData(gameId);
+            if(spyQData == null) {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess", "data", lobby));
+            }
+
+            String country      = spyQData.getCountry();
+            long endTime        = spyQData.getEndTime();
+            long endVoteTime    = spyQData.getEndVoteTime();
+            List<SpyQData.VotingObject> votingObject = spyQData.getVotingObjectList();
+            boolean foundSpy    = spyQData.foundSpy;
+            String spy          = spyQData.getSpyName();
+
+            GameDataMessage gameDataMessage = new GameDataMessage("", endTime, endVoteTime, false, "", new ArrayList<SpyQData.VotingObject>() );
+
+            if(spyQData.everyoneHasVoted()) {
+                spyQData.sortVotingObjectsByVotes();
+                gameDataMessage.setVotingObject(votingObject);
+
+                assert username != null;
+                if (!username.equals(spy)) {
+                    gameDataMessage.setCountry(country);
+                    gameDataMessage.setFoundSpy(foundSpy);
+                    gameDataMessage.setSpyName(spy);
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess", "data", lobby, "gameData", gameDataMessage));
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameDataMessage));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));
     }
     // Other methods and classes as needed
 }

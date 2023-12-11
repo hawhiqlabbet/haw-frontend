@@ -18,4 +18,12 @@ public class StartGameMessage {
         this.endTime = endTime;
         this.endVoteTime = endVoteTime;
     }
+
+    public StartGameMessage() {
+        this.username = "";
+        this.country = "";
+        this.gameChoice = "";
+        this.endTime = 0;
+        this.endVoteTime = 0;
+    }
 }

@@ -19,7 +19,7 @@ export class GameService {
   private socket: any
 
   private apiUrlFromEnv = (window as WindowWithEnv).env?.API_ENDPOINT;
-  private apiUrl: string = this.apiUrlFromEnv ?? environment.apiUrl; // Set the API endpoint dynamically
+  private apiUrl: string = this.apiUrlFromEnv ?? environment.webSocketUrl; // Set the API endpoint dynamically
 
   constructor(private router: Router) {
     this.socket = io(this.apiUrl)

@@ -16,8 +16,9 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.corundumstudio.socketio:netty-socketio:1.7.17'
+	implementation 'com.corundumstudio.socketio:netty-socketio:2.0.0'
 	implementation 'org.projectlombok:lombok:1.18.28'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'org.projectlombok:lombok:1.18.22'

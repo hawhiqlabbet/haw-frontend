@@ -92,8 +92,9 @@ export class RoomPageComponent {
       this.gameService.hostStartedEvent().subscribe((data: any) => {
         const { username, gameChoice, gameData } = data;
         console.log(`Host ${username} started the game with mode ${gameChoice}`);
+        console.log(data);
         this.gameStarted = true;
-        this.gameData = gameData.country ?? 'spy'
+        this.gameData = gameData.country === "" ? 'spy' : gameData.country;
         //this.endTime = new Date(gameData.endTime)
         //this.endVoteTime = new Date(gameData.endVoteTime)
       })
@@ -203,17 +204,17 @@ export class RoomPageComponent {
             // Set current game data
             if (gameData) {
               this.gameStarted = true;
-              this.gameData = gameData.personalData.country ?? 'spy'
-              this.endTime = new Date(gameData.personalData.endTime)
-              this.endVoteTime = new Date(gameData.personalData.endVoteTime)
+              this.gameData = gameData.country === "" ? 'spy' : gameData.country;
+              this.endTime = new Date(gameData.endTime)
+              this.endVoteTime = new Date(gameData.endVoteTime)
               this.animationDone = true
 
               // If voting is done, then this will set the votes
-              if (gameData.personalData.votingObject) {
+              if (gameData.votingObject) {
                 this.votingDone = true
-                this.votingData = gameData.personalData.votingObject
-                this.foundSpy = gameData.personalData.foundSpy
-                this.spyName = gameData.personalData.spyName
+                this.votingData = gameData.votingObject
+                this.foundSpy = gameData.foundSpy
+                this.spyName = gameData.spyName
               }
             }
 

@@ -2,6 +2,7 @@ package com.example.springboot.services;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.example.springboot.models.GameLobby;
+import com.example.springboot.models.SocketGameId;
 import com.example.springboot.models.SpyQData;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +16,19 @@ import com.example.springboot.models.LobbyData;
 public class LobbyService {
     public ConcurrentHashMap<String, GameLobby> activeLobbies;
     public ConcurrentHashMap<String, LobbyData> lobbyData;
-    public ConcurrentHashMap<String, SocketIOClient> socketToUser;
+    public ConcurrentHashMap<String, SocketGameId> socketToUser;
 
     public LobbyService() {
         this.activeLobbies = new ConcurrentHashMap<String, GameLobby>();
         this.lobbyData     = new ConcurrentHashMap<String, LobbyData>();
-        this.socketToUser  = new ConcurrentHashMap<String, SocketIOClient>();
+        this.socketToUser  = new ConcurrentHashMap<String, SocketGameId>();
     }
 
     // Active Lobbies functions
     public ConcurrentHashMap<String, GameLobby> getActiveLobbies() {
         return activeLobbies;
     }
+    public ConcurrentHashMap<String, SocketGameId> getSocketToUsers() { return socketToUser; }
 
     public GameLobby getGameLobby(String gameId) {
         return activeLobbies.get(gameId);

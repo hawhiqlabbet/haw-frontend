@@ -1,5 +1,6 @@
 package com.example.springboot.socketIO;
 
+import ch.qos.logback.core.joran.sanity.Pair;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
@@ -110,9 +111,9 @@ public class SocketModule {
                 // Dont send country to spy
                 String spy = spyQData.getSpyName();
                 StartGameMessage testSpy = new StartGameMessage(username, "", gameChoice, endTime, endVoteTime);
-                lobbyService.socketToUser.get(spy).sendEvent("hostStarted", Map.of("username", username, "gameChoice", gameChoice, "gameData",testSpy));
+                lobbyService.socketToUser.get(spy).getClient().sendEvent("hostStarted", Map.of("username", username, "gameChoice", gameChoice, "gameData",testSpy));
                 StartGameMessage test = new StartGameMessage(username, country, gameChoice, endTime, endVoteTime);
-                socketService.sendMessage(gameId, "hostStarted", lobbyService.socketToUser.get(spy), Map.of("username", username, "gameChoice", gameChoice, "gameData", test));
+                socketService.sendMessage(gameId, "hostStarted", lobbyService.socketToUser.get(spy).getClient(), Map.of("username", username, "gameChoice", gameChoice, "gameData", test));
             }
         };
     }
@@ -124,6 +125,7 @@ public class SocketModule {
 
             // Socket to user
             lobbyService.socketToUser.remove(username);
+            //senderClient.leaveRoom(gameId);
 
             // Getting the list of players from the socketService
             List<Player> players = lobbyService.activeLobbies.get(gameId).getPlayers();
@@ -159,7 +161,7 @@ public class SocketModule {
             senderClient.joinRoom(gameId);
 
             // Socket to user
-            lobbyService.socketToUser.put(username, senderClient);
+            lobbyService.socketToUser.put(username, new SocketGameId(senderClient, gameId));
 
             senderClient.getNamespace().getBroadcastOperations().sendEvent("get_message", data.getMessage());
         };
@@ -179,7 +181,7 @@ public class SocketModule {
             senderClient.joinRoom(gameId);
 
             // Socket to user
-            lobbyService.socketToUser.put(username, senderClient);
+            lobbyService.socketToUser.put(username, new SocketGameId(senderClient, gameId));
 
             // Getting the list of players from the socketService
             List<Player> players = lobbyService.activeLobbies.get(gameId).getPlayers();
@@ -211,7 +213,19 @@ public class SocketModule {
     private DisconnectListener onDisconnected() {
         return client -> {
             log.info("Client[{}] - Disconnected from socket", client.getSessionId().toString());
+            /*
+            for(Map.Entry<String, SocketGameId> entry: lobbyService.getSocketToUsers().entrySet()) {
+                if (client.equals(entry.getValue().getClient())) {
+                    GameLobby lobby = lobbyService.getGameLobby(entry.getValue().getGameId());
+                    if(lobbyService.getGameLobby(entry.getValue().getGameId()).getGameChoice().equals("SpyQ")) {
+                        lobby.removePlayer(entry.getKey());
+                    }
+                    client.leaveRoom(entry.getValue().getGameId());
+                }
+            }
+            */
         };
+
     }
 
 }

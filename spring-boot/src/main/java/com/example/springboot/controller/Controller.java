@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.InetAddress;
 import java.util.*;
 
 // Import the GameLobby class
@@ -23,10 +24,14 @@ public class Controller {
     private LobbyService lobbyService;
 
     private final RestTemplate restTemplate;
+
     @Autowired
     public Controller(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
+
+
+
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/host")

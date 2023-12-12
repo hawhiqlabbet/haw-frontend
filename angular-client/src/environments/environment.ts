@@ -1,4 +1,5 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://4.225.38.22:3000' // TODO: CHECK ASSIGNED IP IF CORRECT
+    apiUrl: 'http://10.66.1.15:8080',
+    webSocketUrl: 'http://10.66.1.15:8085'
 };

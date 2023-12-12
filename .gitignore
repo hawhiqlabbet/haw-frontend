@@ -23,3 +23,6 @@ client/node_modules/
 # Ignore server build folders
 server/build/
 server/node_modules/
+
+angular-client/src/environments/environment.development.ts
+angular-client/src/environments/environment.ts

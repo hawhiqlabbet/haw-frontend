@@ -33,7 +33,7 @@ public class Controller {
 
 
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/host")
     public ResponseEntity<Map<String, Object>> hostGame(@RequestBody Map<String, String> request) {
         String username     = request.get("username");
@@ -61,7 +61,7 @@ public class Controller {
         );
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/join")
     public ResponseEntity<Map<String, Object>> joinGame(@RequestBody Map<String, String> request) {
         String username = request.get("username");
@@ -93,7 +93,7 @@ public class Controller {
         );
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/close")
     public ResponseEntity<Map<String, Object>> closeLobby(@RequestBody Map<String, String> request) {
         String username = request.get("username");
@@ -116,7 +116,7 @@ public class Controller {
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "closeLobbySuccess"));
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/leave")
     public ResponseEntity<Map<String, Object>> leaveGame(@RequestBody Map<String, String> request) {
         String username = request.get("username");
@@ -141,7 +141,7 @@ public class Controller {
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "leaveGameSuccess"));
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/startGame")
     public ResponseEntity<Map<String, Object>> startGame(@RequestBody Map<String, String> request, @RequestParam String gameId){
         String username = request.get("username");
@@ -202,7 +202,7 @@ public class Controller {
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "startGameSuccess"));
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/spyQVote")
     public ResponseEntity<Map<String, Object>> spyQVote(@RequestBody Map<String, String> request, @RequestParam String gameId) {
         String username = request.get("username");
@@ -232,7 +232,7 @@ public class Controller {
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "spyQVoteSuccess"));
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/gameData")
     public ResponseEntity<Map<String, Object>> gameDataHandle(@RequestParam String gameId, @RequestParam String username) {
 

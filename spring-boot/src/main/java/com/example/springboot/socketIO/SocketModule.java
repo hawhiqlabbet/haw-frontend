@@ -32,6 +32,7 @@ public class SocketModule {
     @Autowired
     private LobbyService lobbyService;
 
+    @Autowired
     public SocketModule(SocketIOServer server, SocketService socketService) {
         this.server = server;
         this.socketService = socketService;
@@ -44,7 +45,6 @@ public class SocketModule {
         server.addEventListener("startGame", StartGameMessage.class, handleStartGame());
         server.addEventListener("joinGame", JoinGameMessage.class, handleJoinGame());
         server.addEventListener("reportVotingDone", SocketMessage.class, handleVotingDone());
-
     }
 
     @Scheduled(fixedRate = 1000) // Update every second

@@ -2,11 +2,13 @@ package com.example.springboot.socketIO;
 
 import com.corundumstudio.socketio.SocketIOServer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SocketIOConfig {
+public class SocketIOConfig implements ApplicationListener<ApplicationReadyEvent> {
 
     @Value("${socket-server.host}")
     private String host;
@@ -22,4 +24,9 @@ public class SocketIOConfig {
         return new SocketIOServer(config);
     }
 
+    @Override
+    public void onApplicationEvent(ApplicationReadyEvent event) {
+        System.err.println("LOOOOK HEEEEREEE " + this.host +  ":" + this.port.toString());
+        socketIOServer().start();
+    }
 }

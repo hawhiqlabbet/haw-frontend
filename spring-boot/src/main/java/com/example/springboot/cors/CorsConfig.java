@@ -7,6 +7,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 
 @Configuration
@@ -17,13 +18,12 @@ public class CorsConfig {
     public CorsConfig() {
         try {
             this.hostIp = InetAddress.getLocalHost().getHostAddress();
-        }
-        catch (Exception e){
-            System.err.println(e);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
         }
     }
     @Bean
-    public CorsFilter corsFilter() {
+    public CorsFilter customCorsFilter() {
         return new CorsFilter(corsConfigurationSource());
     }
 

@@ -1,4 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { UserService } from '../services/user.service';
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'app-tab-bar',
@@ -7,36 +9,75 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 })
 export class TabBarComponent {
 
-  username: string = localStorage.getItem('username') ?? ''
-  imageUrl: string = `https://api.multiavatar.com/${this.username}.png`
+  @Input() username: string = ''
+  @Input() imageUrl: string = ''
 
+  @Output() usernameChange: EventEmitter<string> = new EventEmitter<string>()
+  @Output() imageUrlChange: EventEmitter<string> = new EventEmitter<string>()
+
+  newImageUrl: string = ''
+  newUsername: string = ''
+
+  isAnimating: boolean = false;
+
+  @ViewChild('spinIcon') spinIcon!: ElementRef
   @ViewChild('modal') modalElement: ElementRef | undefined;
 
-  ngOnInit() { }
+  constructor(private userService: UserService) { }
 
-  displayStyle = "none";
+  displayStyle = "none"
 
   openPopup(): void {
-    this.displayStyle = "block";
+    this.displayStyle = "block"
+
+    this.newImageUrl = this.imageUrl
+    this.newUsername = this.username
   }
 
   closePopup(event: MouseEvent): void {
-    if (this.modalElement && !this.modalElement.nativeElement.contains(event.target)) {
+    const clickedElement = event.target as HTMLElement;
+    const modalContent = this.modalElement?.nativeElement.querySelector('.modal-content');
+    const isCloseButton = clickedElement.classList.contains('btn-close');
+
+    if (!modalContent || isCloseButton || !modalContent.contains(clickedElement)) {
       this.displayStyle = 'none';
+      this.newImageUrl = this.imageUrl;
+      this.newUsername = this.username;
     }
   }
 
   generateNewProfile(): void {
-    // Logic to generate a new profile image
-    // You can implement your functionality here
+    this.newImageUrl = this.userService.generateImageUrl()
+
+    this.spinIcon.nativeElement.style.transform = 'rotate(0deg)'
+
+    anime({
+      targets: this.spinIcon.nativeElement,
+      rotate: '360deg',
+      easing: 'easeInOutSine',
+      duration: 1000,
+    });
+
   }
 
-  saveNewAlias(): void {
-    // Logic to save the new alias
-    // You can implement your functionality here
+  saveNewAlias(inputValue: string): void {
+    if (inputValue === '' || inputValue.length > 9) {
+      console.log('Invalid feedback: Please choose a username');
+      return;
+    }
+    localStorage.setItem('imageUrl', this.newImageUrl)
+    this.userService.setUsername(inputValue)
+
+    this.imageUrl = this.newImageUrl
+    this.username = this.newUsername
+
+    this.usernameChange.emit()
+    this.imageUrlChange.emit()
+
+    this.displayStyle = 'none'
+
+    console.log("TAB: ", localStorage.getItem('imageUrl'))
+
   }
 
-  editProfile(): void {
-
-  }
 }

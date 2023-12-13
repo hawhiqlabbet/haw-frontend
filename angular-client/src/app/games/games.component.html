@@ -1,6 +1,8 @@
 <div class="d-flex flex-column justify-content-center align-items-center vh-100 primary-background">
     <div class="white-heading text-center">Vad vill du spela idag?</div>
-    <app-tab-bar></app-tab-bar>
+    <app-tab-bar [username]="username" [imageUrl]="imageUrl"       
+    (usernameChange)="handleNewUsername()"
+    (imageUrlChange)="handleNewImageUrl()"></app-tab-bar>
     <form style="width: 90%;" >
         <button (click)="hostGame('SpyQ')" type="button" class="btn game-button btn-secondary">SpyQ</button>
         <button (click)="hostGame('HiQlash')" type="button" class="btn game-button btn-secondary disabled" >HiQlash</button>

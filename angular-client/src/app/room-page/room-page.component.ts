@@ -24,9 +24,9 @@ export class RoomPageComponent {
   subscriptions: Subscription[] = []
 
   users: User[] = [];
-  username = this.userService.getUsername() ?? ''
-  imageUrl = this.userService.getImageUrl() ?? ''
-  isHost = this.userService.getIsHost()
+  username: string = this.userService.getUsername() ?? ''
+  imageUrl: string = this.userService.getImageUrl() ?? ''
+  isHost: boolean = this.userService.getIsHost()
   circleRadius = 21.5
   gameId: string = ''
   gameChoice: string = ''
@@ -121,9 +121,12 @@ export class RoomPageComponent {
 
   // Used to request and store necessary data persistently
   ngOnInit(): void {
+    console.log("ROOM: ", localStorage.getItem('imageUrl'))
+
     this.username = this.userService.getUsername() ?? ''
     this.imageUrl = this.userService.getImageUrl() ?? ''
     this.isHost = this.userService.getIsHost()
+    console.log('on init')
     // On init, refresh the perception of players in the lobby
     this.getGameData(this.gameId);
   }
@@ -207,6 +210,8 @@ export class RoomPageComponent {
               this.endVoteTime = new Date(gameData.endVoteTime)
               this.animationDone = true
 
+              console.log("GAME VOTING DATA", gameData.votingObject)
+
               // If voting is done, then this will set the votes
               if (gameData.votingObject) {
                 this.votingDone = true
@@ -255,6 +260,15 @@ export class RoomPageComponent {
 
   handleAnimationDone(value: boolean) {
     this.animationDone = value
+  }
+
+  resetRoom(value: boolean): void {
+
+    console.log("RESET ROOM")
+    this.gameStarted = false
+    this.gameData = ''
+    this.animationDone = false
+
   }
 
 }

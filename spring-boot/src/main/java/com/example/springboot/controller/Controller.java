@@ -93,7 +93,28 @@ public class Controller {
         );
     }
 
-    //@CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/newRound")
+    public ResponseEntity<Map<String, Object>> newRound(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String gameId = request.get("gameId");
+
+        if (!lobbyService.lobbyExists(gameId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Game with ID: " + gameId + " not found"));
+        }
+
+        GameLobby lobby  = lobbyService.getGameLobby(gameId);
+
+        if (!lobby.getHost().equals(username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "You are not the host of this lobby"));
+        }
+
+        lobbyService.removeLobbyData(gameId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "newRoundSuccess"));
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/close")
     public ResponseEntity<Map<String, Object>> closeLobby(@RequestBody Map<String, String> request) {
         String username = request.get("username");

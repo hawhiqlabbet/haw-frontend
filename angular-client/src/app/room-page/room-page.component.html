@@ -65,7 +65,8 @@
                 [votingDone]="votingDone"
                 [foundSpy]="foundSpy"
                 [spyName]="spyName"
-                (votingDoneChanged)="handleVotingDoneChanged($event)">
+                (votingDoneChanged)="handleVotingDoneChanged($event)"
+                (resetRoom)="resetRoom($event)">
             </app-spyq-game> 
         </ng-container>
     </ng-template>

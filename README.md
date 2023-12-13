@@ -29,6 +29,8 @@ The **technologies** used in the **frontend** are:
 The **technologies** used in the **backend** are:
 - [***Spring Boot Server***](https://spring.io/projects/spring-boot)
 - [***Java 21***](https://docs.oracle.com/en/java/javase/21/)
+- [***Gradle***](https://gradle.org/)
+
 
 #### Installation & Running
 

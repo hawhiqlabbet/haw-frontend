@@ -27,11 +27,12 @@ The **technologies** used in the **frontend** are:
 #### Technologies used
 
 The **technologies** used in the **backend** are:
-- [***Express.js***](https://expressjs.com/)
-- [***Typescript***](https://www.typescriptlang.org/)
+- [***Spring Boot Server***](https://spring.io/projects/spring-boot))
+- [***Java 21***](https://docs.oracle.com/en/java/javase/21/)
 
 #### Installation & Running
 
-- To start the backend, begin by writing `npm install` in the terminal when located in the **/server** folder.
-- When the backend is installed, write `node index.js` in the terminal.
-- The backend should now run on [**localhost:3000**](http://localhost:3000).
+- Ensure that you have Java 21 installed on you system.
+- To start the backend, begin by building the project using Gradle with the command `gradle clean build` in the terminal when located in the **/spring-boot** folder.
+- After a successful build, start the server by running `gradle bootRun`.
+- The backend should now run on [**localhost:8080**](http://localhost:8080) and the socket communication on [**localhost:8085**](http://localhost:8085).

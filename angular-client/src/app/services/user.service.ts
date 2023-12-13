@@ -24,9 +24,14 @@ export class UserService {
     localStorage.setItem('username', username)
   }
 
-  setImageUrl(): void {
+  generateImageUrl(): string {
     const randomString = [...Array(9)].map(() => Math.random().toString(36)[2]).join('');
-    localStorage.setItem('imageUrl', `https://api.multiavatar.com/${randomString}.png`);
+    return `https://api.multiavatar.com/${randomString}.png`
+  }
+
+  setImageUrl(): void {
+    const randomUrl = this.generateImageUrl();
+    localStorage.setItem('imageUrl', randomUrl);
   }
 
   setIsHost(isHost: boolean): void {
@@ -67,6 +72,11 @@ export class UserService {
 
   leaveGame(gameId: string, username: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/game/leave`, { gameId: gameId, username: username })
+  }
+
+  newRound(gameId: string, username: string): Observable<any> {
+    const options = { body: { gameId: gameId, username: username } }
+    return this.http.delete(`${this.apiUrl}/api/game/newRound`, options)
   }
 
   closeLobby(gameId: string, username: string): Observable<any> {

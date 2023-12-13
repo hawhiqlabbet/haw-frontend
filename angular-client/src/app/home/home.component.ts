@@ -14,7 +14,16 @@ export class HomeComponent {
   lobbyNotFound: boolean = false
   gameIdRequired: boolean = false
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router, private userService: UserService) {
+  }
+
+  handleNewUsername() {
+    this.username = this.userService.getUsername() ?? ''
+  }
+
+  handleNewImageUrl() {
+    this.imageUrl = this.userService.getImageUrl() ?? ''
+  }
 
   handleValueChange(value: string) {
 

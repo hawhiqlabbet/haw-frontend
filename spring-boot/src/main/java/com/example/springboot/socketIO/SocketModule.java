@@ -43,6 +43,7 @@ public class SocketModule {
         server.addDisconnectListener(onDisconnected());
         server.addEventListener("send_message", SocketMessage.class, onChatReceived());
         server.addEventListener("hostGame", SocketMessage.class, handleHostGame());
+        server.addEventListener("newRound", NewRoundMessage.class, handleNewRound());
         server.addEventListener("closeLobby", CloseGameMessage.class, handleCloseLobby());
         server.addEventListener("leaveGame", SocketMessage.class, handleLeaveGame());
         server.addEventListener("startGame", StartGameMessage.class, handleStartGame());
@@ -137,6 +138,19 @@ public class SocketModule {
         };
     }
 
+    private DataListener<NewRoundMessage> handleNewRound() {
+        return (senderClient, data, ackSender) -> {
+            String gameId = data.getGameId();
+            String username = data.getUsername();
+
+            List<Player> players = lobbyService.activeLobbies.get(gameId).getPlayers();
+
+            System.out.println("User " + username + " started a new round of game " + gameId + " and the players are " + players);
+
+            socketService.sendMessage(gameId, "newRound", senderClient, new SocketMessage(username, players, gameId, username));
+        };
+    }
+
     private DataListener<CloseGameMessage> handleCloseLobby() {
         return (senderClient, data, ackSender) -> {
             String gameId = data.getGameId();
@@ -148,7 +162,7 @@ public class SocketModule {
             // Just because a Socket message requires players :(
             List<Player> players = new ArrayList<>();
 
-            socketService.sendMessage(gameId, "lobbyClosed", senderClient,new SocketMessage(username, players, gameId, username));
+            socketService.sendMessage(gameId, "lobbyClosed", senderClient, new SocketMessage(username, players, gameId, username));
             socketService.closeLobby(gameId, senderClient);
         };
     }

@@ -26,8 +26,10 @@ export class SpyqGameComponent {
   @Input() votingData: any[] = [];
   @Input() foundSpy: boolean = false
   @Input() spyName: string = ""
+  @Output() resetRoom: EventEmitter<boolean> = new EventEmitter<boolean>
 
-  isHost: boolean = localStorage.getItem('joining') === 'true' ? true : false
+
+  isHost: boolean = localStorage.getItem('isHost') === 'true' ? true : false
   isFlipped: boolean = false
   userHasVoted: boolean = false
 
@@ -133,6 +135,15 @@ export class SpyqGameComponent {
 
       })
     )
+
+    this.subscriptions.push(
+      this.gameService.newRoundEvent().subscribe((data: any) => {
+        this.resetRoom.emit(true)
+      })
+    )
+
+    this.gameService.newRoundEvent()
+
   }
 
   flipCard(): void {
@@ -163,12 +174,11 @@ export class SpyqGameComponent {
     this.subscriptions.push(
       this.userService.closeLobby(this.gameId, this.username).subscribe({
         next: (response) => {
-          console.log(response)
           const { message } = response
           if (message === 'closeLobbySuccess') {
             this.gameService.closeLobbySocket(this.gameId, this.username)
             this.router.navigateByUrl('/home')
-            localStorage.removeItem('joining')
+            localStorage.removeItem('isHost')
           }
         },
         error: (err) => {
@@ -179,7 +189,21 @@ export class SpyqGameComponent {
   }
 
   newRound(): void {
-    console.log("TODO")
-    console.log(this.votingData)
+    this.subscriptions.push(
+      this.userService.newRound(this.gameId, this.username).subscribe({
+        next: (response) => {
+          console.log(response)
+          const { message } = response
+          if (message === 'newRoundSuccess') {
+            this.gameService.newRoundSocket(this.gameId, this.username)
+            this.resetRoom.emit(true)
+
+          }
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
+    )
   }
 }

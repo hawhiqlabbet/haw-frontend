@@ -14,12 +14,18 @@ export class GamesComponent {
 
   constructor(private router: Router, private userService: UserService) { }
 
-  ngOnInit(): void {
+  handleNewUsername() {
     this.username = this.userService.getUsername() ?? ''
+  }
+
+  handleNewImageUrl() {
+    console.log('NEW IMGAGE', this.userService.getImageUrl())
     this.imageUrl = this.userService.getImageUrl() ?? ''
   }
 
+
   hostGame(gameChoice: string): void {
+    console.log('HOST', this.imageUrl)
     this.userService.hostGame(gameChoice, this.username, this.imageUrl).subscribe({
       next: (response) => {
         const { gameId, username, message } = response

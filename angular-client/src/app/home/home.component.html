@@ -14,5 +14,10 @@
       <app-hosting-card (valueChange)="joinGame($event)"></app-hosting-card>
     </form>
 
-    <app-tab-bar></app-tab-bar>
+    <app-tab-bar 
+      [username]="username"
+      [imageUrl]="imageUrl"
+      (usernameChange)="handleNewUsername()"
+      (imageUrlChange)="handleNewImageUrl()"
+    ></app-tab-bar>
 </div>

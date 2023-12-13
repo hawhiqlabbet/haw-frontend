@@ -62,6 +62,10 @@ export class GameService {
 
   }
 
+  newRoundSocket(gameId: string, username: string) {
+    this.socket.emit('newRound', { gameId, username })
+  }
+
   closeLobbySocket(gameId: string, username: string) {
     this.socket.emit('closeLobby', { gameId, username })
     this.socket.disconnect()
@@ -84,6 +88,19 @@ export class GameService {
   reportSpyQVotingDone(gameId: string) {
     this.socket.emit('reportVotingDone', { gameId })
   }
+
+  newRoundEvent(): Observable<any> {
+    return new Observable((observer) => {
+
+      this.socket.on('newRound', (data: any) => {
+        const { username } = data
+        console.log(`Host ${username} is starting a new round!`)
+        observer.next()
+
+      })
+    })
+  }
+
 
   lobbyClosedEvent() {
     this.socket.on('lobbyClosed', (data: any) => {

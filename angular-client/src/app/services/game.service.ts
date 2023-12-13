@@ -29,9 +29,9 @@ export class GameService {
     if (!this.socket) {
       this.socket = io(this.apiUrl)
     }
-
-    console.log('hostGameSocketConnect', username)
     this.socket.connect()
+    console.log('hostGameSocketConnect', username)
+    
     const data = {
       gameId: gameId,
       username: username,
@@ -44,10 +44,9 @@ export class GameService {
   joinGameSocketConnect(gameId: string, username: string, imageUrl: string) {
 
     console.log('joinGameSocketConnect', username)
-
-
     if (!this.socket) {
       this.socket = io(this.apiUrl)
+      //this.socket = io(this.apiUrl)
     }
     this.socket.connect()
     const data = {
@@ -146,5 +145,9 @@ export class GameService {
         observer.next({ endTime, endVoteTime })
       })
     })
+  }
+
+  disconnectSocket() {
+    this.socket.disconnect()
   }
 }

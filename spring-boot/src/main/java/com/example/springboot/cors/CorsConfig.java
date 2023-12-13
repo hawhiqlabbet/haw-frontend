@@ -31,7 +31,6 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
-            System.err.println("Host IP: " + this.hostIp);
             config.setAllowedOrigins(Arrays.asList("*"));//"http://localhost:4200", this.hostIp)); // Add your dynamic origin here
             config.addAllowedMethod("*");
             config.addAllowedHeader("*");

@@ -115,6 +115,7 @@ export class RoomPageComponent {
     this.subscriptions.map((sub) => {
       sub.unsubscribe()
       sub.remove
+      this.gameService.disconnectSocket()
       console.log(`Subscription successfully removed.`);
     })
   }
@@ -208,7 +209,7 @@ export class RoomPageComponent {
               this.animationDone = true
 
               // If voting is done, then this will set the votes
-              if (gameData.votingObject) {
+              if (gameData.votingObject.length !== 0) {
                 this.votingDone = true
                 this.votingData = gameData.votingObject
                 this.foundSpy = gameData.foundSpy

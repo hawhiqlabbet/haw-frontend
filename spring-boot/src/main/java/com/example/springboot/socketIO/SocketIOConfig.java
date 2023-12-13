@@ -26,7 +26,6 @@ public class SocketIOConfig implements ApplicationListener<ApplicationReadyEvent
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        System.err.println("LOOOOK HEEEEREEE " + this.host +  ":" + this.port.toString());
         socketIOServer().start();
     }
 }

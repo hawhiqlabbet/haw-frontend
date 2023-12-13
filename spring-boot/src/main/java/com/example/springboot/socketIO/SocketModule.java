@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@EnableAsync
 @Slf4j
 @Component
 public class SocketModule {
@@ -47,6 +50,7 @@ public class SocketModule {
         server.addEventListener("reportVotingDone", SocketMessage.class, handleVotingDone());
     }
 
+    @Async
     @Scheduled(fixedRate = 1000) // Update every second
     public void updateTimers() {
         for(Map.Entry<String, GameLobby> entry: lobbyService.getActiveLobbies().entrySet()) {
@@ -103,7 +107,6 @@ public class SocketModule {
 
             if(gameChoice.equals("SpyQ")) {
                 SpyQData spyQData =(SpyQData) lobbyService.getLobbyData(gameId);
-                System.err.println(spyQData);
                 String country      = spyQData.getCountry();
                 long endTime        = spyQData.getEndTime();
                 long endVoteTime    = spyQData.getEndVoteTime();
@@ -202,13 +205,21 @@ public class SocketModule {
 
         };
     }
+    /*
+    private DataListener<SocketMessage> handleHeartbeat() {
+        return (senderClient, data, ackSender) -> {
+
+        };
+    }
+    */
 
     private ConnectListener onConnected() {
         return (client) -> {
             log.info("Socket ID[{}]  Connected to socket", client.getSessionId().toString());
+            //client.getNamespace().getBroadcastOperations().sendEvent("myEvent", "reconnectMessage");
         };
-
     }
+
 
     private DisconnectListener onDisconnected() {
         return client -> {

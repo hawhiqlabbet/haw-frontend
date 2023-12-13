@@ -260,7 +260,7 @@ public class Controller {
             boolean foundSpy    = spyQData.foundSpy;
             String spy          = spyQData.getSpyName();
 
-            GameDataMessage gameDataMessage = new GameDataMessage("", endTime, endVoteTime, false, "", new ArrayList<SpyQData.VotingObject>() );
+            GameDataMessage gameDataMessage = new GameDataMessage(country, endTime, endVoteTime, false, "", new ArrayList<SpyQData.VotingObject>() );
 
             if(spyQData.everyoneHasVoted()) {
                 spyQData.sortVotingObjectsByVotes();
@@ -274,6 +274,8 @@ public class Controller {
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess", "data", lobby, "gameData", gameDataMessage));
             }
+            if(spy.equals(username))
+                gameDataMessage.setCountry("");
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameDataMessage));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));

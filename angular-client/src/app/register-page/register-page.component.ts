@@ -53,9 +53,9 @@ export class RegisterPageComponent {
     });
 
 
-    console.log(username);
-    console.log(password);
-    console.log(repeatPassword);
+   // console.log(username);
+   // console.log(password);
+   // console.log(repeatPassword);
 
   }
 

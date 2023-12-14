@@ -1,5 +1,7 @@
 <div class="d-flex flex-column align-items-center vh-100 vv-100 linear-background">
-
+    <ng-container *ngIf="!gotData; else loadStuff"></ng-container>
+    
+    <ng-template #loadStuff>
     <ng-container *ngIf="!gameStarted; else gameStartedContent">
 
         <div class="room-sub-heading text-center">Här spelar vi ...</div>
@@ -70,6 +72,7 @@
             </app-spyq-game> 
         </ng-container>
     </ng-template>
+</ng-template>
 
 </div> 
 

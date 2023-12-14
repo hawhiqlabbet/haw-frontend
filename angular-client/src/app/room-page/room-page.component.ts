@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component } from '@angular/core'
+import { Component, ChangeDetectorRef } from '@angular/core'
 import { GameService } from '../services/game.service'
 import { Router } from '@angular/router'
 import { UserService } from '../services/user.service'
@@ -32,7 +32,7 @@ export class RoomPageComponent {
   gameChoice: string = ''
   gameStarted = false
   gameData = ''
-  gameTimeInMS = 30000
+  gameTimeInMS = 60000 * 2
   category = "countries"
   endTime: Date = new Date()
   endVoteTime: Date = new Date()
@@ -45,7 +45,9 @@ export class RoomPageComponent {
   foundSpy: boolean = false
   spyName: string = ""
 
-  constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
+  gotData: boolean = false;
+
+  constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) {
   }
 
   handleVotingDoneChanged(value: boolean) {
@@ -63,14 +65,10 @@ export class RoomPageComponent {
 
   // Used to request and store necessary data persistently
   ngOnInit(): void {
-    console.log("ROOM: ", localStorage.getItem('imageUrl'))
-
+    this.gotData = false;
     this.username = localStorage.getItem("username") ?? '' //this.userService.getUsername() ?? ''
     this.imageUrl = localStorage.getItem("imageUrl") ?? '' //this.userService.getImageUrl() ?? ''
     this.isHost = localStorage.getItem("isHost") == 'true' ? true : false //     ?? '' //this.userService.getIsHost()
-    console.log('on init')
-
-
 
     this.subscriptions.push(
       this.activatedRoute.params.subscribe(params => {
@@ -133,7 +131,7 @@ export class RoomPageComponent {
 
     this.subscriptions.push(
       this.gameService.connectSocket().subscribe(() => {
-        this.ngOnInit();
+        //this.ngOnInit();
       })
     )
 
@@ -150,7 +148,6 @@ export class RoomPageComponent {
     this.subscriptions.push(
       this.userService.closeLobby(this.gameId, localStorage.getItem('username') ?? '').subscribe({
         next: (response) => {
-          console.log(response)
           const { message } = response
           if (message === 'closeLobbySuccess') {
             this.gameService.closeLobbySocket(this.gameId, this.username)
@@ -169,7 +166,6 @@ export class RoomPageComponent {
     this.subscriptions.push(
       this.userService.leaveGame(this.gameId, this.username).subscribe({
         next: (response) => {
-          console.log(response)
           const { message } = response
           if (message === 'leaveGameSuccess') {
             this.gameService.leaveGameSocket(this.gameId, this.username)
@@ -194,14 +190,12 @@ export class RoomPageComponent {
       this.userService.getGameData(gameId, this.username).subscribe({
         next: (response) => {
           const { message, data, gameData } = response
-          console.log(response)
           if (message === 'getGameDataSuccess' && data) {
             const { players } = data;
 
 
             this.users = Object.keys(players).map((i) => {
               const existingUser = this.findUserByUsername(this.users, players[i].username);
-              console.log("username:", players[i].username)
 
               if (existingUser) {
                 return existingUser;
@@ -224,8 +218,6 @@ export class RoomPageComponent {
               this.endVoteTime = new Date(gameData.endVoteTime)
               this.animationDone = true
 
-              console.log("GAME VOTING DATA", gameData.votingObject)
-
               // If voting is done, then this will set the votes
               if (gameData.votingObject.length !== 0) {
                 this.votingDone = true
@@ -234,6 +226,10 @@ export class RoomPageComponent {
                 this.spyName = gameData.spyName
               }
             }
+            setTimeout(() => {
+              this.gotData = true;
+              this.changeDetectorRef.detectChanges(); 
+            }, 1300); 
           }
         },
         error: (err) => {
@@ -244,7 +240,6 @@ export class RoomPageComponent {
   }
 
   startGame(): void {
-    console.log(this.gameId)
     this.userService.startGame(this.gameId, this.gameTimeInMS, this.username, this.category).subscribe({
       next: (response) => {
         const { message } = response

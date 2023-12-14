@@ -27,8 +27,6 @@ export class HomeComponent {
 
   handleValueChange(value: string) {
 
-    console.log(value)
-
     if (value === 'lobbyNotFound') {
       this.lobbyNotFound = true
       setTimeout(() => { this.lobbyNotFound = false }, 3000)

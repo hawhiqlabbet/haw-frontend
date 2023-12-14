@@ -30,6 +30,40 @@ public class Controller {
         this.restTemplate = restTemplate;
     }
 
+    private final List<String> hiQAreas = Arrays.asList(
+            "Repan", "X", "Pingisbordet", "Speedys korg", "Labbet",
+            "War Room", "FIFA-soffan", "Scania-rummet"
+    );
+
+    private final List<String> sports = Arrays.asList(
+            "Soccer", "Basketball", "Cricket", "Baseball", "Tennis",
+            "Golf", "Swimming", "Athletics", "Gymnastics", "Boxing",
+            "Cycling", "Volleyball", "Table Tennis", "Badminton", "Rugby",
+            "Hockey", "Skiing", "Snowboarding", "Skateboarding", "Surfing",
+            "Horse Racing", "Fencing", "Archery", "Bowling", "Darts",
+            "Bouldering", "Karate", "Judo", "Taekwondo", "Wrestling",
+            "Ice Hockey", "Figure Skating", "Bobsleigh", "Curling", "Luge",
+            "Biathlon", "Triathlon", "Pentathlon", "Rowing", "Sailing",
+            "Canoeing", "Kayaking", "Water Polo", "Diving", "Synchronized Swimming",
+            "Polo", "Lacrosse", "Handball", "Squash", "Rock Climbing"
+    );
+
+    private final List<String> programmingLanguages = Arrays.asList(
+            "Java", "Python", "C++", "C#", "JavaScript",
+            "Ruby", "Swift", "Kotlin", "Go", "R",
+            "PHP", "TypeScript", "Scala", "Perl", "Lua",
+            "Haskell", "Elixir", "Rust", "Dart", "Objective-C"
+    );
+
+    private final List<String> itTitles = Arrays.asList(
+            "Software Developer", "Systems Analyst", "Network Administrator", "Database Administrator",
+            "IT Manager", "Security Analyst", "Cloud Architect", "Data Scientist",
+            "Front-end Developer", "Back-end Developer", "Full-stack Developer", "DevOps Engineer",
+            "Quality Assurance Tester", "User Experience Designer", "Technical Support Specialist",
+            "IT Project Manager", "Machine Learning Engineer", "Cybersecurity Specialist",
+            "Business Intelligence Analyst", "Web Developer"
+    );
+
 
 
 
@@ -181,17 +215,33 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User is not in the game"));
         }
 
-        String country = "";
+        String selectedCategory = "";
         if ("SpyQ".equals(lobby.getGameChoice())) {
-            // Fetch country data
-            // Note: You may need to add error handling for the HTTP request
-            // and adjust the URL based on the actual endpoint you are using.
-            String countryEndpoint = "https://restcountries.com/v3.1/region/europe";
-            List<Map<String, Map<String, String>>> jsonData = restTemplate.getForObject(countryEndpoint, List.class);
-            // Choose a random country
-            int randomIndex = new Random().nextInt(jsonData.size());
-            country = jsonData.get(randomIndex).get("name").get("common");
+            String category = request.get("category");
+            long milliseconds = Long.parseLong(request.get("gameTimeInMS"));
 
+            if(category.equals("HiQAreas")) {
+                Random random = new Random();
+                int randomIndex = random.nextInt(hiQAreas.size());
+                selectedCategory = hiQAreas.get(randomIndex);
+            }
+            else if(category.equals("programmingLanguages")) {
+                Random random = new Random();
+                int randomIndex = random.nextInt(programmingLanguages.size());
+                selectedCategory = programmingLanguages.get(randomIndex);
+            }
+            else if(category.equals("itTitles")) {
+                Random random = new Random();
+                int randomIndex = random.nextInt(itTitles.size());
+                selectedCategory = itTitles.get(randomIndex);
+            }
+            else {//(category.equals("countries")) {
+                String countryEndpoint = "https://restcountries.com/v3.1/region/europe";
+                List<Map<String, Map<String, String>>> jsonData = restTemplate.getForObject(countryEndpoint, List.class);
+                // Choose a random country
+                int randomIndex = new Random().nextInt(jsonData.size());
+                selectedCategory = jsonData.get(randomIndex).get("name").get("common");
+            }
             // Spy game logic
             String spyName = lobby.getPlayers().get(new Random().nextInt(lobby.getPlayers().size())).getUsername();
 
@@ -207,7 +257,7 @@ public class Controller {
 
             // Set game end time (2 minutes by default)
             long currentTime = System.currentTimeMillis();
-            long endTime = System.currentTimeMillis() + 30000 - currentTime;
+            long endTime = System.currentTimeMillis() + milliseconds - currentTime;
 
             // Set vote end time (1 minute by default)
             long endVoteTime = endTime + 30000;
@@ -216,7 +266,7 @@ public class Controller {
             endVoteTime = endVoteTime / 1000;
 
             // Set game data
-            SpyQData lobbyData = new SpyQData(spyName, country, Arrays.asList(votingObject), Arrays.asList(hasVoted), foundSpy, endTime, endVoteTime);
+            SpyQData lobbyData = new SpyQData(spyName, selectedCategory, Arrays.asList(votingObject), Arrays.asList(hasVoted), foundSpy, endTime, endVoteTime);
             lobbyService.addLobbyData(gameId, lobbyData);
         }
 

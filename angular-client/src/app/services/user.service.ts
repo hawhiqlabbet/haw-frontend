@@ -89,8 +89,8 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/api/game/gameData?gameId=${gameId}&username=${username}`);
   }
 
-  startGame(gameId: string, gameTimeInS: any, username: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/game/startGame?gameId=${gameId}`, { gameTimeInS: gameTimeInS, username: username });
+  startGame(gameId: string, gameTimeInMS: number, username: string, category: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/game/startGame?gameId=${gameId}`, { gameTimeInMS: gameTimeInMS, username: username, category: category });
   }
 
   spyQVote(gameId: string, username: string, votedFor: string): Observable<any> {

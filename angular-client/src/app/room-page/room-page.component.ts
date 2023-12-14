@@ -32,7 +32,8 @@ export class RoomPageComponent {
   gameChoice: string = ''
   gameStarted = false
   gameData = ''
-  gameTimeInS = undefined
+  gameTimeInMS = 30000
+  category = "countries"
   endTime: Date = new Date()
   endVoteTime: Date = new Date()
   timeDifference: number = 0
@@ -244,7 +245,7 @@ export class RoomPageComponent {
 
   startGame(): void {
     console.log(this.gameId)
-    this.userService.startGame(this.gameId, this.gameTimeInS, this.username).subscribe({
+    this.userService.startGame(this.gameId, this.gameTimeInMS, this.username, this.category).subscribe({
       next: (response) => {
         const { message } = response
         if (message === 'startGameSuccess') {

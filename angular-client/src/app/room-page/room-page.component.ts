@@ -45,17 +45,44 @@ export class RoomPageComponent {
   spyName: string = ""
 
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
+  }
+
+  handleVotingDoneChanged(value: boolean) {
+    this.votingDone = value
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.map((sub) => {
+      sub.unsubscribe()
+      sub.remove
+      this.gameService.disconnectSocket()
+      console.log(`Subscription successfully removed.`);
+    })
+  }
+
+  // Used to request and store necessary data persistently
+  ngOnInit(): void {
+    console.log("ROOM: ", localStorage.getItem('imageUrl'))
+
+    this.username = localStorage.getItem("username") ?? '' //this.userService.getUsername() ?? ''
+    this.imageUrl = localStorage.getItem("imageUrl") ?? '' //this.userService.getImageUrl() ?? ''
+    this.isHost = localStorage.getItem("isHost") == 'true' ? true : false //     ?? '' //this.userService.getIsHost()
+    console.log('on init')
+
+
+
     this.subscriptions.push(
       this.activatedRoute.params.subscribe(params => {
         this.gameId = params['gameId']
       })
     )
 
-    if (this.isHost)
+    if (this.userService.getIsHost())
       this.gameService.hostGameSocketConnect(this.gameId, this.username, this.gameChoice)
     else
       this.gameService.joinGameSocketConnect(this.gameId, this.username, this.imageUrl)
 
+    //?????
     this.gameService.lobbyClosedEvent()
 
     this.subscriptions.push(
@@ -101,33 +128,17 @@ export class RoomPageComponent {
       })
     )
 
+    this.subscriptions.push(
+      this.gameService.connectSocket().subscribe(() => {
+        this.ngOnInit();
+      })
+    )
+
     // Attach the beforeunload event listener to handle disconnection on window close/refresh
     window.addEventListener('beforeunload', () => {
       this.gameService.disconnectBeforeUnload(this.username);
     });
-  }
 
-  handleVotingDoneChanged(value: boolean) {
-    this.votingDone = value
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.map((sub) => {
-      sub.unsubscribe()
-      sub.remove
-      this.gameService.disconnectSocket()
-      console.log(`Subscription successfully removed.`);
-    })
-  }
-
-  // Used to request and store necessary data persistently
-  ngOnInit(): void {
-    console.log("ROOM: ", localStorage.getItem('imageUrl'))
-
-    this.username = this.userService.getUsername() ?? ''
-    this.imageUrl = this.userService.getImageUrl() ?? ''
-    this.isHost = this.userService.getIsHost()
-    console.log('on init')
     // On init, refresh the perception of players in the lobby
     this.getGameData(this.gameId);
   }
@@ -180,10 +191,9 @@ export class RoomPageComponent {
       this.userService.getGameData(gameId, this.username).subscribe({
         next: (response) => {
           const { message, data, gameData } = response
-
+          console.log(response)
           if (message === 'getGameDataSuccess' && data) {
             const { players } = data;
-            console.log("IMAGE:", players)
 
 
             this.users = Object.keys(players).map((i) => {
@@ -266,9 +276,18 @@ export class RoomPageComponent {
   resetRoom(value: boolean): void {
 
     console.log("RESET ROOM")
+    /*
     this.gameStarted = false
     this.gameData = ''
     this.animationDone = false
+    this.votingDone = false;
+    this.ngOnInit();
+    */
+
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
+    });
 
   }
 

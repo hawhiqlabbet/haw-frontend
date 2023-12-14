@@ -93,7 +93,7 @@ public class Controller {
         );
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/newRound")
     public ResponseEntity<Map<String, Object>> newRound(@RequestBody Map<String, String> request) {
         String username = request.get("username");

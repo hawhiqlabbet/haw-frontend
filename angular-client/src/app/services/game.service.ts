@@ -167,4 +167,13 @@ export class GameService {
   disconnectSocket() {
     this.socket.disconnect()
   }
+
+  connectSocket() {
+    return new Observable((observer) => {
+      this.socket.on('connect', () => {
+        console.log("Connecting!")
+        observer.next()
+      })
+    })
+  }
 }

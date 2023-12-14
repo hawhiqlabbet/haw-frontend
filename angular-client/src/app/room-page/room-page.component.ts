@@ -112,6 +112,8 @@ export class RoomPageComponent {
 
         if (this.timeDifferenceVote < 0) {
           this.votingDone = true
+          if(this.isHost)
+            this.gameService.reportSpyQVotingDone(this.gameId)
         }
       })
     )

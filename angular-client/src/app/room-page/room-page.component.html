@@ -2,13 +2,22 @@
     <ng-container *ngIf="!gotData; else loadStuff"></ng-container>
     
     <ng-template #loadStuff>
+    <app-settings-modal #settingsModal       
+        [category]="category" 
+        [timeDifference]="gameTimeInMS"
+        (formSubmitted)="handleSettingsChange($event)"
+        ></app-settings-modal>
+
     <ng-container *ngIf="!gameStarted; else gameStartedContent">
 
         <div class="room-sub-heading text-center">Här spelar vi ...</div>
         <div class="white-heading text-center ">RUMSKOD: {{gameId}}</div>
         
         <button *ngIf="isHost" (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
-        <button *ngIf="isHost" (click)="closeLobby()" type="button" class="btn room-button-secondary btn-secondary">Stäng lobbyn</button>
+        <div class="btn-group" role="group" aria-label="Basic example" style="width: 90%;">
+            <button *ngIf="isHost" (click)="closeLobby()" type="button" class="btn room-button-secondary btn-secondary">Stäng lobbyn</button>
+            <button *ngIf="isHost" (click)="settingsModal.openModalExternally()" type="button" class="btn room-button-secondary btn-secondary">Inställningar</button>
+        </div>
         <button *ngIf="!isHost" (click)="leaveGame()" type="button" class="btn room-button-primary btn-secondary">Lämna rummet</button>
 
         <div class="svg-container">

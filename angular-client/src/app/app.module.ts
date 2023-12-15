@@ -18,6 +18,7 @@ import { AnimatedGameTextComponent } from './animated-game-text/animated-game-te
 import { SpyqGameComponent } from './spyq-game/spyq-game.component';
 import { BackgroundStarsComponent } from './background-stars/background-stars.component';
 import { ResultContainerComponent } from './result-container/result-container.component';
+import { SettingsModalComponent } from './settings-modal/settings-modal.component';
 
 @NgModule({
   declarations: [
@@ -36,12 +37,13 @@ import { ResultContainerComponent } from './result-container/result-container.co
     SpyqGameComponent,
     BackgroundStarsComponent,
     ResultContainerComponent,
+    SettingsModalComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

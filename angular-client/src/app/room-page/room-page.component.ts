@@ -50,6 +50,12 @@ export class RoomPageComponent {
   constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) {
   }
 
+  handleSettingsChange(event: { selectedCategory: string, selectedTime: number }): void {
+    this.category = event.selectedCategory;
+    this.gameTimeInMS = event.selectedTime;
+    console.log("New Settings: ", this.category, " ", this.gameTimeInMS);
+  }
+
   handleVotingDoneChanged(value: boolean) {
     this.votingDone = value
   }
@@ -111,7 +117,7 @@ export class RoomPageComponent {
 
         if (this.timeDifferenceVote < 0) {
           this.votingDone = true
-          if(this.isHost)
+          if (this.isHost)
             this.gameService.reportSpyQVotingDone(this.gameId)
         }
       })
@@ -228,8 +234,8 @@ export class RoomPageComponent {
             }
             setTimeout(() => {
               this.gotData = true;
-              this.changeDetectorRef.detectChanges(); 
-            }, 1300); 
+              this.changeDetectorRef.detectChanges();
+            }, 1300);
           }
         },
         error: (err) => {
@@ -283,8 +289,8 @@ export class RoomPageComponent {
     */
 
     let currentUrl = this.router.url;
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this.router.navigate([currentUrl]);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
     });
 
   }

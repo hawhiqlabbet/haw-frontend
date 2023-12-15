@@ -66,7 +66,7 @@ public class LobbyService {
     // Lobby Utility
     public static String generateGameId() {
         // Define the characters allowed in the code
-        String allowedCharacters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String allowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         // Set the length of the code
         int codeLength = 4;

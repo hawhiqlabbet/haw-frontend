@@ -10,7 +10,6 @@ $secondary: #9c009f;
 $third: #0000008a;
 
 body { 
-  // background: linear-gradient(to top, white, $secondary, $primary);
   font-family: 'Inter', sans-serif;
 }
 
@@ -43,7 +42,6 @@ body {
   color: white;
   border-color: $secondary;
   background-color: $secondary;
-
 }
 
 .btn-primary:focus,
@@ -64,7 +62,6 @@ body {
 .show>.btn-secondary.dropdown-toggle:focus {
   box-shadow: rgba($secondary, 0.5);
 }
-
 
 /* Secondary button styles */
 .btn-secondary {
@@ -107,29 +104,35 @@ body {
 .primary-background {
   background-color: $primary; 
   color: white;
-  }
+  max-height: 100vh;
+}
 
 .secondary-background {
-    background-color: $secondary; 
-    color: white;
-    }
+  background-color: $secondary; 
+  color: white;
+  max-height: 100vh;
+}
 
 .white-background {
-    background-color: $secondary;
-    color: $primary; 
-  }
+  background-color: $secondary;
+  color: $primary; 
+  max-height: 100vh;
+}
 
 .grey-background {
-    background: $third;
-  }
+  background: $third;
+  max-height: 100vh;
+}
 
-  .white-background {
-    background: white;
-  }
+.white-background {
+  background: white;
+  max-height: 100vh;
+}
 
-  .pink-background {
-    background: $primary;
-  }
+.pink-background {
+  background: $primary;
+  max-height: 100vh;
+}
 
 
 .linear-background{
@@ -142,40 +145,37 @@ body {
     color: white; 
   }
 
-  .white-box {
-    background-color:  rgba(white, 0.9);
-    height: 80px; 
+.white-box {
+  background-color:  rgba(white, 0.9);
+  height: 80px; 
+}
 
-  }
-
-  .form-input {
-    font-size: 1rem; 
-    height: 38px; 
-    padding: 6px 12px; 
-    border-radius: 5px; 
-    border: transparent;
-    color: $secondary; 
-    background-color: #f9f9f9; 
-    margin-right: 10px;
-  }
+.form-input {
+  font-size: 1rem; 
+  height: 38px; 
+  padding: 6px 12px; 
+  border-radius: 5px; 
+  border: transparent;
+  color: $secondary; 
+  background-color: #f9f9f9; 
+  margin-right: 10px;
+}
   
-  .form-input::placeholder {
-    color: $primary; /* Set placeholder text color to pink */
-  }
-  
-
-  .form-input::focus {
-    border-color: #FF4D6D; /* Set border color to pink on focus */
-  }
+.form-input::placeholder {
+  color: $primary; /* Set placeholder text color to pink */
+}
 
 
-  .form-control::focus {
-    border-color: $primary;
+.form-input::focus {
+  border-color: #FF4D6D; /* Set border color to pink on focus */
+}
 
-  }
+
+.form-control::focus {
+  border-color: $primary;
+}
   
 /* Form input */
-
 .custom-input {
   padding: 10px;
   font-size: 16px;
@@ -236,6 +236,6 @@ body {
 }
 
 .link-style:hover {
-  color: $primary; /* Darker shade of purple on hover */
-  text-decoration: underline; /* Maintain the underline on hover */
+  color: $primary; 
+  text-decoration: underline; 
 }

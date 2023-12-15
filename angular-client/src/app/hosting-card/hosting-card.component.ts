@@ -26,7 +26,8 @@ export class HostingCardComponent {
   }
 
   joinGame(): void {
-    this.valueChange.emit(this.gameId);
+    this.valueChange.emit(this.gameId.toUpperCase());
+
   }
 
 }

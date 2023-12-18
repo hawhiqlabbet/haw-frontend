@@ -23,16 +23,25 @@ export class TabBarComponent {
   @ViewChild('spinIcon') spinIcon!: ElementRef
   @ViewChild('modal') modalElement: ElementRef | undefined;
 
+  selectedTab: string = 'controller';
+
+
   constructor(private userService: UserService) { }
 
   displayStyle = "none"
 
   openPopup(): void {
+    this.selectedTab = 'profileIcon';
     this.displayStyle = "block"
 
     this.newImageUrl = this.imageUrl
     this.newUsername = this.username
   }
+
+  selectTab(tabName: string) {
+    this.selectedTab = tabName;
+  }
+
 
   closePopup(event: MouseEvent): void {
     const clickedElement = event.target as HTMLElement;

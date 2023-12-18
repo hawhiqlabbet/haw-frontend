@@ -104,33 +104,34 @@ body {
 .primary-background {
   background-color: $primary; 
   color: white;
+  max-height: -webkit-fill-available;
   max-height: 100vh;
 }
 
 .secondary-background {
   background-color: $secondary; 
   color: white;
+  max-height: -webkit-fill-available;
   max-height: 100vh;
 }
 
-.white-background {
-  background-color: $secondary;
-  color: $primary; 
-  max-height: 100vh;
-}
 
 .grey-background {
   background: $third;
+  max-height: -webkit-fill-available;
   max-height: 100vh;
 }
 
 .white-background {
   background: white;
+  color: $primary; 
+  max-height: -webkit-fill-available;
   max-height: 100vh;
 }
 
 .pink-background {
   background: $primary;
+  max-height: -webkit-fill-available;
   max-height: 100vh;
 }
 
@@ -139,6 +140,8 @@ body {
   background: linear-gradient(to top, white, $secondary, $primary);
   position: relative; 
   overflow-x: hidden; 
+  max-height: -webkit-fill-available;
+  max-height: 100vh;
 }
 
 .secondary-icon {
@@ -162,12 +165,12 @@ body {
 }
   
 .form-input::placeholder {
-  color: $primary; /* Set placeholder text color to pink */
+  color: $primary;
 }
 
 
 .form-input::focus {
-  border-color: #FF4D6D; /* Set border color to pink on focus */
+  border-color: #FF4D6D; 
 }
 
 

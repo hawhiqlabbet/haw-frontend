@@ -14,13 +14,13 @@
   .centered-placeholder {
     margin-top: 10px;
     width: 100%;
-    height: 40px; /* Set a fixed height */
+    height: 40px; 
     margin-bottom: 10px;
   }
   
   .invalid-feedback {
     display: none;
-    height: 20px; /* Set a fixed height for the error message */
+    height: 20px; 
     color: $secondary;
     font-size: 14px;
   }

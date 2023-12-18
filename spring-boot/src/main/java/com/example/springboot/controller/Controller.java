@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 // Import the GameLobby class
 
@@ -351,5 +352,12 @@ public class Controller {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));
     }
+
+    @GetMapping("/getServerStatus")
+    public ResponseEntity<Map<String, Object>> serverStatusHandle() {
+        ConcurrentHashMap<String, GameLobby> lobbies = lobbyService.getActiveLobbies();
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("active lobbies", lobbies));
+    }
     // Other methods and classes as needed
 }
+

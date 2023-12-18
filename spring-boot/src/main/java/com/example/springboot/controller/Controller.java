@@ -270,6 +270,12 @@ public class Controller {
             SpyQData lobbyData = new SpyQData(spyName, selectedCategory, Arrays.asList(votingObject), Arrays.asList(hasVoted), foundSpy, endTime, endVoteTime);
             lobbyService.addLobbyData(gameId, lobbyData);
         }
+        else if("HiQlash".equals(lobby.getGameChoice())){
+            HiQlashData lobbyData = new HiQlashData(lobby.getPlayers().size(), lobby.getPlayers());
+            lobbyService.addLobbyData(gameId, lobbyData);
+
+            System.out.println(lobbyData);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "startGameSuccess"));
     }
@@ -349,6 +355,9 @@ public class Controller {
             if(spy.equals(username))
                 gameDataMessage.setCountry("");
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameDataMessage));
+        }
+        else if(gameChoice.equals("HiQlash")) {
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));
     }

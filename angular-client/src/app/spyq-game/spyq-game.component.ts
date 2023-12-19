@@ -5,6 +5,14 @@ import { Subscription } from 'rxjs';
 import { User } from '../room-page/room-page.component';
 import { Router } from '@angular/router'
 
+interface GameData {
+  country: string
+  endTime: number
+  endVoteTime: number
+  foundSpy: boolean
+  spyName: string
+  votingObject: any[]
+}
 
 @Component({
   selector: 'app-spyq-game',
@@ -14,24 +22,29 @@ import { Router } from '@angular/router'
 export class SpyqGameComponent {
   subscriptions: Subscription[] = []
 
-  @Input() gameData: any;
+  @Input() gameData: GameData = {
+    country: '',
+    endTime: 0,
+    endVoteTime: 0,
+    foundSpy: false,
+    spyName: '',
+    votingObject: []
+  };
   @Input() gameId: string = ''
-  @Input() username: string = '';
-  @Input() users: User[] = [];
-  @Input() timeDifference: number = 0;
-  @Input() timeDifferenceVote: number = 0;
+  @Input() username: string = ''
+  @Input() users: User[] = []
+  @Input() timeDifference: number = 0
+  @Input() timeDifferenceVote: number = 0
 
   @Input() votingDone: boolean = false
   @Output() votingDoneChanged: EventEmitter<boolean> = new EventEmitter<boolean>
-  @Input() votingData: any[] = [];
-  @Input() foundSpy: boolean = false
-  @Input() spyName: string = ""
+  @Input() votingData: any[] = []
   @Output() resetRoom: EventEmitter<boolean> = new EventEmitter<boolean>
 
-
-  isHost: boolean = localStorage.getItem('isHost') === 'true' ? true : false
   isFlipped: boolean = false
   userHasVoted: boolean = false
+  spyName: string = ''
+  foundSpy: boolean = false
 
   // Mock data to use for testing purpose
   // gameData: any;
@@ -124,21 +137,21 @@ export class SpyqGameComponent {
   // joining: boolean = false;
   // spyName: string = 'emelie'
 
-  constructor(private gameService: GameService, private userService: UserService, private router: Router) {
+  constructor(private gameService: GameService, private userService: UserService) {
     this.subscriptions.push(
       this.gameService.votingDoneEvent().subscribe((data: any) => {
         const { votingData, foundSpy, spyName } = data
         this.votingData = votingData
+        console.log('votindg data: ', data)
         this.foundSpy = foundSpy
         this.spyName = spyName
         this.votingDoneChanged.emit(true)
-
       })
     )
 
     this.subscriptions.push(
       this.gameService.newRoundEvent().subscribe((data: any) => {
-        this.resetRoom.emit(true)
+        this.resetRoom.emit()
       })
     )
 
@@ -170,40 +183,4 @@ export class SpyqGameComponent {
     )
   }
 
-  closeLobby(): void {
-    this.subscriptions.push(
-      this.userService.closeLobby(this.gameId, this.username).subscribe({
-        next: (response) => {
-          const { message } = response
-          if (message === 'closeLobbySuccess') {
-            this.gameService.closeLobbySocket(this.gameId, this.username)
-            this.router.navigateByUrl('/home')
-            localStorage.removeItem('isHost')
-          }
-        },
-        error: (err) => {
-          console.log(err)
-        }
-      })
-    )
-  }
-
-  newRound(): void {
-    this.subscriptions.push(
-      this.userService.newRound(this.gameId, this.username).subscribe({
-        next: (response) => {
-          console.log(response)
-          const { message } = response
-          if (message === 'newRoundSuccess') {
-            this.gameService.newRoundSocket(this.gameId, this.username)
-            this.resetRoom.emit(true)
-
-          }
-        },
-        error: (err) => {
-          console.log(err)
-        }
-      })
-    )
-  }
 }

@@ -1,5 +1,9 @@
 @import '../../styles.scss';
 
+.white-heading{
+  margin-top: 50px;
+}
+
 .card {
     background-color: transparent;
     // box-shadow: 0 0 20px rgba(white, 0.65);
@@ -65,10 +69,6 @@
 
   }
 
-.result-heading{
-    font-size: 50px;
-
-}
 
 .time-text{
     color: white;
@@ -76,22 +76,6 @@
     font-size: 14px;
 }
 
-.buttons-container {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin-top: 30px;
-    }
-
-.custom-btn {
-    flex: 1;
-    margin: 5px 20px;
-    width: 100%;
-    box-shadow: 0 0 0 .1rem rgba(white, 0.5);
-    z-index: 2;
-  }
 
 
 

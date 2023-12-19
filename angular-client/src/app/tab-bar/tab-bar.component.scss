@@ -66,6 +66,10 @@
   align-items: center;
 }
 
+.btn-edit.focus {
+  background-color: $primary;
+}
+
 .btn-edit i {
   font-size: 1.5rem;
   color: white; 

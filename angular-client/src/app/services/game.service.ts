@@ -31,7 +31,7 @@ export class GameService {
     }
     this.socket.connect()
     console.log('hostGameSocketConnect', username)
-    
+
     const data = {
       gameId: gameId,
       username: username,
@@ -140,7 +140,6 @@ export class GameService {
     return new Observable((observer) => {
       this.socket.on('hostStarted', (data: any) => {
         const { username, gameChoice, gameData } = data
-        console.log("HOST STARTED ", data)
         observer.next({ username, gameChoice, gameData });
       })
     });

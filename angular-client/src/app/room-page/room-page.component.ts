@@ -22,7 +22,6 @@ export interface User {
 export class RoomPageComponent {
 
   subscriptions: Subscription[] = []
-
   users: User[] = [];
   username: string = this.userService.getUsername() ?? ''
   imageUrl: string = this.userService.getImageUrl() ?? ''
@@ -31,19 +30,15 @@ export class RoomPageComponent {
   gameId: string = ''
   gameChoice: string = ''
   gameStarted = false
-  gameData = ''
+  gameData: any
   gameTimeInMS = 60000 * 2
   category = "countries"
-  endTime: Date = new Date()
-  endVoteTime: Date = new Date()
   timeDifference: number = 0
   timeDifferenceVote: number = 0
   animationDone = false
 
   votingDone: boolean = false
   votingData: any = []
-  foundSpy: boolean = false
-  spyName: string = ""
 
   gotData: boolean = false;
 
@@ -53,7 +48,6 @@ export class RoomPageComponent {
   handleSettingsChange(event: { selectedCategory: string, selectedTime: number }): void {
     this.category = event.selectedCategory;
     this.gameTimeInMS = event.selectedTime;
-    console.log("New Settings: ", this.category, " ", this.gameTimeInMS);
   }
 
   handleVotingDoneChanged(value: boolean) {
@@ -69,12 +63,11 @@ export class RoomPageComponent {
     })
   }
 
-  // Used to request and store necessary data persistently
   ngOnInit(): void {
     this.gotData = false;
-    this.username = localStorage.getItem("username") ?? '' //this.userService.getUsername() ?? ''
-    this.imageUrl = localStorage.getItem("imageUrl") ?? '' //this.userService.getImageUrl() ?? ''
-    this.isHost = localStorage.getItem("isHost") == 'true' ? true : false //     ?? '' //this.userService.getIsHost()
+    this.username = localStorage.getItem("username") ?? ''
+    this.imageUrl = localStorage.getItem("imageUrl") ?? ''
+    this.isHost = localStorage.getItem("isHost") == 'true' ? true : false
 
     this.subscriptions.push(
       this.activatedRoute.params.subscribe(params => {
@@ -125,13 +118,10 @@ export class RoomPageComponent {
 
     this.subscriptions.push(
       this.gameService.hostStartedEvent().subscribe((data: any) => {
-        const { username, gameChoice, gameData } = data;
-        console.log(`Host ${username} started the game with mode ${gameChoice}`);
-        console.log(data);
+        const { gameData, gameChoice } = data;
+        this.gameChoice = gameChoice
         this.gameStarted = true;
-        this.gameData = gameData.country === "" ? 'spy' : gameData.country;
-        //this.endTime = new Date(gameData.endTime)
-        //this.endVoteTime = new Date(gameData.endVoteTime)
+        this.gameData = gameData;
       })
     )
 
@@ -218,18 +208,14 @@ export class RoomPageComponent {
             }).filter((item) => !(new Set(players).has(item.username)));
 
             if (gameData) {
-              this.gameStarted = true;
-              this.gameData = gameData.country === "" ? 'spy' : gameData.country;
-              this.endTime = new Date(gameData.endTime)
-              this.endVoteTime = new Date(gameData.endVoteTime)
+              this.gameStarted = true
+              this.gameData = gameData
               this.animationDone = true
 
               // If voting is done, then this will set the votes
               if (gameData.votingObject.length !== 0) {
                 this.votingDone = true
                 this.votingData = gameData.votingObject
-                this.foundSpy = gameData.foundSpy
-                this.spyName = gameData.spyName
               }
             }
             setTimeout(() => {
@@ -277,16 +263,8 @@ export class RoomPageComponent {
     this.animationDone = value
   }
 
-  resetRoom(value: boolean): void {
+  resetRoom(): void {
 
-    console.log("RESET ROOM")
-    /*
-    this.gameStarted = false
-    this.gameData = ''
-    this.animationDone = false
-    this.votingDone = false;
-    this.ngOnInit();
-    */
 
     let currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {

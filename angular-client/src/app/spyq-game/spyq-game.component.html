@@ -1,22 +1,16 @@
-
-<div class="d-flex flex-column align-items-center vh-100 vv-100 linear-background">
-    <div class="d-flex vh-100 align-items-center ">
-
+<div class="d-flex flex-column align-items-center vh-100 vw-100 linear-background">
         <ng-container *ngIf="timeDifference>0; else votingBlock">
             <div class="card" (click)="flipCard()" [class.flipped]="isFlipped">
 
                 <div class="card-inner">
-
                     <div class="front">
                         <div class="heading">{{username}}</div>
                         <h6 class="card-title text-center">Klicka här för att se din roll</h6>
-
                     </div>
-            
                     <div class="back">
-                        <ng-container *ngIf="gameData !== 'spy'; else spyBlock">
+                        <ng-container *ngIf="gameData.country !== ''; else spyBlock">
                             <i class="bi bi-geo-alt-fill" style="font-size: 4rem;"></i>                    
-                            <h6 class="card-title text-center">{{gameData}}</h6>
+                            <h6 class="card-title text-center">{{gameData.country}}</h6>
                             <h6 class="card-text text-center"><i class="bi bi-info-circle"></i> Nu kör vi! Ställ Ja/Nej frågor till dina motspelare i klockvis ordning för att lista ut vem i gänget som inte vet om det hemliga ordet.</h6>
                             <h6 class="card-text text-center">Spionen ifrån förra omgången ställer första frågan.</h6>
 
@@ -63,22 +57,13 @@
             </ng-container>
 
             <ng-template #votingResultBlock>  
-                <app-background-stars></app-background-stars>
-
                 <div>
-                    <div class="white-heading result-heading text-center"> RESULTAT  </div>
-                    <app-result-container [votingData]="votingData" [spyName]="spyName" [foundSpy]="foundSpy"></app-result-container>
-                
-                    <ng-container *ngIf="isHost;">
-                      <div class="buttons-container">
-                        <button (click)="newRound()" type="button" class="btn btn-secondary custom-btn">Starta en ny omgång</button>
-                        <button (click)="closeLobby()" type="button" class="btn btn-secondary custom-btn">Avsluta Spelet</button>
-                      </div>
-                    </ng-container>
-                  
+                    <app-result-container 
+                        [votingData]="votingData" 
+                        [gameData]="gameData"
+                        [subscriptions]="subscriptions" 
+                        [gameId]="gameId" ></app-result-container>
                 </div>  
-
             </ng-template>
         </ng-template> 
-    </div>
 </div>

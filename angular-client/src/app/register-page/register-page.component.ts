@@ -30,7 +30,6 @@ export class RegisterPageComponent {
 
     this.authService.register(username, password).subscribe({
       next: (data) => {
-        console.log(data);
         this.router.navigateByUrl('/login');
       },
       error: (error) => {
@@ -51,12 +50,6 @@ export class RegisterPageComponent {
 
       }
     });
-
-
-   // console.log(username);
-   // console.log(password);
-   // console.log(repeatPassword);
-
   }
 
   redirectToLogin(): void {

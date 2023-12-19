@@ -3,7 +3,7 @@
       <div class="modal-content bg-light rounded">
         <div class="modal-body d-flex flex-column align-items-center justify-content-center white-background rounded">
           <button type="button" class="btn-close btn-close-white align-self-end" (click)="closePopup($event)" aria-label="Close"></button>
-          <h5 class="modal-title heading">Inställningar</h5>
+          <h5 class="heading">Inställningar</h5>
   
           <form (ngSubmit)="onFormSubmit()">
             <div class="center-input">
@@ -12,12 +12,12 @@
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ getSelectedLabel() }}
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <div *ngFor="let item of dropdownItems" class="dropdown-item" (click)="selectOption(item.name)">
-                      {{ item.label }}
-                    </div>
-                  </div>
-
+  
+                <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <button *ngFor="let item of dropdownItems" class="dropdown-item" (click)="selectOption(item.name)">
+                    {{ item.label }}
+                  </button>
+                </div> -->
               </div>
 
               <label for="timeInput" class="form-label">Välj en tid(s) för att ställa frågor</label>

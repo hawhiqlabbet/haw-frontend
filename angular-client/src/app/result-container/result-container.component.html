@@ -1,8 +1,11 @@
+<div class="white-heading result-heading text-center">RESULTAT</div>
 
+<app-background-stars></app-background-stars>
 <div class="result-container" [ngClass]="{'centered-text': !showResultText}">
+
     <ng-container *ngIf="!showResultText; else userResult">
-        <ng-container *ngIf="!foundSpy; else foundSpyTemplate">
-            <img class="kg-image image" src="https://i.imgur.com/EPxyW4M.gif" width="104" height="104" >
+        <ng-container *ngIf="!gameData.foundSpy; else foundSpyTemplate">
+            <img class="image" src="https://i.imgur.com/EPxyW4M.gif" width="104" height="104" >
             <h6 class="found-spy-info text-center">Åhnej, ni lyckades inte hitta SpyQ!</h6>
         </ng-container>
         <ng-template #foundSpyTemplate>
@@ -10,20 +13,28 @@
             <h6 class="found-spy-info text-center">Bra jobbat, ni hittade SpyQ!</h6>
         </ng-template>
     </ng-container>
+    
     <ng-template #userResult>
         <div id="resultText">
-           
-        <ng-container *ngFor="let user of votingData; let i = index">
-            <div class="result-user-container">
-                <ng-container *ngIf="user.player === spyName; else spyVotes">
-                    <h6 class="result-user-text bold-spy-user">{{user.player}}: {{user.votes}} {{ user.votes === 1 ? 'röst' : 'röster' }}</h6>
-                    <i class="bi bi-incognito spy-icon"></i>
-                </ng-container>
-                <ng-template #spyVotes> 
-                    <h6 class="result-user-text">{{user.player}}: {{user.votes}} {{ user.votes === 1 ? 'röst' : 'röster' }}</h6>
-                </ng-template>
-            </div>
-        </ng-container>
-     </div>
+            <ng-container *ngFor="let user of votingData; let i = index">
+                <div class="result-user-container">
+                    <ng-container *ngIf="user.player === gameData.spyName; else spyVotes">
+                        <h6 class="result-user-text bold-spy-user">{{user.player}}: {{user.votes}} {{ user.votes === 1 ? 'röst' : 'röster' }}</h6>
+                        <i class="bi bi-incognito spy-icon"></i>
+                    </ng-container>
+                    <ng-template #spyVotes> 
+                        <h6 class="result-user-text">{{user.player}}: {{user.votes}} {{ user.votes === 1 ? 'röst' : 'röster' }}</h6>
+                    </ng-template>
+                </div>
+            </ng-container>
+        </div>
     </ng-template>
 </div>
+
+<ng-container *ngIf="isHost;">
+    <div class="buttons-container">
+        <button (click)="newRound()" type="button" class="btn btn-secondary">Starta en ny omgång</button>
+        <button (click)="closeLobby()" type="button" class="btn btn-secondary">Avsluta Spelet</button>
+    </div>
+</ng-container>
+

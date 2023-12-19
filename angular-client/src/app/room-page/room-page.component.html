@@ -2,87 +2,95 @@
     <ng-container *ngIf="!gotData; else loadStuff"></ng-container>
     
     <ng-template #loadStuff>
-    <app-settings-modal #settingsModal       
-        [category]="category" 
-        [timeDifference]="gameTimeInMS"
-        (formSubmitted)="handleSettingsChange($event)"
-        ></app-settings-modal>
+        <app-settings-modal #settingsModal       
+            [category]="category" 
+            [timeDifference]="gameTimeInMS"
+            (formSubmitted)="handleSettingsChange($event)">
+        </app-settings-modal>
 
-    <ng-container *ngIf="!gameStarted; else gameStartedContent">
+        <ng-container *ngIf="!gameStarted; else gameStartedContent">
 
-        <div class="room-sub-heading text-center">Här spelar vi ...</div>
-        <div class="white-heading text-center ">RUMSKOD: {{gameId}}</div>
-        
-        <button *ngIf="isHost" (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
-        <div class="btn-group" role="group" aria-label="Basic example" style="width: 90%;">
-            <button *ngIf="isHost" (click)="closeLobby()" type="button" class="btn room-button-secondary btn-secondary">Stäng lobbyn</button>
-            <button *ngIf="isHost" (click)="settingsModal.openModalExternally()" type="button" class="btn room-button-secondary btn-secondary">Inställningar</button>
-        </div>
-        <button *ngIf="!isHost" (click)="leaveGame()" type="button" class="btn room-button-primary btn-secondary">Lämna rummet</button>
+            <div class="white-heading text-center ">RUMSKOD: {{gameId}}</div>
+            
+            <button *ngIf="isHost" (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
+            <div class="btn-group" role="group" aria-label="Basic example" style="width: 90%;">
+                <button *ngIf="isHost" (click)="closeLobby()" type="button" class="btn room-button-secondary btn-secondary">Stäng lobbyn</button>
+                <button *ngIf="isHost" (click)="settingsModal.openModalExternally()" type="button" class="btn room-button-secondary btn-secondary">Inställningar</button>
+            </div>
+            <button *ngIf="!isHost" (click)="leaveGame()" type="button" class="btn room-button-primary btn-secondary">Lämna rummet</button>
 
-        <div class="svg-container">
-            <svg class="circle-svg" style="height: 70vh; width: 100%;">
-                <ng-container *ngFor="let user of users; let i = index">
-                    <text 
-                        *ngIf="user.isHost"
-                        [attr.x]="user.cx" 
-                        [attr.y]="user.cy-circleRadius*1.3" 
-                        class="user-name"
-                        text-anchor="middle" 
-                dominant-baseline="middle">
-                        HOST
-                    </text>
-                    <circle 
-                        [attr.cx]="user.cx" 
-                        [attr.cy]="user.cy" 
-                        [attr.fill]="user.fill" 
-                        opacity="0.45" 
-                        [attr.r]="circleRadius" >
-                    </circle>
-                    <image 
-                        [attr.x]="user.cx-circleRadius" 
-                        [attr.y]="user.cy-circleRadius" 
-                        [attr.width]="circleRadius*2" 
-                        [attr.height]="circleRadius*2" 
-                        [attr.href]="user.imageUrl" />
+            <div class="svg-container">
+                <svg class="circle-svg" style="height: 70vh; width: 100%;">
+                    <ng-container *ngFor="let user of users; let i = index">
+                        <text 
+                            *ngIf="user.isHost"
+                            [attr.x]="user.cx" 
+                            [attr.y]="user.cy-circleRadius*1.3" 
+                            class="user-name"
+                            text-anchor="middle" 
+                    dominant-baseline="middle">
+                            HOST
+                        </text>
+                        <circle 
+                            [attr.cx]="user.cx" 
+                            [attr.cy]="user.cy" 
+                            [attr.fill]="user.fill" 
+                            opacity="0.45" 
+                            [attr.r]="circleRadius" >
+                        </circle>
+                        <image 
+                            [attr.x]="user.cx-circleRadius" 
+                            [attr.y]="user.cy-circleRadius" 
+                            [attr.width]="circleRadius*2" 
+                            [attr.height]="circleRadius*2" 
+                            [attr.href]="user.imageUrl" />
 
-                    <text 
-                        [attr.x]="user.cx" 
-                        [attr.y]="user.cy+circleRadius*1.3" 
-                        class="user-name" 
-                        text-anchor="middle" 
-                        dominant-baseline="middle">
-                        {{ user.username }}
-                    </text>
+                        <text 
+                            [attr.x]="user.cx" 
+                            [attr.y]="user.cy+circleRadius*1.3" 
+                            class="user-name" 
+                            text-anchor="middle" 
+                            dominant-baseline="middle">
+                            {{ user.username }}
+                        </text>
+                    </ng-container>
+                </svg>
+            </div>
+        </ng-container>
+
+        <ng-template #gameStartedContent>
+            <ng-container *ngIf="!animationDone">
+                <app-animated-game-text (animationDone)="handleAnimationDone($event)"></app-animated-game-text>
+            </ng-container>
+
+            <ng-container *ngIf="animationDone">
+                <ng-container *ngIf="gameChoice==='SpyQ'; else hiQlashGame">
+
+                    <app-spyq-game 
+                        [gameData]="gameData" 
+                        [gameId]="gameId" 
+                        [username]="username" 
+                        [timeDifference]="timeDifference" 
+                        [timeDifferenceVote]="timeDifferenceVote" 
+                        [users]="users"
+                        [votingData]="votingData"
+                        [votingDone]="votingDone"
+                        (votingDoneChanged)="handleVotingDoneChanged($event)"
+                        (resetRoom)="resetRoom()">
+                    </app-spyq-game> 
                 </ng-container>
-            </svg>
-        </div>
-    </ng-container>
 
-    <ng-template #gameStartedContent>
-        <ng-container *ngIf="!animationDone">
-            <app-animated-game-text (animationDone)="handleAnimationDone($event)"></app-animated-game-text>
-        </ng-container>
+                <ng-template #hiQlashGame>
+                    <app-hiqlash-game
+                    [gameData]="gameData" 
+                    [timeDifference]="timeDifference" 
+                    >
+                    </app-hiqlash-game>
+                </ng-template>
 
-        <ng-container *ngIf="animationDone">
-            <app-spyq-game 
-                [gameData]="gameData" 
-                [gameId]="gameId" 
-                [username]="username" 
-                [timeDifference]="timeDifference" 
-                [timeDifferenceVote]="timeDifferenceVote" 
-                [users]="users"
-                [votingData]="votingData"
-                [votingDone]="votingDone"
-                [foundSpy]="foundSpy"
-                [spyName]="spyName"
-                (votingDoneChanged)="handleVotingDoneChanged($event)"
-                (resetRoom)="resetRoom($event)">
-            </app-spyq-game> 
-        </ng-container>
+            </ng-container>
+        </ng-template>
     </ng-template>
-</ng-template>
-
 </div> 
 
 

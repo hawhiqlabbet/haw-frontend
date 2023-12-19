@@ -69,7 +69,6 @@ export class SettingsModalComponent {
       selectedCategory: this.selectedCategory,
       selectedTime: this.selectedTime * 1000
     };
-    console.log('Form Data:', formData);
     this.formSubmitted.emit(formData);
     this.displayStyle = 'none';
   }

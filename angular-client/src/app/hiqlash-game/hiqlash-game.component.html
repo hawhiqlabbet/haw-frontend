@@ -1,0 +1,11 @@
+<div class="d-flex flex-column align-items-center justify-content-center vh-100 vv-100 linear-background">
+    <div class="prompts-box">
+        <div class="white-heading">SVARA PÅ FÖLJDANDE PROMTPS:</div>
+        <div class="white-prompts">En oväntad funktion i en smartphone ...</div>
+        <textarea class="custom-textarea" rows="2" placeholder="Skriv ditt svar här" required></textarea>
+        <div class="white-prompts">Något olämpligt att säga på Magic Monday ...</div>
+        <textarea class="custom-textarea" rows="2" placeholder="Skriv ditt svar här" required></textarea>
+        <button (click)="submitAnswers()" type="submit" class="btn btn-secondary">Skicka in ditt svar</button>
+        <app-progress-bar></app-progress-bar>
+    </div>
+</div>

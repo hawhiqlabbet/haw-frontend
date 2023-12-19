@@ -19,6 +19,8 @@ import { SpyqGameComponent } from './spyq-game/spyq-game.component';
 import { BackgroundStarsComponent } from './background-stars/background-stars.component';
 import { ResultContainerComponent } from './result-container/result-container.component';
 import { SettingsModalComponent } from './settings-modal/settings-modal.component';
+import { HiqlashGameComponent } from './hiqlash-game/hiqlash-game.component';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { SettingsModalComponent } from './settings-modal/settings-modal.componen
     BackgroundStarsComponent,
     ResultContainerComponent,
     SettingsModalComponent,
+    HiqlashGameComponent,
+    ProgressBarComponent,
   ],
   imports: [
     BrowserModule,

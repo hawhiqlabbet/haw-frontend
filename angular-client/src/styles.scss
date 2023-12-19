@@ -30,73 +30,76 @@ body {
   
 /* Primary Button Styles */
 .btn-primary {
-  color: $secondary;
+  color: $primary;
   background-color: white;
-  border-color: $secondary;
+  border-color: $primary;
   border-width: 2px;
   font-size: 14px;
   letter-spacing: 2px;
+  width: 100%;
+
 }
 
 .btn-primary:hover {
   color: white;
-  border-color: $secondary;
-  background-color: $secondary;
+  border-color: $primary;
+  background-color: $primary;
 }
 
 .btn-primary:focus,
 .btn-primary.focus {
-  box-shadow: 0 0 0 .2rem rgba($secondary, 0.5)
+  box-shadow: 0 0 0 .2rem rgba($primary, 0.5)
 }
 
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active,
 .show>.btn-primary.dropdown-toggle {
   color: white;
-  background-color: rgba($secondary, 0.5);
-  border-color: $secondary;
+  background-color: rgba($primary, 0.5);
+  border-color: $primary;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus,
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show>.btn-secondary.dropdown-toggle:focus {
-  box-shadow: rgba($secondary, 0.5);
+  box-shadow: rgba($primary, 0.5);
 }
 
 /* Secondary button styles */
 .btn-secondary {
   color: white;
-  background-color: $secondary;
-  border-color: $secondary;
+  background-color: $primary;
+  border-color: $primary;
   border-width: 2px;
   font-size: 14px;
   letter-spacing: 2px;
+  width: 100%;
 }
 
 .btn-secondary:hover {
-  color: $secondary;
+  color: $primary;
   background-color: white;
-  border-color: $secondary;
+  border-color: $primary;
   border-width: 2px;
 }
 
 .btn-secondary:focus,
 .btn-secondary.focus {
-  box-shadow: 0 0 0 .2rem rgba($secondary, 0.5)
+  box-shadow: 0 0 0 .2rem rgba($primary, 0.5)
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active,
 .btn-secondary:not(:disabled):not(.disabled).active,
 .show>.btn-primary.dropdown-toggle {
   color: white;
-  background-color: rgba($secondary, 0.5);
-  border-color: $secondary;
+  background-color: rgba($primary, 0.5);
+  border-color: $primary;
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active:focus,
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
 .show>.btn-secondary.dropdown-toggle:focus {
-  box-shadow: rgba($secondary, 0.5);
+  box-shadow: rgba($primary, 0.5);
 }
 
 /*Background styles*/
@@ -137,7 +140,8 @@ body {
 
 
 .linear-background{
-  background: linear-gradient(to top, white, $secondary, $primary);
+  background: linear-gradient(to top, white, $primary);
+  // background: linear-gradient(to top, white, $secondary, $primary);
   position: relative; 
   overflow-x: hidden; 
   max-height: -webkit-fill-available;
@@ -242,3 +246,13 @@ body {
   color: $primary; 
   text-decoration: underline; 
 }
+
+/* Progress bar*/
+.progress .progress-bar {
+  background-color: $primary !important; 
+}
+
+.progress {
+  background-color: rgba($primary, 0.25); 
+}
+

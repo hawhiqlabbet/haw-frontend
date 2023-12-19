@@ -271,7 +271,16 @@ public class Controller {
             lobbyService.addLobbyData(gameId, lobbyData);
         }
         else if("HiQlash".equals(lobby.getGameChoice())){
-            HiQlashData lobbyData = new HiQlashData(lobby.getPlayers().size(), lobby.getPlayers());
+            long milliseconds = Long.parseLong(request.get("gameTimeInMS"));
+
+            // Set game end time (2 minutes by default)
+            long currentTime = System.currentTimeMillis();
+            long endTime = System.currentTimeMillis() + milliseconds - currentTime;
+
+            // Set vote end time, equal to endTime in HiQlash
+            long endVoteTime = endTime;
+
+            HiQlashData lobbyData = new HiQlashData(lobby.getPlayers().size(), lobby.getPlayers(), endTime, endVoteTime);
             lobbyService.addLobbyData(gameId, lobbyData);
 
             System.out.println(lobbyData);

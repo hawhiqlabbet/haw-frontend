@@ -2,6 +2,7 @@ package com.example.springboot.models;
 
 import com.example.springboot.models.LobbyData;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +47,40 @@ public class SpyQData implements LobbyData {
             this.hasVoted = hasVoted;
         }
     }
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class StartGameMessage extends com.example.springboot.models.StartGameMessage {
+        private String country;
+
+        public StartGameMessage(String username, String gameId, long endTime, long endVoteTime, String country) {
+            super(username, gameId, endTime, endVoteTime);
+            this.country = country;
+        }
+
+        public StartGameMessage() {
+            super();
+        }
+    }
+
+    @Data
+    public static class GameDataMessage {
+        private String country;
+        private long endTime;
+        private long endVoteTime;
+        private boolean foundSpy;
+        private String spyName;
+        List<SpyQData.VotingObject> votingObject;
+
+        public GameDataMessage(String country, long endTime, long endVoteTime, boolean foundSpy, String spyName, List<SpyQData.VotingObject> votingObject){
+            this.country = country;
+            this.endTime = endTime;
+            this.endVoteTime = endVoteTime;
+            this.foundSpy = foundSpy;
+            this.spyName = spyName;
+            this.votingObject = votingObject;
+        }
+    }
+
     public boolean hasPlayerVoted(String player){
         for(HasVoted obj : hasVotedList) {
             if(obj.player.equals(player)) {

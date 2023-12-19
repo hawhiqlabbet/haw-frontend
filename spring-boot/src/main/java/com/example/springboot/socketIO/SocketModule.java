@@ -10,6 +10,7 @@ import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.example.springboot.models.*;
 import com.example.springboot.services.LobbyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @EnableAsync
 @Slf4j
@@ -35,20 +33,46 @@ public class SocketModule {
     @Autowired
     private LobbyService lobbyService;
 
+    @Data
+    public static class SocketRecieve {
+        String username;
+        String gameId;
+        String imageUrl;
+    }
+
+    @Data
+    public static class SocketSend {
+        private String message;
+        private String gameId;
+        private String username;
+        private List<Player> data;
+
+        public SocketSend() {
+        }
+
+        public SocketSend(String message, List<Player> data, String gameId, String username) {
+            this.message = message;
+            this.data = data;
+            this.gameId = gameId;
+            this.username = username;
+        }
+    }
+
+
+
     @Autowired
     public SocketModule(SocketIOServer server, SocketService socketService) {
         this.server = server;
         this.socketService = socketService;
         server.addConnectListener(onConnected());
         server.addDisconnectListener(onDisconnected());
-        server.addEventListener("send_message", SocketMessage.class, onChatReceived());
-        server.addEventListener("hostGame", SocketMessage.class, handleHostGame());
-        server.addEventListener("newRound", NewRoundMessage.class, handleNewRound());
-        server.addEventListener("closeLobby", CloseGameMessage.class, handleCloseLobby());
-        server.addEventListener("leaveGame", SocketMessage.class, handleLeaveGame());
-        server.addEventListener("startGame", StartGameMessage.class, handleStartGame());
-        server.addEventListener("joinGame", JoinGameMessage.class, handleJoinGame());
-        server.addEventListener("reportVotingDone", SocketMessage.class, handleVotingDone());
+        server.addEventListener("hostGame", SocketRecieve.class, handleHostGame());
+        server.addEventListener("newRound", SocketRecieve.class, handleNewRound());
+        server.addEventListener("closeLobby", SocketRecieve.class, handleCloseLobby());
+        server.addEventListener("leaveGame", SocketRecieve.class, handleLeaveGame());
+        server.addEventListener("startGame", SocketRecieve.class, handleStartGame());
+        server.addEventListener("joinGame", SocketRecieve.class, handleJoinGame());
+        server.addEventListener("reportVotingDone", SocketRecieve.class, handleVotingDone());
     }
 
     @Async
@@ -71,7 +95,7 @@ public class SocketModule {
         }
     }
 
-    private DataListener<SocketMessage> handleVotingDone() {
+    private DataListener<SocketRecieve> handleVotingDone() {
         return (senderClient, data, ackSender) -> {
             String gameId = data.getGameId();
             LobbyData ld = lobbyService.getLobbyData(gameId);
@@ -98,7 +122,7 @@ public class SocketModule {
         };
     }
 
-    private DataListener<StartGameMessage> handleStartGame() {
+    private DataListener<SocketRecieve> handleStartGame() {
         return (senderClient, data, ackSender) -> {
             String gameId = data.getGameId();
             String username = data.getUsername();
@@ -114,15 +138,27 @@ public class SocketModule {
 
                 // Dont send country to spy
                 String spy = spyQData.getSpyName();
-                StartGameMessage testSpy = new StartGameMessage(username, "", gameChoice, endTime, endVoteTime);
-                lobbyService.socketToUser.get(spy).getClient().sendEvent("hostStarted", Map.of("username", username, "gameChoice", gameChoice, "gameData",testSpy));
-                StartGameMessage test = new StartGameMessage(username, country, gameChoice, endTime, endVoteTime);
-                socketService.sendMessage(gameId, "hostStarted", lobbyService.socketToUser.get(spy).getClient(), Map.of("username", username, "gameChoice", gameChoice, "gameData", test));
+                SpyQData.StartGameMessage gameDataSpy = new SpyQData.StartGameMessage(username, gameId, endTime, endVoteTime, "");
+                lobbyService.socketToUser.get(spy).getClient().sendEvent("hostStarted", Map.of("username", username, "gameChoice", gameChoice,"gameData", gameDataSpy));
+                SpyQData.StartGameMessage gameData = new SpyQData.StartGameMessage(username, gameId, endTime, endVoteTime, country);
+                socketService.sendMessage(gameId, "hostStarted", lobbyService.socketToUser.get(spy).getClient(), Map.of("username", username, "gameChoice", gameChoice, "gameData", gameData));
+            }
+            else if(gameChoice.equals("HiQlash")) {
+                HiQlashData hiQlashData =(HiQlashData) lobbyService.getLobbyData(gameId);
+
+                long endTime = hiQlashData.getEndTime();
+                long endVoteTime = hiQlashData.getEndVoteTime();
+
+                // Send prompts to each user
+                for(HiQlashData.PlayerPrompts p: hiQlashData.getPromptsForPlayers()) {
+                    HiQlashData.StartGameMessage gameData = new HiQlashData.StartGameMessage(username, gameId, endTime, endVoteTime, p.getPrompts());
+                    lobbyService.socketToUser.get(p.getPlayer()).getClient().sendEvent("hostStarted", Map.of("username", username, "gameChoice", gameChoice, "gameData", gameData));
+                }
             }
         };
     }
 
-    private DataListener<SocketMessage> handleLeaveGame() {
+    private DataListener<SocketRecieve> handleLeaveGame() {
         return (senderClient, data, ackSender) -> {
             String gameId = data.getGameId();
             String username = data.getUsername();
@@ -134,11 +170,11 @@ public class SocketModule {
             // Getting the list of players from the socketService
             List<Player> players = lobbyService.activeLobbies.get(gameId).getPlayers();
 
-            socketService.sendMessage(gameId, "playerLeft", senderClient,new SocketMessage(username, players, gameId, username));
+            socketService.sendMessage(gameId, "playerLeft", senderClient, new SocketSend(username, players, gameId, username));
         };
     }
 
-    private DataListener<NewRoundMessage> handleNewRound() {
+    private DataListener<SocketRecieve> handleNewRound() {
         return (senderClient, data, ackSender) -> {
             String gameId = data.getGameId();
             String username = data.getUsername();
@@ -147,11 +183,11 @@ public class SocketModule {
 
             System.out.println("User " + username + " started a new round of game " + gameId + " and the players are " + players);
 
-            socketService.sendMessage(gameId, "newRound", senderClient, new SocketMessage(username, players, gameId, username));
+            socketService.sendMessage(gameId, "newRound", senderClient, new SocketSend(username, players, gameId, username));
         };
     }
 
-    private DataListener<CloseGameMessage> handleCloseLobby() {
+    private DataListener<SocketRecieve> handleCloseLobby() {
         return (senderClient, data, ackSender) -> {
             String gameId = data.getGameId();
             String username = data.getUsername();
@@ -162,12 +198,12 @@ public class SocketModule {
             // Just because a Socket message requires players :(
             List<Player> players = new ArrayList<>();
 
-            socketService.sendMessage(gameId, "lobbyClosed", senderClient, new SocketMessage(username, players, gameId, username));
+            socketService.sendMessage(gameId, "lobbyClosed", senderClient, new SocketSend(username, players, gameId, username));
             socketService.closeLobby(gameId, senderClient);
         };
     }
 
-    private DataListener<SocketMessage> handleHostGame() {
+    private DataListener<SocketRecieve> handleHostGame() {
         return (senderClient, data, ackSender) -> {
             log.info(data.toString());
 
@@ -179,14 +215,12 @@ public class SocketModule {
 
             // Socket to user
             lobbyService.socketToUser.put(username, new SocketGameId(senderClient, gameId));
-
-            senderClient.getNamespace().getBroadcastOperations().sendEvent("get_message", data.getMessage());
         };
     }
 
-    private DataListener<JoinGameMessage> handleJoinGame() {
+    private DataListener<SocketRecieve> handleJoinGame() {
         return (senderClient, data, ackSender) -> {
-            // Extracting data from SocketMessage
+            // Extracting data from SocketSend
             String gameId = data.getGameId();
             String username = data.getUsername();
             String imageUrl = data.getImageUrl();
@@ -204,28 +238,13 @@ public class SocketModule {
             List<Player> players = lobbyService.activeLobbies.get(gameId).getPlayers();
 
             // Emitting 'playerJoined' event to all clients in the room
-            socketService.sendMessage(gameId, "playerJoined", senderClient, new SocketMessage(username, players, gameId, username));
+            socketService.sendMessage(gameId, "playerJoined", senderClient, new SocketSend(username, players, gameId, username));
 
             // Logging the event
             System.out.println("User " + username + " joined game " + gameId +
                     " and image url " + imageUrl + " and the players are " + players);
         };
     }
-
-    private DataListener<SocketMessage> onChatReceived() {
-        return (senderClient, data, ackSender) -> {
-            log.info(data.toString());
-            senderClient.getNamespace().getBroadcastOperations().sendEvent("get_message", data.getMessage());
-
-        };
-    }
-    /*
-    private DataListener<SocketMessage> handleHeartbeat() {
-        return (senderClient, data, ackSender) -> {
-
-        };
-    }
-    */
 
     private ConnectListener onConnected() {
         return (client) -> {
@@ -238,17 +257,6 @@ public class SocketModule {
     private DisconnectListener onDisconnected() {
         return client -> {
             log.info("Client[{}] - Disconnected from socket", client.getSessionId().toString());
-            /*
-            for(Map.Entry<String, SocketGameId> entry: lobbyService.getSocketToUsers().entrySet()) {
-                if (client.equals(entry.getValue().getClient())) {
-                    GameLobby lobby = lobbyService.getGameLobby(entry.getValue().getGameId());
-                    if(lobbyService.getGameLobby(entry.getValue().getGameId()).getGameChoice().equals("SpyQ")) {
-                        lobby.removePlayer(entry.getKey());
-                    }
-                    client.leaveRoom(entry.getValue().getGameId());
-                }
-            }
-            */
         };
 
     }

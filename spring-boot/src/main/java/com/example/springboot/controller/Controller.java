@@ -347,7 +347,7 @@ public class Controller {
             boolean foundSpy    = spyQData.foundSpy;
             String spy          = spyQData.getSpyName();
 
-            GameDataMessage gameDataMessage = new GameDataMessage(country, endTime, endVoteTime, false, "", new ArrayList<SpyQData.VotingObject>() );
+            SpyQData.GameDataMessage gameDataMessage = new SpyQData.GameDataMessage(country, endTime, endVoteTime, false, "", new ArrayList<SpyQData.VotingObject>() );
 
             if(spyQData.everyoneHasVoted()) {
                 spyQData.sortVotingObjectsByVotes();
@@ -366,7 +366,18 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameDataMessage));
         }
         else if(gameChoice.equals("HiQlash")) {
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby));
+
+            HiQlashData hiQlashData =(HiQlashData) lobbyService.getLobbyData(gameId);
+            if(hiQlashData == null) {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess", "data", lobby));
+            }
+
+            long endTime = hiQlashData.getEndTime();
+            long endVoteTime = hiQlashData.getEndVoteTime();
+
+
+            HiQlashData.StartGameMessage gameData = new HiQlashData.StartGameMessage(username, gameId, endTime, endVoteTime, hiQlashData.getPlayerPrompts(username));
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameData));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));
     }

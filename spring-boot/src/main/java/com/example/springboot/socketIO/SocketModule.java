@@ -81,17 +81,73 @@ public class SocketModule {
         for(Map.Entry<String, GameLobby> entry: lobbyService.getActiveLobbies().entrySet()) {
             GameLobby lobby = entry.getValue();
             lobby.setTimeout(lobby.getTimeout() - 1);
-            if(lobbyService.getLobbyData(entry.getKey()) != null && lobbyService.getGameLobby(entry.getKey()).getGameChoice().equals("SpyQ")) {
+
+            // If lobby has not started, just check if timeout and go next
+            if(lobbyService.getLobbyData(entry.getKey()) == null) {
+                if(lobby.getTimeout() <= 0){
+                    lobbyService.removeLobby(entry.getKey());
+                    lobbyService.removeLobbyData(entry.getKey());
+                }
+                continue;
+            }
+
+            // All clients in lobby
+            Collection<SocketIOClient> clients = server.getRoomOperations(entry.getKey()).getClients();
+
+            // Reduce timers depending on which game choice.
+            if(lobbyService.getGameLobby(entry.getKey()).getGameChoice().equals("SpyQ")) {
                 SpyQData lobbyData = (SpyQData) lobbyService.getLobbyData(entry.getKey());
                 lobbyData.endTime -= 1;
                 lobbyData.endVoteTime -= 1;
-                Collection<SocketIOClient> clients = server.getRoomOperations(entry.getKey()).getClients();
                 socketService.sendMessageCollection("timeUpdateEvent", clients, Map.of("endTime", lobbyData.endTime, "endVoteTime", lobbyData.endVoteTime));
             }
+            else if(lobbyService.getGameLobby(entry.getKey()).getGameChoice().equals("HiQlash")) {
+                HiQlashData lobbyData = (HiQlashData) lobbyService.getLobbyData(entry.getKey());
+
+                // If answering prompts, decrement endTime until end which should end first phase
+                if(lobbyData.isAnsweringPrompts()) {
+                    lobbyData.setEndTime(lobbyData.getEndTime() - 1);
+
+                    // Send initial prompt data
+                    if(lobbyData.getEndTime() <= 0) {
+                        lobbyData.setAnsweringPrompts(false);
+                        String prompt = lobbyData.getUsedPrompts().get(0);
+                        lobbyData.getUsedPrompts().remove(0);
+                        List<String> players = lobbyData.getPlayersHavingPrompt(prompt);
+                        socketService.sendMessageCollection("promptView", clients, Map.of("prompt", prompt, "players", players));
+                    }
+                }
+                // Else, for n == number of players, display prompt => display answers => allow voting for endVoteTime milliseconds
+                else {
+                    lobbyData.setEndVoteTime(lobbyData.getEndVoteTime() - 1);
+
+                    if(lobbyData.getEndVoteTime() <= 0) {
+                        lobbyData.setCurrRound(lobbyData.getCurrRound() + 1);
+
+                        if(lobbyData.getCurrRound() < lobbyData.getNumRounds()) {
+                            lobbyData.setEndVoteTime(lobbyData.getEndVoteTimeConst());
+
+                            // Send new prompt data
+                            String prompt = lobbyData.getUsedPrompts().get(0);
+                            lobbyData.getUsedPrompts().remove(0);
+                            List<String> players = lobbyData.getPlayersHavingPrompt(prompt);
+                            socketService.sendMessageCollection("promptView", clients, Map.of("prompt", prompt, "players", players));
+                        }
+                        //TODO: Display voting results for n seconds or until everyone has voted
+                        //TODO: Add voting stuff to HiQlash gameData
+
+                    }
+                }
+                socketService.sendMessageCollection("timeUpdateEvent", clients, Map.of("endTime", lobbyData.getEndTime(), "endVoteTime", lobbyData.getEndVoteTime()));
+            }
+
+            // Check if lobby has timeouted
             if(lobby.getTimeout() <= 0){
                 lobbyService.removeLobby(entry.getKey());
                 lobbyService.removeLobbyData(entry.getKey());
             }
+
+
         }
     }
 

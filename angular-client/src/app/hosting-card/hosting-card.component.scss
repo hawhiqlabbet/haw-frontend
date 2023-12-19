@@ -85,9 +85,9 @@
 
 .btn-secondary{
     box-shadow: 0 0 10px rgba($secondary, 0.25);
+    background-color: $secondary;
 
 }
-
 
 .btn-secondary:hover{
     background-color: rgb($secondary, 0.3);

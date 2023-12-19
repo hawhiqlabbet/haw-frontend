@@ -1,20 +1,18 @@
 @import '../../styles.scss';
 
 .divider {
-    border-top: 1.5px solid rgba(244, 63, 133, 0.3);   
-    width: 80%; 
-    position: absolute;
-    top: 0; 
-  }
+  border-top: 1.5px solid rgba(244, 63, 133, 0.3);   
+  width: 80%; 
+  position: absolute;
+  top: 0; 
+}
 
-  .white-box {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 0 20px; 
-  }
-  
-
+.white-box {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 0 20px; 
+}
 
 .icon-frame {
   width: 2.7rem;
@@ -35,12 +33,20 @@
 
 .modal{
   background: rgba(white, 0.6);
+
 }
 
 .modal-dialog {
   max-width: 90%;
   margin: auto;
+
 }
+
+.modal-content{
+  box-shadow: 0 0 10px rgba($primary, 0.35);
+
+}
+
 .position-relative {
   position: relative;
 }
@@ -51,7 +57,7 @@
   right: 0;
   padding: 0.2rem;
   border: none;
-  background-color: $secondary;
+  background-color: $primary;
   border-radius: 50%; 
   width: 30px;
   height: 30px;
@@ -64,12 +70,6 @@
   font-size: 1.5rem;
   color: white; 
 }
-
-.btn-edit:focus,
-.btn-edit.focus {
-  background-color: $secondary;
-}
-
 
 .heading{
   font-size: 20px;
@@ -145,6 +145,6 @@
 
 
 .heading{
-  color: $secondary;
+  color: $primary;
   font-size: 30px;
 }

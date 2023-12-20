@@ -21,14 +21,24 @@ export class HiqlashGameComponent implements OnInit {
   //     "Do you like Jazzis?"
   //   ]
   // }
+  promptAnswer1: string = ''
+  promptAnswer2: string = ''
+
+  vote(choice: string): void {
+    console.log("pressed ", choice)
+  }
 
   ngOnInit() {
     console.log(this.gameData.endTimeConst)
     console.log(this.gameData.prompts[0])
-
+    if (this.timeDifference === 0 && !this.promptsSaved) {
+      this.submitAnswers();
+    }
   }
   submitAnswers() {
     this.promptsSaved = true
+    console.log('Answer 1:', this.promptAnswer1);
+    console.log('Answer 2:', this.promptAnswer2);
   }
 
 }

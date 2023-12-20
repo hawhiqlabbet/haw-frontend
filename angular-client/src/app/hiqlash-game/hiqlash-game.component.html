@@ -5,15 +5,25 @@
             <div class="prompts-box">
                 <div class="white-heading">SVARA PÅ FÖLJDANDE PROMTPS:</div>
                 <div class="white-prompts">{{gameData.prompts[0]}}</div>
-                <textarea class="custom-textarea" rows="2" placeholder="Skriv ditt svar här" required></textarea>
+                <textarea 
+                    class="custom-textarea" 
+                    rows="2"  
+                    [(ngModel)]="promptAnswer1"
+                    placeholder="Skriv ditt svar här" 
+                    required></textarea>                
                 <div class="white-prompts">{{gameData.prompts[1]}}</div>
-                <textarea class="custom-textarea" rows="2" placeholder="Skriv ditt svar här" required></textarea>
+                <textarea 
+                    class="custom-textarea" 
+                    rows="2"  
+                    [(ngModel)]="promptAnswer2"
+                    placeholder="Skriv ditt svar här" 
+                    required></textarea>   
                 <button (click)="submitAnswers()" type="submit" class="btn btn-secondary">Skicka in ditt svar</button>
             </div>
         </ng-container>
 
         <ng-template #waitingBlock>
-            <div class="white-heading m-5">Hämta en liten nocco medans de andra tänker ...</div>
+            <div class="white-heading m-5">Hämta en liten NOCCO medans de andra tänker ...</div>
         </ng-template>
 
         <app-progress-bar [timeConst]="gameData.endTimeConst" [timeDifference]="timeDifference"></app-progress-bar>
@@ -26,12 +36,22 @@
           </div>
       
           <div class="row justify-content-center">
-            <div class="col-auto text-end">
-              <img src="assets/speech-bubble2.png" alt="Your Image" width="300" height="150" class="position-relative">
+            <div class="col-auto text-end" style="width: 300px; height: 150px; position: relative; display: inline-block; " class="position-relative">
+                <a (click)="vote('1')" style="cursor: pointer;">
+                    <img src="assets/speech-bubble2.png" alt="Your Image" style="width: 300px; height: 150px;" class="position-relative">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                      <div style="color: black; font-weight: bold;">Your Text Your Text Your Text Your TextYour TextYour TextYour TextYour TextYour TextYour Text Your Text Your Text Your Text Your Text</div>
+                    </div>
+                  </a>                  
             </div>
             <div class="col-auto text-start">
-              <img src="assets/speech-bubble-inverted2.png" alt="Your Image" width="300" height="150" class="position-relative">
+                <a (click)="vote('2')" style="cursor: pointer;">
+                    <img src="assets/speech-bubble-inverted2.png" alt="Your Image" width="300" height="150" class="position-relative">
+                </a>
             </div>
           </div>
+        
+        <app-progress-bar [timeConst]="gameData.endVoteTimeConst" [timeDifference]="timeDifference"></app-progress-bar>
+
       </ng-template>
 </div>

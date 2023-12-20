@@ -289,6 +289,9 @@ public class Controller {
             // Set vote end time, equal to endTime in HiQlash
             long endVoteTime = endTime;
 
+            endTime = endTime / 1000;
+            endVoteTime = endVoteTime / 1000;
+
             HiQlashData lobbyData = new HiQlashData(lobby.getPlayers().size(), lobby.getPlayers(), Arrays.asList(votingObject), Arrays.asList(hasVoted), endTime, endVoteTime);
             lobbyService.addLobbyData(gameId, lobbyData);
 

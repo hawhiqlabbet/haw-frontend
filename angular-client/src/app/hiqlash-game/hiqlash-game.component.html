@@ -1,11 +1,37 @@
 <div class="d-flex flex-column align-items-center justify-content-center vh-100 vv-100 linear-background">
-    <div class="prompts-box">
-        <div class="white-heading">SVARA PÅ FÖLJDANDE PROMTPS:</div>
-        <div class="white-prompts">{{gameData.prompts[0]}}</div>
-        <textarea class="custom-textarea" rows="2" placeholder="Skriv ditt svar här" required></textarea>
-        <div class="white-prompts">{{gameData.prompts[1]}}</div>
-        <textarea class="custom-textarea" rows="2" placeholder="Skriv ditt svar här" required></textarea>
-        <button (click)="submitAnswers()" type="submit" class="btn btn-secondary">Skicka in ditt svar</button>
-        <app-progress-bar [timeDifference]="timeDifference"></app-progress-bar>
-    </div>
+    <ng-container *ngIf="timeDifference>0; else votingBlock">
+
+        <ng-container *ngIf="!promptsSaved; else waitingBlock">
+            <div class="prompts-box">
+                <div class="white-heading">SVARA PÅ FÖLJDANDE PROMTPS:</div>
+                <div class="white-prompts">{{gameData.prompts[0]}}</div>
+                <textarea class="custom-textarea" rows="2" placeholder="Skriv ditt svar här" required></textarea>
+                <div class="white-prompts">{{gameData.prompts[1]}}</div>
+                <textarea class="custom-textarea" rows="2" placeholder="Skriv ditt svar här" required></textarea>
+                <button (click)="submitAnswers()" type="submit" class="btn btn-secondary">Skicka in ditt svar</button>
+            </div>
+        </ng-container>
+
+        <ng-template #waitingBlock>
+            <div class="white-heading m-5">Hämta en liten nocco medans de andra tänker ...</div>
+        </ng-template>
+
+        <app-progress-bar [timeConst]="gameData.endTimeConst" [timeDifference]="timeDifference"></app-progress-bar>
+
+    </ng-container>
+
+    <ng-template #votingBlock>
+        <div class="text-center">
+            <div class="white-heading mb-3">PROMPT 1</div>
+          </div>
+      
+          <div class="row justify-content-center">
+            <div class="col-auto text-end">
+              <img src="assets/speech-bubble2.png" alt="Your Image" width="300" height="150" class="position-relative">
+            </div>
+            <div class="col-auto text-start">
+              <img src="assets/speech-bubble-inverted2.png" alt="Your Image" width="300" height="150" class="position-relative">
+            </div>
+          </div>
+      </ng-template>
 </div>

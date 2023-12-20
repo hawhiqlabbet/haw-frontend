@@ -6,19 +6,23 @@ import anime from 'animejs/lib/anime.es.js';
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss']
 })
-export class ProgressBarComponent implements OnInit {
+export class ProgressBarComponent {//implements OnInit {
   @Input() timeDifference: number = 100;
+  @Input() timeConst: number = 100;
   initialTimeDifference: number = 0;
   isWarning: boolean = false;
 
   constructor(private elementRef: ElementRef) { }
 
+  /*
   ngOnInit(): void {
     this.initialTimeDifference = this.timeDifference;
+    this.timeConst = this.timeConst;
   }
+  */
 
   get progressPercentage(): number {
-    return ((this.initialTimeDifference - this.timeDifference) / this.initialTimeDifference) * 100;
+    return ((this.timeConst - this.timeDifference) / this.timeConst) * 100;
   }
 
   // ngAfterViewInit(): void {

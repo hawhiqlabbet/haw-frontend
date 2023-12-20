@@ -9,6 +9,8 @@ interface GameData {
   country: string
   endTime: number
   endVoteTime: number
+  endTimeConst: number
+  endVoteTimeConst: number
   foundSpy: boolean
   spyName: string
   votingObject: any[]
@@ -26,6 +28,8 @@ export class SpyqGameComponent {
     country: '',
     endTime: 0,
     endVoteTime: 0,
+    endTimeConst: 0,
+    endVoteTimeConst: 0,
     foundSpy: false,
     spyName: '',
     votingObject: []

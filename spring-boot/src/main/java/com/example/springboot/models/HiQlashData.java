@@ -2,6 +2,7 @@ package com.example.springboot.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.util.*;
 
@@ -15,6 +16,7 @@ public class HiQlashData implements LobbyData{
     int numPlayers;
     int numRounds;
     long endTime;
+    long endTimeConst;
     long endVoteTime;
     long endVoteTimeConst;
     List<PlayerPrompts> promptsForPlayers;
@@ -25,7 +27,10 @@ public class HiQlashData implements LobbyData{
     List<PlayerScores> playerScores;
     List<String> usedPrompts;
 
-    public HiQlashData(int numPlayers, List<Player> players, long endTime, long endVoteTime) {
+    public List<SpyQData.VotingObject> votingObjectList;
+    public List<SpyQData.HasVoted> hasVotedList;
+
+    public HiQlashData(int numPlayers, List<Player> players, List<SpyQData.VotingObject> votingObject, List<SpyQData.HasVoted> hasVoted, long endTime, long endVoteTime) {
         Collections.shuffle(this.prompts);
         Collections.shuffle(players);
 
@@ -34,12 +39,16 @@ public class HiQlashData implements LobbyData{
         this.numPlayers       = numPlayers;
         this.numRounds        = numPlayers;
         this.endTime          = endTime;
+        this.endTimeConst     = endTime;
         this.endVoteTime      = endVoteTime;
         this.endVoteTimeConst = endVoteTime;
 
         this.promptsForPlayers = new ArrayList<PlayerPrompts>();
         this.playerScores      = new ArrayList<PlayerScores>();
         this.usedPrompts       = new ArrayList<String>();
+
+        this.votingObjectList = votingObject;
+        this.hasVotedList     = hasVoted;
 
         for(int i = 0; i < numPlayers; ++i) {
             String playerName = players.get(i).getUsername();
@@ -101,6 +110,18 @@ public class HiQlashData implements LobbyData{
         public StartGameMessage() {
             super();
             this.prompts = new ArrayList<String>();
+        }
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class GameDataMessage extends com.example.springboot.models.GameDataMessage {
+        List<SpyQData.VotingObject> votingObject;
+        List<String> prompts;
+        public GameDataMessage(long endTime, long endTimeConst, long endVoteTime, long endVoteTimeConst, String gameChoice, List<SpyQData.VotingObject> votingObject, List<String> prompts){
+            super(endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice);
+            this.votingObject = votingObject;
+            this.prompts = prompts;
         }
     }
 

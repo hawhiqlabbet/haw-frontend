@@ -208,16 +208,21 @@ export class RoomPageComponent {
             }).filter((item) => !(new Set(players).has(item.username)));
 
             if (gameData) {
+              console.log(gameData);
               this.gameStarted = true
+              this.gameChoice = gameData.gameChoice
               this.gameData = gameData
               this.animationDone = true
 
               // If voting is done, then this will set the votes
+              /*
               if (gameData.votingObject.length !== 0) {
                 this.votingDone = true
                 this.votingData = gameData.votingObject
               }
+              */
             }
+            
             setTimeout(() => {
               this.gotData = true;
               this.changeDetectorRef.detectChanges();

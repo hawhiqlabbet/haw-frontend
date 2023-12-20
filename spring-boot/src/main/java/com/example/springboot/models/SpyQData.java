@@ -17,7 +17,9 @@ public class SpyQData implements LobbyData {
     public List<HasVoted> hasVotedList;
     public boolean foundSpy;
     public long endTime;
+    public long endTimeConst;
     public long endVoteTime;
+    public long endVoteTimeConst;
 
     public SpyQData(String spyName, String country, List<VotingObject> votingObject, List<HasVoted> hasVoted,
                     boolean foundSpy, long endTime, long endVoteTime){
@@ -27,7 +29,9 @@ public class SpyQData implements LobbyData {
         this.hasVotedList       = hasVoted;
         this.foundSpy           = foundSpy;
         this.endTime            = endTime;
+        this.endTimeConst       = endTime;
         this.endVoteTime        = endVoteTime;
+        this.endVoteTimeConst   = endVoteTime;
     }
 
     public static class VotingObject {
@@ -62,19 +66,17 @@ public class SpyQData implements LobbyData {
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @Data
-    public static class GameDataMessage {
+    public static class GameDataMessage extends com.example.springboot.models.GameDataMessage {
         private String country;
-        private long endTime;
-        private long endVoteTime;
         private boolean foundSpy;
         private String spyName;
         List<SpyQData.VotingObject> votingObject;
 
-        public GameDataMessage(String country, long endTime, long endVoteTime, boolean foundSpy, String spyName, List<SpyQData.VotingObject> votingObject){
+        public GameDataMessage(String country, long endTime, long endTimeConst, long endVoteTime, long endVoteTimeConst, String gameChoice, boolean foundSpy, String spyName, List<SpyQData.VotingObject> votingObject){
+            super(endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice);
             this.country = country;
-            this.endTime = endTime;
-            this.endVoteTime = endVoteTime;
             this.foundSpy = foundSpy;
             this.spyName = spyName;
             this.votingObject = votingObject;

@@ -273,6 +273,15 @@ public class Controller {
         else if("HiQlash".equals(lobby.getGameChoice())){
             long milliseconds = Long.parseLong(request.get("gameTimeInMS"));
 
+            SpyQData.VotingObject[] votingObject = lobby.getPlayers().stream()
+                    .map(player -> new SpyQData.VotingObject(player.getUsername(), 0))
+                    .toArray(SpyQData.VotingObject[]::new);
+
+            SpyQData.HasVoted[] hasVoted = lobby.getPlayers().stream()
+                    .map(player -> new SpyQData.HasVoted(player.getUsername(),false))
+                    .toArray(SpyQData.HasVoted[]::new);
+            boolean foundSpy = false;
+
             // Set game end time (2 minutes by default)
             long currentTime = System.currentTimeMillis();
             long endTime = System.currentTimeMillis() + milliseconds - currentTime;
@@ -280,7 +289,7 @@ public class Controller {
             // Set vote end time, equal to endTime in HiQlash
             long endVoteTime = endTime;
 
-            HiQlashData lobbyData = new HiQlashData(lobby.getPlayers().size(), lobby.getPlayers(), endTime, endVoteTime);
+            HiQlashData lobbyData = new HiQlashData(lobby.getPlayers().size(), lobby.getPlayers(), Arrays.asList(votingObject), Arrays.asList(hasVoted), endTime, endVoteTime);
             lobbyService.addLobbyData(gameId, lobbyData);
 
             System.out.println(lobbyData);
@@ -340,14 +349,16 @@ public class Controller {
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess", "data", lobby));
             }
 
-            String country      = spyQData.getCountry();
-            long endTime        = spyQData.getEndTime();
-            long endVoteTime    = spyQData.getEndVoteTime();
+            String country        = spyQData.getCountry();
+            long endTime          = spyQData.getEndTime();
+            long endVoteTime      = spyQData.getEndVoteTime();
+            long endTimeConst     = spyQData.getEndTimeConst();
+            long endVoteTimeConst = spyQData.getEndVoteTimeConst();
             List<SpyQData.VotingObject> votingObject = spyQData.getVotingObjectList();
             boolean foundSpy    = spyQData.foundSpy;
             String spy          = spyQData.getSpyName();
 
-            SpyQData.GameDataMessage gameDataMessage = new SpyQData.GameDataMessage(country, endTime, endVoteTime, false, "", new ArrayList<SpyQData.VotingObject>() );
+            SpyQData.GameDataMessage gameDataMessage = new SpyQData.GameDataMessage(country, endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice,false, "", new ArrayList<SpyQData.VotingObject>() );
 
             if(spyQData.everyoneHasVoted()) {
                 spyQData.sortVotingObjectsByVotes();
@@ -375,8 +386,12 @@ public class Controller {
             long endTime = hiQlashData.getEndTime();
             long endVoteTime = hiQlashData.getEndVoteTime();
 
+            long endTimeConst     = hiQlashData.getEndTimeConst();
+            long endVoteTimeConst = hiQlashData.getEndVoteTimeConst();
 
-            HiQlashData.StartGameMessage gameData = new HiQlashData.StartGameMessage(username, gameId, endTime, endVoteTime, hiQlashData.getPlayerPrompts(username));
+            List<SpyQData.VotingObject> votingObject = hiQlashData.getVotingObjectList();
+
+            HiQlashData.GameDataMessage gameData = new HiQlashData.GameDataMessage(endTime, endTimeConst, endVoteTime, endTimeConst, gameChoice, votingObject, hiQlashData.getPlayerPrompts(username));
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameData));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));

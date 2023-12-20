@@ -27,7 +27,7 @@
                     </div> 
                 </div>   
             </div>  
-            <app-progress-bar [timeDifference]="timeDifference"></app-progress-bar>
+            <app-progress-bar [timeConst]="gameData.endTimeConst" [timeDifference]="timeDifference"></app-progress-bar>
 
         </ng-container>
         
@@ -50,7 +50,7 @@
                             </ng-template>   
                     
                             <h3 class="time-text text-center">{{timeDifferenceVote}}</h3>
-                            <app-progress-bar [timeDifference]="timeDifferenceVote"></app-progress-bar>
+                            <app-progress-bar [timeConst]="gameData.endVoteTimeConst - gameData.endTimeConst" [timeDifference]="timeDifferenceVote "></app-progress-bar>
 
                         </div>   
                 </div>

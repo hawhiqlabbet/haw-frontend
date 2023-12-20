@@ -3,6 +3,17 @@ import { GameService } from '../services/game.service';
 import { UserService } from '../services/user.service';
 import { Subscription } from 'rxjs';
 
+interface GameData {
+  endTime: number
+  endVoteTime: number
+  endTimeConst: number
+  endVoteTimeConst: number
+  hasAnswered: boolean
+  hasAllAnswered: boolean
+  prompts: any[]
+  votingObject: any[]
+}
+
 @Component({
   selector: 'app-hiqlash-game',
   templateUrl: './hiqlash-game.component.html',
@@ -21,17 +32,17 @@ export class HiqlashGameComponent implements OnInit {
   @Input() timeDifference: number = 0
   @Input() gameId: string = ''
   @Input() username: string = ''
-  @Input() gameData: any
-  // gameData: any = {
-  //   "username": "hello",
-  //   "gameId": "XKKM",
-  //   "endTime": 29993,
-  //   "endVoteTime": 30000,
-  //   "prompts": [
-  //     "Do you like Jazz8?",
-  //     "Do you like Jazzis?"
-  //   ]
-  // }
+  @Input() gameData: GameData = {
+    endTime: 0,
+    endVoteTime: 0,
+    endTimeConst: 0,
+    endVoteTimeConst: 0,
+    hasAnswered: false,
+    hasAllAnswered: false,
+    prompts: [],
+    votingObject: []
+  };
+
   promptAnswer1: string = ''
   promptAnswer2: string = ''
 
@@ -42,7 +53,9 @@ export class HiqlashGameComponent implements OnInit {
   ngOnInit() {
     console.log(this.gameData.endTimeConst)
     console.log(this.gameData.prompts[0])
-
+    
+    this.myAnswersDone  = this.gameData.hasAnswered;
+    this.allAnswersDone = this.gameData.hasAllAnswered;
 
 
     this.subscriptions.push(

@@ -30,6 +30,9 @@ public class HiQlashData implements LobbyData{
     public List<SpyQData.VotingObject> votingObjectList;
     public List<SpyQData.HasVoted> hasVotedList;
 
+    boolean hasAnswered;
+    boolean hasAllAnswered;
+
     public HiQlashData(int numPlayers, List<Player> players, List<SpyQData.VotingObject> votingObject, List<SpyQData.HasVoted> hasVoted, long endTime, long endVoteTime) {
         Collections.shuffle(this.prompts);
         Collections.shuffle(players);
@@ -50,6 +53,9 @@ public class HiQlashData implements LobbyData{
         this.votingObjectList = votingObject;
         this.hasVotedList     = hasVoted;
 
+        this.hasAnswered = false;
+        this.hasAllAnswered = false;
+
         for(int i = 0; i < numPlayers; ++i) {
             String playerName = players.get(i).getUsername();
             PlayerPrompts playerPrompts = new PlayerPrompts(playerName);
@@ -58,7 +64,7 @@ public class HiQlashData implements LobbyData{
             this.playerScores.add(new PlayerScores(playerName, 0));
 
             // Determine prompts for each player
-            for(int j = 0; j < 2; ++j) {
+            for(int j = 0; j < min(2, this.numPlayers); ++j) {
                 int promptIndex = i + j;
                 if(i == (numPlayers - 1) && j == 1) {
                     promptIndex = 0;
@@ -118,10 +124,14 @@ public class HiQlashData implements LobbyData{
     public static class GameDataMessage extends com.example.springboot.models.GameDataMessage {
         List<SpyQData.VotingObject> votingObject;
         List<String> prompts;
+        boolean hasAnswered;
+        boolean hasAllAnswered;
         public GameDataMessage(long endTime, long endTimeConst, long endVoteTime, long endVoteTimeConst, String gameChoice, List<SpyQData.VotingObject> votingObject, List<String> prompts){
             super(endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice);
             this.votingObject = votingObject;
             this.prompts = prompts;
+            this.hasAnswered = false;
+            this.hasAllAnswered = false;
         }
     }
 
@@ -169,8 +179,8 @@ public class HiQlashData implements LobbyData{
 
     public boolean hasAllPlayersAnswered(){
         for(PlayerPrompts p : this.promptsForPlayers) {
-            for(String prompt : p.getPromptAnswers()){
-                if(prompt.isEmpty())
+            for(String promptAnswer : p.getPromptAnswers()){
+                if(promptAnswer.isEmpty())
                     return false;
             }
         }

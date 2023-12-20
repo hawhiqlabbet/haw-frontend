@@ -46,7 +46,7 @@
                             </ng-container>
                             
                             <ng-template #waitForOtherVotes>  
-                                <h3 class="time-text text-center">Hämta en liten NOCCO medans de andra röstar klart...</h3>
+                                <div class="white-heading m-5">Hämta en liten NOCCO medans de andra röstar klart ...</div>
                             </ng-template>   
                     
                             <h3 class="time-text text-center">{{timeDifferenceVote}}</h3>
@@ -62,7 +62,7 @@
                         [votingData]="votingData" 
                         [gameData]="gameData"
                         [subscriptions]="subscriptions" 
-                        [gameId]="gameId" ></app-result-container>
+                        [gameId]="gameId"></app-result-container>
                 </div>  
             </ng-template>
         </ng-template> 

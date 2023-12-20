@@ -18,16 +18,29 @@ export class HiqlashGameComponent implements OnInit {
   myAnswersDone: boolean  = false;
   allAnswersDone: boolean = false;
 
-  answer1: string = ''
-  answer2: string = ''
-
   @Input() timeDifference: number = 0
   @Input() gameId: string = ''
   @Input() username: string = ''
   @Input() gameData: any
+  // gameData: any = {
+  //   "username": "hello",
+  //   "gameId": "XKKM",
+  //   "endTime": 29993,
+  //   "endVoteTime": 30000,
+  //   "prompts": [
+  //     "Do you like Jazz8?",
+  //     "Do you like Jazzis?"
+  //   ]
+  // }
+  promptAnswer1: string = ''
+  promptAnswer2: string = ''
+
+  vote(choice: string): void {
+    console.log("pressed ", choice)
+  }
 
   ngOnInit() {
-    console.log(this.gameData)
+    console.log(this.gameData.endTimeConst)
     console.log(this.gameData.prompts[0])
 
 
@@ -41,9 +54,9 @@ export class HiqlashGameComponent implements OnInit {
 
   submitAnswers() {
     this.myAnswersDone = true;
-    console.log("wewo")
+
     this.subscriptions.push(
-      this.userService.hiQlashAnswer(this.gameId, this.username, this.answer1, this.answer2).subscribe((data: any) => {
+      this.userService.hiQlashAnswer(this.gameId, this.username, this.promptAnswer1, this.promptAnswer2).subscribe((data: any) => {
         const { message } = data
         if (message === 'HiQlashAnswerSuccessDone') {
           this.gameService.reportHiQlashAnswersDone(this.gameId)

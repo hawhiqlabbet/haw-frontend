@@ -142,6 +142,7 @@ export class SpyqGameComponent {
   // spyName: string = 'emelie'
 
   constructor(private gameService: GameService, private userService: UserService) {
+
     this.subscriptions.push(
       this.gameService.votingDoneEvent().subscribe((data: any) => {
         const { votingData, foundSpy, spyName } = data
@@ -160,6 +161,8 @@ export class SpyqGameComponent {
     )
 
     this.gameService.newRoundEvent()
+    console.log("GameData: ", this.gameData)
+
 
   }
 

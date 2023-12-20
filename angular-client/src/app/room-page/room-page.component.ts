@@ -186,6 +186,9 @@ export class RoomPageComponent {
       this.userService.getGameData(gameId, this.username).subscribe({
         next: (response) => {
           const { message, data, gameData } = response
+
+          console.log("MEssage: ", message, " Data: ", gameData)
+
           if (message === 'getGameDataSuccess' && data) {
             const { players } = data;
 
@@ -222,7 +225,7 @@ export class RoomPageComponent {
               }
               */
             }
-            
+
             setTimeout(() => {
               this.gotData = true;
               this.changeDetectorRef.detectChanges();

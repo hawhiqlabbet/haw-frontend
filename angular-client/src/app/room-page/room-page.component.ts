@@ -110,7 +110,7 @@ export class RoomPageComponent {
 
         if (this.timeDifferenceVote < 0) {
           this.votingDone = true
-          if (this.isHost)
+          if (this.isHost && (this.gameChoice === "SpyQ"))
             this.gameService.reportSpyQVotingDone(this.gameId)
         }
       })

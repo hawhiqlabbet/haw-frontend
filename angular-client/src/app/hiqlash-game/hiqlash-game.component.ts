@@ -47,7 +47,7 @@ export class HiqlashGameComponent implements OnInit {
   promptAnswer1: string = ''
   promptAnswer2: string = ''
 
-  showPromptBlock: boolean = this.timeDifference > 0 || !this.allAnswersDone
+  showPromptBlock: boolean = true
 
 
   vote(choice: string): void {
@@ -57,13 +57,18 @@ export class HiqlashGameComponent implements OnInit {
   ngOnInit() {
     console.log(this.gameData.endTimeConst)
     console.log(this.gameData.prompts[0])
-    
-    this.myAnswersDone  = this.gameData.hasAnswered;
+
+
+    this.showPromptBlock = this.timeDifference > 0
+
+    this.myAnswersDone = this.gameData.hasAnswered;
     this.allAnswersDone = this.gameData.hasAllAnswered;
 
     this.subscriptions.push(
       this.gameService.hiQlashAnswersDoneEvent().subscribe((data: any) => {
-        this.allAnswersDone = true;
+        this.showPromptBlock = false;
+        console.log('all answering done')
+
       })
     )
   }

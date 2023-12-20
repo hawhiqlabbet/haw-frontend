@@ -34,25 +34,26 @@
         <ng-template #votingBlock>
             <ng-container *ngIf="!votingDone; else votingResultBlock">
                 <div class="flex-column">
-                    <div class="white-heading text-center">Vem är SpyQ?</div>
+                    <ng-container *ngIf="!userHasVoted; else waitForOtherVotes">
 
+                        <div class="white-heading text-center">Vem är SpyQ?</div>
                         <div class="voting-box">
-                            <ng-container *ngIf="!userHasVoted; else waitForOtherVotes">
-                                <ng-container *ngFor="let user of users; let i = index">
-                                    <ng-container *ngIf="user.username !== username">   
-                                        <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
-                                    </ng-container>
+                            <ng-container *ngFor="let user of users; let i = index">
+                                <ng-container *ngIf="user.username !== username">   
+                                    <button (click)="vote(user.username)" type="button" class="btn btn-primary">{{user.username}}</button>
                                 </ng-container>
                             </ng-container>
+                        </div>
+                    </ng-container>
                             
-                            <ng-template #waitForOtherVotes>  
-                                <div class="white-heading m-5">Hämta en liten NOCCO medans de andra röstar klart ...</div>
-                            </ng-template>   
+                    <ng-template #waitForOtherVotes>  
+                        <div class="voting-box">
+                            <div class="white-heading m-5">Hämta en liten NOCCO medans de andra röstar klart ...</div>
+                        </div>
+                    </ng-template>   
                     
-                            <h3 class="time-text text-center">{{timeDifferenceVote}}</h3>
-                            <app-progress-bar [timeConst]="gameData.endVoteTimeConst - gameData.endTimeConst" [timeDifference]="timeDifferenceVote "></app-progress-bar>
+                    <app-progress-bar [timeConst]="gameData.endVoteTimeConst - gameData.endTimeConst" [timeDifference]="timeDifferenceVote "></app-progress-bar>
 
-                        </div>   
                 </div>
             </ng-container>
 

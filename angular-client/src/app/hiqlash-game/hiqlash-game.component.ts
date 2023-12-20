@@ -26,8 +26,9 @@ export class HiqlashGameComponent implements OnInit {
 
   subscriptions: Subscription[] = []
 
-  myAnswersDone: boolean  = false;
+  myAnswersDone: boolean = false;
   allAnswersDone: boolean = false;
+
 
   @Input() timeDifference: number = 0
   @Input() gameId: string = ''
@@ -46,6 +47,9 @@ export class HiqlashGameComponent implements OnInit {
   promptAnswer1: string = ''
   promptAnswer2: string = ''
 
+  showPromptBlock: boolean = this.timeDifference > 0 || !this.allAnswersDone
+
+
   vote(choice: string): void {
     console.log("pressed ", choice)
   }
@@ -56,7 +60,6 @@ export class HiqlashGameComponent implements OnInit {
     
     this.myAnswersDone  = this.gameData.hasAnswered;
     this.allAnswersDone = this.gameData.hasAllAnswered;
-
 
     this.subscriptions.push(
       this.gameService.hiQlashAnswersDoneEvent().subscribe((data: any) => {

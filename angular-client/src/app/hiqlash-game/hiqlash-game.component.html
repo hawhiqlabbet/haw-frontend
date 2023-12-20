@@ -1,5 +1,5 @@
 <div class="d-flex flex-column align-items-center justify-content-center vh-100 vv-100 linear-background">
-    <ng-container *ngIf="timeDifference>0; else votingBlock">
+    <ng-container *ngIf="showPromptBlock; else votingBlock">
 
         <ng-container *ngIf="!myAnswersDone; else waitingBlock">
             <div class="prompts-box">

@@ -156,4 +156,83 @@ public class HiQlashData implements LobbyData{
             }
         }
     }
+
+    public boolean hasPlayedAnswered(String player) {
+        for (PlayerPrompts p : promptsForPlayers) {
+            if (p.getPlayer().equals(player)) {
+                return !p.getPromptAnswers().get(0).isEmpty() && !p.getPromptAnswers().get(1).isEmpty();
+            }
+        }
+        System.err.println("Player " + player + " does not exist");
+        return false;
+    }
+
+    public boolean hasAllPlayersAnswered(){
+        for(PlayerPrompts p : this.promptsForPlayers) {
+            for(String prompt : p.getPromptAnswers()){
+                if(prompt.isEmpty())
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean hasPlayerVoted(String player){
+        for(SpyQData.HasVoted obj : hasVotedList) {
+            if(obj.player.equals(player)) {
+                return obj.hasVoted;
+            }
+        }
+        return false;
+    }
+
+    public void setVoted(String player){
+        for(SpyQData.HasVoted obj : hasVotedList) {
+            if(obj.player.equals(player)) {
+                obj.hasVoted = true;
+                return;
+            }
+        }
+    }
+
+    public void incrementVotes(String player) {
+        for(SpyQData.VotingObject obj : votingObjectList) {
+            if(obj.player.equals(player)) {
+                obj.votes += 1;
+                return;
+            }
+        }
+    }
+
+    public boolean everyoneHasVoted(){
+        for (SpyQData.HasVoted obj : hasVotedList) {
+            if (!obj.hasVoted) {
+                return false; // If any player hasn't voted, return false
+            }
+        }
+        return true; // If all players have voted, return true
+    }
+
+    public String getPlayerMostVotes() {
+        int maxVotes = Integer.MIN_VALUE;
+        String mostVotes = "";
+
+        for (SpyQData.VotingObject obj : votingObjectList) {
+            if (obj.votes > maxVotes) {
+                maxVotes = obj.votes;
+                mostVotes = obj.player;
+            }
+        }
+        return mostVotes;
+    }
+
+    public void sortVotingObjectsByVotes() {
+        votingObjectList.sort(new Comparator<SpyQData.VotingObject>() {
+            @Override
+            public int compare(SpyQData.VotingObject vo1, SpyQData.VotingObject vo2) {
+                // Compare based on the number of votes in descending order
+                return vo2.votes - vo1.votes;
+            }
+        });
+    }
 }

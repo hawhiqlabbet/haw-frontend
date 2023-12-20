@@ -96,4 +96,8 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/api/game/spyQVote?gameId=${gameId}`, { username: username, votedFor: votedFor })
   }
 
+  hiQlashAnswer(gameId: string, username: string, answer1: string, answer2: string) {
+    return this.http.post(`${this.apiUrl}/api/game/hiQlashAnswer?gameId=${gameId}`, { username: username, promptAnswer1: answer1, promptAnswer2: answer2 })
+  }
+
 }

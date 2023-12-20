@@ -73,6 +73,7 @@ public class SocketModule {
         server.addEventListener("startGame", SocketRecieve.class, handleStartGame());
         server.addEventListener("joinGame", SocketRecieve.class, handleJoinGame());
         server.addEventListener("reportVotingDone", SocketRecieve.class, handleVotingDone());
+        server.addEventListener("reportHiQlashAnswersDone", SocketRecieve.class, handleHiQlashAnswersDone());
     }
 
     @Async
@@ -175,6 +176,21 @@ public class SocketModule {
         console.log(`Voting done for lobby ${gameId}`)
         io.to(gameId).emit('votingDone', { gameId: gameId, votingData: votingData, foundSpy: foundSpy, spyName: spyName });
          */
+        };
+    }
+
+    private DataListener<SocketRecieve> handleHiQlashAnswersDone() {
+        return (senderClient, data, ackSender) -> {
+            String gameId = data.getGameId();
+            LobbyData id = lobbyService.getLobbyData(gameId);
+
+            if(id != null) {
+                HiQlashData lobbyData = (HiQlashData) lobbyService.getLobbyData(gameId);
+                List<SpyQData.VotingObject> votingData = lobbyData.getVotingObjectList();
+
+                Collection<SocketIOClient> clients = server.getRoomOperations(gameId).getClients();
+                socketService.sendMessageCollection("HiQlashAnswersDone", clients, Map.of("gameId", gameId));
+            }
         };
     }
 

@@ -89,6 +89,10 @@ export class GameService {
     this.socket.emit('reportVotingDone', { gameId })
   }
 
+  reportHiQlashAnswersDone(gameId: string) {
+    this.socket.emit('reportHiQlashAnswersDone', {gameId})
+  }
+
   newRoundEvent(): Observable<any> {
     return new Observable((observer) => {
 
@@ -150,6 +154,15 @@ export class GameService {
       this.socket.on('votingDone', (data: any) => {
         const { votingData, foundSpy, spyName } = data
         observer.next({ votingData, foundSpy, spyName })
+      })
+    })
+  }
+
+  hiQlashAnswersDoneEvent() {
+    return new Observable((observer) => {
+      this.socket.on('HiQlashAnswersDone', (data: any) => {
+        const{ gameId } = data
+        observer.next({ gameId })
       })
     })
   }

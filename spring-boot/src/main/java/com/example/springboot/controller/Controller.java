@@ -394,7 +394,7 @@ public class Controller {
 
             List<SpyQData.VotingObject> votingObject = hiQlashData.getVotingObjectList();
 
-            HiQlashData.GameDataMessage gameData = new HiQlashData.GameDataMessage(endTime, endTimeConst, endVoteTime, endTimeConst, gameChoice, votingObject, hiQlashData.getPlayerPrompts(username));
+            HiQlashData.GameDataMessage gameData = new HiQlashData.GameDataMessage(endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice, votingObject, hiQlashData.getPlayerPrompts(username));
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameData));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));
@@ -404,6 +404,35 @@ public class Controller {
     public ResponseEntity<Map<String, Object>> serverStatusHandle() {
         ConcurrentHashMap<String, GameLobby> lobbies = lobbyService.getActiveLobbies();
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("active lobbies", lobbies));
+    }
+
+    @PostMapping("/hiQlashAnswer")
+    public ResponseEntity<Map<String, Object>> hiQlashAnswer(@RequestBody Map<String, String> request, @RequestParam String gameId) {
+        String username = request.get("username");
+        String promptAnswer1 = request.get("promptAnswer1");
+        String promptAnswer2 = request.get("promptAnswer2");
+        List<String> answers = new ArrayList<String>(Arrays.asList(promptAnswer1, promptAnswer2));
+
+        if (!lobbyService.lobbyExists(gameId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Game with ID: " + gameId + " not found"));
+        }
+
+        GameLobby lobby = lobbyService.getGameLobby(gameId);
+        if (lobby.getGameChoice().equals("HiQlash")) {
+            HiQlashData lobbyData = (HiQlashData) lobbyService.getLobbyData(gameId);
+            if(lobbyData.hasPlayedAnswered((username))) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Player: " + username + " already answered"));
+            }
+
+            for(int i = 0; i < lobbyData.getPlayerPrompts(username).size(); ++i) {
+                lobbyData.setAnswer(username, lobbyData.getPlayerPrompts(username).get(i), answers.get(i));
+            }
+
+            if(lobbyData.hasAllPlayersAnswered()){
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "HiQlashAnswerSuccessDone"));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "HiQlashSuccess"));
     }
     // Other methods and classes as needed
 }

@@ -440,6 +440,32 @@ public class Controller {
         }
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "HiQlashSuccess"));
     }
+
+    @PostMapping("/hiQlashVote")
+    public ResponseEntity<Map<String, Object>> hiQlashVote(@RequestBody Map<String, String> request, @RequestParam String gameId) {
+        String username = request.get("username");
+        String votedFor = request.get("votedFor");
+
+        if (!lobbyService.lobbyExists(gameId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Game with ID: " + gameId + " not found"));
+        }
+
+        GameLobby lobby = lobbyService.getGameLobby(gameId);
+        if (lobby.getGameChoice().equals("HiQlash")) {
+            HiQlashData lobbyData = (HiQlashData) lobbyService.getLobbyData(gameId);
+            if(lobbyData.hasPlayerVoted((username))) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Player: " + username + " already voted"));
+            }
+
+            lobbyData.setVoted(username);
+            lobbyData.incrementVotes(votedFor);
+
+            if(lobbyData.everyoneHasVoted()){
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "hiQlashVoteSuccessDone"));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "hiQlashVoteSuccess"));
+    }
     // Other methods and classes as needed
 }
 

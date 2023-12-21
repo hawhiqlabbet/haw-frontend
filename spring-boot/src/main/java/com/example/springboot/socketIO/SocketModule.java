@@ -116,24 +116,30 @@ public class SocketModule {
                         String prompt = lobbyData.getUsedPrompts().get(0);
                         lobbyData.getUsedPrompts().remove(0);
                         List<String> players = lobbyData.getPlayersHavingPrompt(prompt);
-                        socketService.sendMessageCollection("promptView", clients, Map.of("prompt", prompt, "players", players));
+                        List<String> promptAnswers = new ArrayList<String>(Arrays.asList(lobbyData.getAnswer(players.get(0), prompt), lobbyData.getAnswer(players.get(1), prompt)));
+                        socketService.sendMessageCollection("promptView", clients, Map.of("prompt", prompt, "players", players, "promptAnswers", promptAnswers));
                     }
                 }
                 // Else, for n == number of players, display prompt => display answers => allow voting for endVoteTime milliseconds
                 else {
                     lobbyData.setEndVoteTime(lobbyData.getEndVoteTime() - 1);
 
-                    if(lobbyData.getEndVoteTime() <= 0) {
+                    if(lobbyData.getEndVoteTime() <= -10) { // Update this value if less or more of viewing time
                         lobbyData.setCurrRound(lobbyData.getCurrRound() + 1);
 
                         if(lobbyData.getCurrRound() < lobbyData.getNumRounds()) {
+
+                            // Reset timer
                             lobbyData.setEndVoteTime(lobbyData.getEndVoteTimeConst());
+
+                            //TODO: Fix voting reset and add scores
 
                             // Send new prompt data
                             String prompt = lobbyData.getUsedPrompts().get(0);
                             lobbyData.getUsedPrompts().remove(0);
                             List<String> players = lobbyData.getPlayersHavingPrompt(prompt);
-                            socketService.sendMessageCollection("promptView", clients, Map.of("prompt", prompt, "players", players));
+                            List<String> promptAnswers = new ArrayList<String>(Arrays.asList(lobbyData.getAnswer(players.get(0), prompt), lobbyData.getAnswer(players.get(1), prompt)));
+                            socketService.sendMessageCollection("hiQlashPromptUpdate", clients, Map.of("prompt", prompt, "players", players, "promptAnswers", promptAnswers));
                         }
                         //TODO: Display voting results for n seconds or until everyone has voted
                         //TODO: Add voting stuff to HiQlash gameData
@@ -167,16 +173,6 @@ public class SocketModule {
                 Collection<SocketIOClient> clients = server.getRoomOperations(gameId).getClients();
                 socketService.sendMessageCollection("votingDone", clients, Map.of("gameId", gameId, "votingData", votingData, "foundSpy", foundSpy, "spyName", spyName));
             }
-        /*
-         const { gameId } = data;
-        const votingData = lobbyData.get(gameId).gameData.votingObject
-        const foundSpy   = lobbyData.get(gameId).gameData.foundSpy
-        const spyName    = lobbyData.get(gameId).gameData.spyName
-        console.log(spyName)
-
-        console.log(`Voting done for lobby ${gameId}`)
-        io.to(gameId).emit('votingDone', { gameId: gameId, votingData: votingData, foundSpy: foundSpy, spyName: spyName });
-         */
         };
     }
 
@@ -191,6 +187,21 @@ public class SocketModule {
 
                 Collection<SocketIOClient> clients = server.getRoomOperations(gameId).getClients();
                 socketService.sendMessageCollection("HiQlashAnswersDone", clients, Map.of("gameId", gameId));
+            }
+        };
+    }
+
+    private DataListener<SocketRecieve> handleHiQlashVotingDone() {
+        return (senderClient, data, ackSender) -> {
+            String gameId = data.getGameId();
+            LobbyData ld = lobbyService.getLobbyData(gameId);
+
+            if(ld != null) {
+                HiQlashData lobbyData = (HiQlashData) lobbyService.getLobbyData(gameId);
+                List<SpyQData.VotingObject> votingData = lobbyData.getVotingObjectList();
+
+                Collection<SocketIOClient> clients = server.getRoomOperations(gameId).getClients();
+                socketService.sendMessageCollection("hiQlashVotingDone", clients, Map.of("gameId", gameId, "votingData", votingData));
             }
         };
     }

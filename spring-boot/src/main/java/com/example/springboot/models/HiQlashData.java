@@ -168,6 +168,20 @@ public class HiQlashData implements LobbyData{
         }
     }
 
+    public String getAnswer(String player, String prompt) {
+        for(PlayerPrompts p : promptsForPlayers) {
+            if(p.getPlayer().equals(player)) {
+                for(int i = 0; i < p.getPrompts().size(); ++i) {
+                    if(p.getPrompts().get(i).equals(prompt)) {
+                        return p.getPromptAnswers().get(i);
+                    }
+                }
+            }
+        }
+        System.err.println("Player " + player + " does not have prompt " + prompt);
+        return "";
+    }
+
     public boolean hasPlayerAnswered(String player) {
         for (PlayerPrompts p : promptsForPlayers) {
             if (p.getPlayer().equals(player)) {

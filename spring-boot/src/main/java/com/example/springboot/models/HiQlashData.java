@@ -30,7 +30,6 @@ public class HiQlashData implements LobbyData{
     public List<SpyQData.VotingObject> votingObjectList;
     public List<SpyQData.HasVoted> hasVotedList;
 
-    boolean hasAnswered;
     boolean hasAllAnswered;
 
     public HiQlashData(int numPlayers, List<Player> players, List<SpyQData.VotingObject> votingObject, List<SpyQData.HasVoted> hasVoted, long endTime, long endVoteTime) {
@@ -53,7 +52,6 @@ public class HiQlashData implements LobbyData{
         this.votingObjectList = votingObject;
         this.hasVotedList     = hasVoted;
 
-        this.hasAnswered = false;
         this.hasAllAnswered = false;
 
         for(int i = 0; i < numPlayers; ++i) {
@@ -95,11 +93,13 @@ public class HiQlashData implements LobbyData{
         List<String> promptAnswers;
         List<String> prompts;
         String player;
+        boolean hasAnswered;
 
         public PlayerPrompts(String player){
             this.promptAnswers = new ArrayList<String>();
             this.prompts       = new ArrayList<String>();
             this.player        = player;
+            this.hasAnswered   = false;
         }
     }
 
@@ -163,14 +163,15 @@ public class HiQlashData implements LobbyData{
         for(PlayerPrompts p : promptsForPlayers) {
             if(p.getPlayer().equals(player)) {
                 p.promptAnswers.set(p.getPrompts().indexOf(prompt), answer);
+                p.setHasAnswered(true);
             }
         }
     }
 
-    public boolean hasPlayedAnswered(String player) {
+    public boolean hasPlayerAnswered(String player) {
         for (PlayerPrompts p : promptsForPlayers) {
             if (p.getPlayer().equals(player)) {
-                return !p.getPromptAnswers().get(0).isEmpty() && !p.getPromptAnswers().get(1).isEmpty();
+                return p.isHasAnswered();
             }
         }
         System.err.println("Player " + player + " does not exist");

@@ -396,7 +396,7 @@ public class Controller {
 
             HiQlashData.GameDataMessage gameData = new HiQlashData.GameDataMessage(endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice, votingObject, hiQlashData.getPlayerPrompts(username));
             gameData.setHasAllAnswered(hiQlashData.isHasAllAnswered());
-            gameData.setHasAnswered(hiQlashData.isHasAnswered());
+            gameData.setHasAnswered(hiQlashData.hasPlayerAnswered(username));
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameData));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));
@@ -422,14 +422,13 @@ public class Controller {
         GameLobby lobby = lobbyService.getGameLobby(gameId);
         if (lobby.getGameChoice().equals("HiQlash")) {
             HiQlashData lobbyData = (HiQlashData) lobbyService.getLobbyData(gameId);
-            if(lobbyData.hasPlayedAnswered((username))) {
+            if(lobbyData.hasPlayerAnswered((username))) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Player: " + username + " already answered"));
             }
 
             for(int i = 0; i < lobbyData.getPlayerPrompts(username).size(); ++i) {
                 lobbyData.setAnswer(username, lobbyData.getPlayerPrompts(username).get(i), answers.get(i));
             }
-            lobbyData.setHasAnswered(true);
 
             if(lobbyData.hasAllPlayersAnswered()){
                 System.err.println("ALL DONE");

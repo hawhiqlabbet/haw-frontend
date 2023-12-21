@@ -206,7 +206,7 @@ body {
   font-family: 'Unlock', sans-serif;
   font-size: 42px;
   margin-bottom: 30px;
-  background: linear-gradient(to right, $secondary, $primary);
+  background: linear-gradient(to right, rgba($primary, 0.5), $primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

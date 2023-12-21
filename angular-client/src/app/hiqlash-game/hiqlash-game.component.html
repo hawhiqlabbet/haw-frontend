@@ -34,22 +34,40 @@
         <div class="text-center">
             <div class="white-heading mb-3">PROMPT 1</div>
           </div>
-      
-          <div class="row justify-content-center">
-            <div class="col-auto text-end" style="width: 300px; height: 150px; position: relative; display: inline-block; " class="position-relative">
-                <a (click)="vote('1')" style="cursor: pointer;">
-                    <img src="assets/speech-bubble2.png" alt="Your Image" style="width: 300px; height: 150px;" class="position-relative">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                      <div style="color: black; font-weight: bold;">Your Text Your Text Your Text Your TextYour TextYour TextYour TextYour TextYour TextYour Text Your Text Your Text Your Text Your Text</div>
-                    </div>
-                  </a>                  
-            </div>
-            <div class="col-auto text-start">
-                <a (click)="vote('2')" style="cursor: pointer;">
-                    <img src="assets/speech-bubble-inverted2.png" alt="Your Image" width="300" height="150" class="position-relative">
-                </a>
+
+            <!-- <div class="speech-bubble-container col-auto text-end">
+            <div class="speech-bubble" style="background-image: url('assets/speech-bubble2.png')">
+              <div class="text-overlay">
+                Your dynamic text goes here
+              </div>
             </div>
           </div>
+           -->
+              
+
+           <div class="row ">
+            <div class="text-end" style="width: 300px; height: 150px; position: relative; display: inline-block;">
+                <a (click)="vote('1')" style="cursor: pointer; display: block; position: relative;">
+                    <img src="assets/speech-bubble2.png" alt="Speech Bubble Image" style="width: 300px; height: 150px;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        <div style="color: black; font-weight: bold; position: relative; z-index: 1;">Your Text</div>
+                    </div>
+                </a>
+            </div>
+            </div>
+
+            <div class="row ">
+
+            <div class="col-auto text-start" style="width: 300px; height: 150px; position: relative; display: inline-block;">
+                <a (click)="vote('2')" style="cursor: pointer; display: block; position: relative;">
+                    <img src="assets/speech-bubble-inverted2.png" alt="Speech Bubble Image Inverted" width="300" height="150">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        <div style="color: black; font-weight: bold; position: relative; z-index: 1;">Answer 2</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
         
         <app-progress-bar [timeConst]="gameData.endVoteTimeConst" [timeDifference]="timeDifference"></app-progress-bar>
 

@@ -160,7 +160,7 @@ export class GameService {
 
   hiQlashAnswersDoneEvent() {
     return new Observable((observer) => {
-      this.socket.on('HiQlashAnswersDone', (data: any) => {
+      this.socket.on('hiQlashAnswersDone', (data: any) => {
         const{ gameId } = data
         observer.next({ gameId })
       })
@@ -169,7 +169,7 @@ export class GameService {
 
   hiQlashVotingDoneEvent() {
     return new Observable((observer) => {
-      this.socket.on('HiQlashAnswersDone', (data: any) => {
+      this.socket.on('hiQlashAnswersDone', (data: any) => {
         const { votingData } = data
         observer.next({ votingData })
       })
@@ -178,7 +178,7 @@ export class GameService {
 
   hiQlashPromptUpdateEvent() {
     return new Observable((observer) => {
-      this.socket.on('HiQlashPromptUpdate', (data: any) => {
+      this.socket.on('hiQlashPromptUpdate', (data: any) => {
         const{ prompt, players, promptAnswers } = data
         observer.next({ prompt, players, promptAnswers })
       })

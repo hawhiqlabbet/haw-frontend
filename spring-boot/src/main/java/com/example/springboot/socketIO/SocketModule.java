@@ -111,13 +111,13 @@ public class SocketModule {
 
                     // Send initial prompt data
                     if(lobbyData.getEndTime() <= 0) {
-                        socketService.sendMessageCollection("HiQlashAnswersDone", clients, Map.of("gameId", entry.getKey()));
+                        socketService.sendMessageCollection("hiQlashAnswersDone", clients, Map.of("gameId", entry.getKey()));
                         lobbyData.setAnsweringPrompts(false);
                         String prompt = lobbyData.getUsedPrompts().get(0);
                         lobbyData.getUsedPrompts().remove(0);
                         List<String> players = lobbyData.getPlayersHavingPrompt(prompt);
                         List<String> promptAnswers = new ArrayList<String>(Arrays.asList(lobbyData.getAnswer(players.get(0), prompt), lobbyData.getAnswer(players.get(1), prompt)));
-                        socketService.sendMessageCollection("promptView", clients, Map.of("prompt", prompt, "players", players, "promptAnswers", promptAnswers));
+                        socketService.sendMessageCollection("hiQlashPromptUpdate", clients, Map.of("prompt", prompt, "players", players, "promptAnswers", promptAnswers));
                     }
                 }
                 // Else, for n == number of players, display prompt => display answers => allow voting for endVoteTime milliseconds
@@ -186,7 +186,7 @@ public class SocketModule {
                 List<SpyQData.VotingObject> votingData = lobbyData.getVotingObjectList();
 
                 Collection<SocketIOClient> clients = server.getRoomOperations(gameId).getClients();
-                socketService.sendMessageCollection("HiQlashAnswersDone", clients, Map.of("gameId", gameId));
+                socketService.sendMessageCollection("hiQlashAnswersDone", clients, Map.of("gameId", gameId));
             }
         };
     }

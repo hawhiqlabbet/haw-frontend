@@ -110,7 +110,7 @@ public class SocketModule {
                     lobbyData.setEndTime(lobbyData.getEndTime() - 1);
 
                     // Send initial prompt data
-                    if(lobbyData.getEndTime() <= 0) {
+                    if(lobbyData.getEndTime() <= 0 || lobbyData.hasAllPlayersAnswered()) {
                         socketService.sendMessageCollection("hiQlashAnswersDone", clients, Map.of("gameId", entry.getKey()));
                         lobbyData.setAnsweringPrompts(false);
                         String prompt = lobbyData.getUsedPrompts().get(0);

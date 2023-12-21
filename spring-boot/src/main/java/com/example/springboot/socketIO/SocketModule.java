@@ -117,6 +117,12 @@ public class SocketModule {
                         lobbyData.getUsedPrompts().remove(0);
                         List<String> players = lobbyData.getPlayersHavingPrompt(prompt);
                         List<String> promptAnswers = new ArrayList<String>(Arrays.asList(lobbyData.getAnswer(players.get(0), prompt), lobbyData.getAnswer(players.get(1), prompt)));
+
+                        // Set initial state
+                        lobbyData.setCurrentAnswers(promptAnswers);
+                        lobbyData.setCurrentPlayers(players);
+                        lobbyData.setCurrentPrompt(prompt);
+
                         socketService.sendMessageCollection("hiQlashPromptUpdate", clients, Map.of("prompt", prompt, "players", players, "promptAnswers", promptAnswers));
                     }
                 }
@@ -139,6 +145,12 @@ public class SocketModule {
                             lobbyData.getUsedPrompts().remove(0);
                             List<String> players = lobbyData.getPlayersHavingPrompt(prompt);
                             List<String> promptAnswers = new ArrayList<String>(Arrays.asList(lobbyData.getAnswer(players.get(0), prompt), lobbyData.getAnswer(players.get(1), prompt)));
+
+                            // Set new state
+                            lobbyData.setCurrentAnswers(promptAnswers);
+                            lobbyData.setCurrentPlayers(players);
+                            lobbyData.setCurrentPrompt(prompt);
+
                             socketService.sendMessageCollection("hiQlashPromptUpdate", clients, Map.of("prompt", prompt, "players", players, "promptAnswers", promptAnswers));
                         }
                         //TODO: Display voting results for n seconds or until everyone has voted

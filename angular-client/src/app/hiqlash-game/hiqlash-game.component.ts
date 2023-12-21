@@ -12,6 +12,9 @@ interface GameData {
   hasAllAnswered: boolean
   prompts: any[]
   votingObject: any[]
+  currentPlayers: string[]
+  currentAnswers: string[]
+  currentPrompt: string
 }
 
 @Component({
@@ -41,13 +44,20 @@ export class HiqlashGameComponent implements OnInit {
     hasAnswered: false,
     hasAllAnswered: false,
     prompts: [],
-    votingObject: []
+    votingObject: [],
+    currentPlayers: [],
+    currentAnswers: [],
+    currentPrompt: ""
   };
 
   promptAnswer1: string = ''
   promptAnswer2: string = ''
 
   showPromptBlock: boolean = true
+
+  currentAnswers: string[] = []
+  currentPlayers: string[] = []
+  currentPrompt: string = ''
 
   // showPromptBlock: boolean = false
 
@@ -63,6 +73,10 @@ export class HiqlashGameComponent implements OnInit {
 
     this.myAnswersDone = this.gameData.hasAnswered;
     this.allAnswersDone = this.gameData.hasAllAnswered;
+
+    this.currentPlayers = this.gameData.currentPlayers
+    this.currentAnswers = this.gameData.currentAnswers
+    this.currentPrompt  = this.gameData.currentPrompt
 
     this.subscriptions.push(
       this.gameService.hiQlashAnswersDoneEvent().subscribe((data: any) => {

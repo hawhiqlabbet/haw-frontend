@@ -32,6 +32,11 @@ public class HiQlashData implements LobbyData{
 
     boolean hasAllAnswered;
 
+    // Viewing state
+    String currentPrompt;
+    List<String> currentAnswers;
+    List<String> currentPlayers;
+
     public HiQlashData(int numPlayers, List<Player> players, List<SpyQData.VotingObject> votingObject, List<SpyQData.HasVoted> hasVoted, long endTime, long endVoteTime) {
         Collections.shuffle(this.prompts);
         Collections.shuffle(players);
@@ -53,6 +58,11 @@ public class HiQlashData implements LobbyData{
         this.hasVotedList     = hasVoted;
 
         this.hasAllAnswered = false;
+
+        // Viewing state
+        this.currentPrompt = "";
+        this.currentAnswers = new ArrayList<String>();
+        this.currentPlayers = new ArrayList<String>();
 
         for(int i = 0; i < numPlayers; ++i) {
             String playerName = players.get(i).getUsername();
@@ -126,12 +136,22 @@ public class HiQlashData implements LobbyData{
         List<String> prompts;
         boolean hasAnswered;
         boolean hasAllAnswered;
+
+        // Viewing state
+        String currentPrompt;
+        List<String> currentAnswers;
+        List<String> currentPlayers;
+
         public GameDataMessage(long endTime, long endTimeConst, long endVoteTime, long endVoteTimeConst, String gameChoice, List<SpyQData.VotingObject> votingObject, List<String> prompts){
             super(endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice);
             this.votingObject = votingObject;
             this.prompts = prompts;
             this.hasAnswered = false;
             this.hasAllAnswered = false;
+
+            this.currentPrompt = "";
+            this.currentAnswers = new ArrayList<String>();
+            this.currentPlayers = new ArrayList<String>();
         }
     }
 

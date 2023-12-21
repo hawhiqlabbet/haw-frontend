@@ -397,6 +397,12 @@ public class Controller {
             HiQlashData.GameDataMessage gameData = new HiQlashData.GameDataMessage(endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice, votingObject, hiQlashData.getPlayerPrompts(username));
             gameData.setHasAllAnswered(hiQlashData.isHasAllAnswered());
             gameData.setHasAnswered(hiQlashData.hasPlayerAnswered(username));
+
+            // State
+            gameData.setCurrentAnswers(hiQlashData.getCurrentAnswers());
+            gameData.setCurrentPrompt(hiQlashData.getCurrentPrompt());
+            gameData.setCurrentPlayers(hiQlashData.getCurrentPlayers());
+
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameData));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));

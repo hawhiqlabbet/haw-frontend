@@ -30,46 +30,29 @@
 
     </ng-container>
 
-    <ng-template #votingBlock>
-        <div class="text-center">
-            <div class="white-heading mb-3">PROMPT 1</div>
-          </div>
+    <ng-template #votingBlock id="votingAnimation">
 
-            <!-- <div class="speech-bubble-container col-auto text-end">
-            <div class="speech-bubble" style="background-image: url('assets/speech-bubble2.png')">
-              <div class="text-overlay">
-                Your dynamic text goes here
-              </div>
-            </div>
-          </div>
-           -->
-              
+        <div class="text-center white-heading mb-3" id="currentPrompt">{{currentPrompt}}</div>
 
-           <div class="row ">
-            <div class="text-end" style="width: 300px; height: 150px; position: relative; display: inline-block;">
-                <a (click)="vote('1')" style="cursor: pointer; display: block; position: relative;">
-                    <img src="assets/speech-bubble2.png" alt="Speech Bubble Image" style="width: 300px; height: 150px;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                        <div style="color: black; font-weight: bold; position: relative; z-index: 1;">Your Text</div>
+        <div class="row mb-3" id="speechBubble1">
+            <div class="answer-container">
+                    <img src="assets/speech-bubble1.png" alt="Speech Bubble Image" style="width: 400px; height: 200px;">
+                    <div (click)="vote('1')" class="answer-box">
+                        <div class="content">{{currentAnswers[0]}}</div>
                     </div>
-                </a>
             </div>
-            </div>
+        </div>
 
-            <div class="row ">
-
-            <div class="col-auto text-start" style="width: 300px; height: 150px; position: relative; display: inline-block;">
-                <a (click)="vote('2')" style="cursor: pointer; display: block; position: relative;">
-                    <img src="assets/speech-bubble-inverted2.png" alt="Speech Bubble Image Inverted" width="300" height="150">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                        <div style="color: black; font-weight: bold; position: relative; z-index: 1;">Answer 2</div>
-                    </div>
-                </a>
+        <div class="row mb-3" id="speechBubble2">
+            <div class="answer-container">
+                <img src="assets/speech-bubble-inverted1.png" alt="Speech Bubble Image" style="width: 400px; height: 200px;">
+                <div (click)="vote('2')" class="answer-box">
+                    <div class="content">{{currentAnswers[1]}}</div>
+                </div>
             </div>
         </div>
         
-        
+        <div class="text-center pink-info" id="infoText">Välj det roligaste svaret ovan, NU!</div>
         <app-progress-bar [timeConst]="gameData.endVoteTimeConst" [timeDifference]="timeDifferenceVote"></app-progress-bar>
-
       </ng-template>
 </div>

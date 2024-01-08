@@ -24,7 +24,6 @@ interface GameData {
 })
 export class HiqlashGameComponent implements OnInit {
   constructor(private gameService: GameService, private userService: UserService) {
-
   }
 
   subscriptions: Subscription[] = []
@@ -72,14 +71,14 @@ export class HiqlashGameComponent implements OnInit {
     this.myAnswersDone = this.gameData.hasAnswered ?? false
     this.allAnswersDone = this.gameData.hasAllAnswered ?? false
 
-    if(this.timeDifference < 0 || this.allAnswersDone)
+    if (this.timeDifference < 0 || this.allAnswersDone)
       this.showPromptBlock = false
     else
       this.showPromptBlock = true
 
     this.currentPlayers = this.gameData.currentPlayers
     this.currentAnswers = this.gameData.currentAnswers
-    this.currentPrompt  = this.gameData.currentPrompt
+    this.currentPrompt = this.gameData.currentPrompt
 
     console.log(this.myAnswersDone)
     console.log(this.allAnswersDone)
@@ -95,7 +94,10 @@ export class HiqlashGameComponent implements OnInit {
 
     this.subscriptions.push(
       this.gameService.hiQlashPromptUpdateEvent().subscribe((data: any) => {
-        const { prompt, players, promptAnswers } = data
+        const { players, promptAnswers, prompt } = data
+        this.currentPlayers = players
+        this.currentAnswers = promptAnswers
+        this.currentPrompt = prompt
         console.log("PROMPT: ", prompt, " PLAYERS: ", players, " ANSWERS: ", promptAnswers)
       })
     )

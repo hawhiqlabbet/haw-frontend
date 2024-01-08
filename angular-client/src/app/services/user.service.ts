@@ -100,4 +100,8 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/api/game/hiQlashAnswer?gameId=${gameId}`, { username: username, promptAnswer1: answer1, promptAnswer2: answer2 })
   }
 
+  hiQlashVote(gameId: string, username: string, votedFor: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/game/hiQlashAnswer?gameId=${gameId}`, { username: username, votedFor: votedFor })
+  }
+
 }

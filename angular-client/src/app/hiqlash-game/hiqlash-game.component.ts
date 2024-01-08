@@ -62,10 +62,6 @@ export class HiqlashGameComponent implements OnInit {
 
   // showPromptBlock: boolean = false
 
-  vote(choice: string): void {
-    console.log("pressed ", choice)
-  }
-
   ngOnInit() {
     console.log("WEEE ", this.gameData)
     console.log(this.timeDifference)
@@ -108,6 +104,21 @@ export class HiqlashGameComponent implements OnInit {
 
     this.subscriptions.push(
       this.userService.hiQlashAnswer(this.gameId, this.username, this.promptAnswer1, this.promptAnswer2).subscribe((data: any) => {
+        const { message } = data
+        if (message === 'HiQlashAnswerSuccessDone') {
+          this.gameService.reportHiQlashAnswersDone(this.gameId)
+          console.log('answering done')
+        }
+        console.log(message)
+      })
+    )
+  }
+
+  vote(choice: string): void {
+    console.log("pressed ", choice)
+
+    this.subscriptions.push(
+      this.userService.hiQlashVote(this.gameId, this.username, "").subscribe((data: any) => {
         const { message } = data
         if (message === 'HiQlashAnswerSuccessDone') {
           this.gameService.reportHiQlashAnswersDone(this.gameId)

@@ -26,3 +26,4 @@ server/node_modules/
 
 angular-client/src/environments/environment.development.ts
 angular-client/src/environments/environment.ts
+angular-client/angular-client-win32-x64/

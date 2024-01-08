@@ -140,7 +140,7 @@ public class SocketModule {
 
                             //TODO: Fix voting reset and add scores
 
-                            // Send new prompt data
+                            // New prompt data
                             String prompt = lobbyData.getUsedPrompts().get(0);
                             lobbyData.getUsedPrompts().remove(0);
                             List<String> players = lobbyData.getPlayersHavingPrompt(prompt);
@@ -153,9 +153,6 @@ public class SocketModule {
 
                             socketService.sendMessageCollection("hiQlashPromptUpdate", clients, Map.of("prompt", prompt, "players", players, "promptAnswers", promptAnswers));
                         }
-                        //TODO: Display voting results for n seconds or until everyone has voted
-                        //TODO: Add voting stuff to HiQlash gameData
-
                     }
                 }
                 socketService.sendMessageCollection("timeUpdateEvent", clients, Map.of("endTime", lobbyData.getEndTime(), "endVoteTime", lobbyData.getEndVoteTime()));

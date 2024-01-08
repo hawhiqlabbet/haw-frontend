@@ -34,6 +34,7 @@ export class HiqlashGameComponent implements OnInit {
 
 
   @Input() timeDifference: number = 0
+  @Input() timeDifferenceVote: number = 0
   @Input() gameId: string = ''
   @Input() username: string = ''
   @Input() gameData: GameData = {
@@ -66,17 +67,23 @@ export class HiqlashGameComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.gameData.endTimeConst)
-    console.log(this.gameData.prompts[0])
+    console.log("WEEE ", this.gameData)
+    console.log(this.timeDifference)
+    this.myAnswersDone = this.gameData.hasAnswered ?? false
+    this.allAnswersDone = this.gameData.hasAllAnswered ?? false
 
-    this.showPromptBlock = this.timeDifference > 0
-
-    this.myAnswersDone = this.gameData.hasAnswered;
-    this.allAnswersDone = this.gameData.hasAllAnswered;
+    if(this.timeDifference < 0 || this.allAnswersDone)
+      this.showPromptBlock = false
+    else
+      this.showPromptBlock = true
 
     this.currentPlayers = this.gameData.currentPlayers
     this.currentAnswers = this.gameData.currentAnswers
     this.currentPrompt  = this.gameData.currentPrompt
+
+    console.log(this.myAnswersDone)
+    console.log(this.allAnswersDone)
+    console.log(this.showPromptBlock)
 
     this.subscriptions.push(
       this.gameService.hiQlashAnswersDoneEvent().subscribe((data: any) => {

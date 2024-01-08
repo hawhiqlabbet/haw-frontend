@@ -169,7 +169,7 @@ export class GameService {
 
   hiQlashVotingDoneEvent() {
     return new Observable((observer) => {
-      this.socket.on('hiQlashAnswersDone', (data: any) => {
+      this.socket.on('hiQlashVotingDone', (data: any) => {
         const { votingData } = data
         observer.next({ votingData })
       })

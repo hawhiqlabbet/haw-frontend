@@ -92,6 +92,10 @@ export class GameService {
   reportHiQlashAnswersDone(gameId: string) {
     this.socket.emit('reportHiQlashAnswersDone', {gameId})
   }
+  reportHiQlashVotingDone(gameId: string) {
+    console.log("report hiqlash vote done")
+    this.socket.emit('reportHiQlashVotingDone', {gameId})
+  }
 
   newRoundEvent(): Observable<any> {
     return new Observable((observer) => {
@@ -170,6 +174,7 @@ export class GameService {
   hiQlashVotingDoneEvent() {
     return new Observable((observer) => {
       this.socket.on('hiQlashVotingDone', (data: any) => {
+        console.log(data)
         const { votingData } = data
         observer.next({ votingData })
       })

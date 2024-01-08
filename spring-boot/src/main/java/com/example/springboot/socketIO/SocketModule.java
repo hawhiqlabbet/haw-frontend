@@ -74,6 +74,7 @@ public class SocketModule {
         server.addEventListener("joinGame", SocketRecieve.class, handleJoinGame());
         server.addEventListener("reportVotingDone", SocketRecieve.class, handleVotingDone());
         server.addEventListener("reportHiQlashAnswersDone", SocketRecieve.class, handleHiQlashAnswersDone());
+        server.addEventListener("reportHiQlashVotingDone", SocketRecieve.class, handleHiQlashVotingDone());
     }
 
     @Async
@@ -201,6 +202,7 @@ public class SocketModule {
     }
 
     private DataListener<SocketRecieve> handleHiQlashVotingDone() {
+        System.out.println("REPORTING VOTING DONE TO ALL CLIENTS1");
         return (senderClient, data, ackSender) -> {
             String gameId = data.getGameId();
             LobbyData ld = lobbyService.getLobbyData(gameId);
@@ -208,9 +210,12 @@ public class SocketModule {
             if(ld != null) {
                 HiQlashData lobbyData = (HiQlashData) lobbyService.getLobbyData(gameId);
                 List<SpyQData.VotingObject> votingData = lobbyData.getVotingObjectList();
+                List<String> votedForOne = lobbyData.getVotedForOne();
+                List<String> votedForTwo = lobbyData.getVotedForTwo();
 
                 Collection<SocketIOClient> clients = server.getRoomOperations(gameId).getClients();
-                socketService.sendMessageCollection("hiQlashVotingDone", clients, Map.of("gameId", gameId, "votingData", votingData));
+                System.out.println("REPORTING VOTING DONE TO ALL CLIENTS");
+                socketService.sendMessageCollection("hiQlashVotingDone", clients, Map.of("gameId", gameId, "votingData", votingData, "votedForOne", votedForOne, "votedForTwo", votedForTwo));
             }
         };
     }

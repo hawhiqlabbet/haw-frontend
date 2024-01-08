@@ -395,13 +395,17 @@ public class Controller {
             List<SpyQData.VotingObject> votingObject = hiQlashData.getVotingObjectList();
 
             HiQlashData.GameDataMessage gameData = new HiQlashData.GameDataMessage(endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice, votingObject, hiQlashData.getPlayerPrompts(username));
-            gameData.setHasAllAnswered(hiQlashData.isHasAllAnswered());
+            gameData.setHasAllAnswered(hiQlashData.hasAllPlayersAnswered());
             gameData.setHasAnswered(hiQlashData.hasPlayerAnswered(username));
+            gameData.setHasVoted(hiQlashData.hasPlayerVoted(username));
+            gameData.setHasAllVoted(hiQlashData.everyoneHasVoted());
 
             // State
             gameData.setCurrentAnswers(hiQlashData.getCurrentAnswers());
             gameData.setCurrentPrompt(hiQlashData.getCurrentPrompt());
             gameData.setCurrentPlayers(hiQlashData.getCurrentPlayers());
+            gameData.setVotedForOne(hiQlashData.getVotedForOne());
+            gameData.setVotedForTwo(hiQlashData.getVotedForTwo());
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameData));
         }
@@ -438,7 +442,6 @@ public class Controller {
 
             if(lobbyData.hasAllPlayersAnswered()){
                 System.err.println("ALL DONE");
-                lobbyData.setHasAllAnswered(true);
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "HiQlashAnswerSuccessDone"));
             }
             else
@@ -463,10 +466,13 @@ public class Controller {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Player: " + username + " already voted"));
             }
 
+            lobbyData.setVotedFor(username, votedFor);
             lobbyData.setVoted(username);
             lobbyData.incrementVotes(votedFor);
 
+            System.out.println("REPORTING VOTE");
             if(lobbyData.everyoneHasVoted()){
+                System.out.println("DONE WITH VOTING");
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "hiQlashVoteSuccessDone"));
             }
         }

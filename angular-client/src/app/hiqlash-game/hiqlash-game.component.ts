@@ -10,6 +10,8 @@ interface GameData {
   endVoteTimeConst: number
   hasAnswered: boolean
   hasAllAnswered: boolean
+  hasVoted: boolean
+  hasAllVoted: boolean
   prompts: any[]
   votingObject: any[]
   currentPlayers: string[]
@@ -31,6 +33,10 @@ export class HiqlashGameComponent implements OnInit {
   myAnswersDone: boolean = false;
   allAnswersDone: boolean = false;
 
+  myVoteDone: boolean = false
+  allVotesDone: boolean = false
+  
+  votingData: any[] = []
 
   @Input() timeDifference: number = 0
   @Input() timeDifferenceVote: number = 0
@@ -43,6 +49,8 @@ export class HiqlashGameComponent implements OnInit {
     endVoteTimeConst: 0,
     hasAnswered: false,
     hasAllAnswered: false,
+    hasVoted: false,
+    hasAllVoted: false,
     prompts: [],
     votingObject: [],
     currentPlayers: [],
@@ -62,10 +70,11 @@ export class HiqlashGameComponent implements OnInit {
   // showPromptBlock: boolean = false
 
   ngOnInit() {
-    console.log("WEEE ", this.gameData)
-    console.log(this.timeDifference)
     this.myAnswersDone = this.gameData.hasAnswered ?? false
     this.allAnswersDone = this.gameData.hasAllAnswered ?? false
+
+    this.myVoteDone = this.gameData.hasVoted ?? false
+    this.allVotesDone = this.gameData.hasAllVoted ?? false
 
     if (this.timeDifference < 0 || this.allAnswersDone)
       this.showPromptBlock = false
@@ -85,6 +94,16 @@ export class HiqlashGameComponent implements OnInit {
         this.showPromptBlock = false;
         console.log('all answering done')
 
+      })
+    )
+
+    this.subscriptions.push(
+      this.gameService.hiQlashVotingDoneEvent().subscribe((data: any) => {
+        const { votingData } = data
+        this.votingData = votingData
+        this.allVotesDone = true;
+
+        console.log('all votes done')
       })
     )
 
@@ -116,17 +135,25 @@ export class HiqlashGameComponent implements OnInit {
     )
   }
 
-  vote(choice: string): void {
+  vote(choice: number): void {
+    this.myVoteDone = true;
+
+    //let choice_nr: number = parseInt(choice)
+
     console.log("pressed ", choice)
+    console.log(this.gameData)
+    //console.log(this.gameData.currentPlayers[choice])
 
     this.subscriptions.push(
-      this.userService.hiQlashVote(this.gameId, this.username, "").subscribe((data: any) => {
+      this.userService.hiQlashVote(this.gameId, this.username, this.currentPlayers[choice]).subscribe((data: any) => {
         const { message } = data
-        if (message === 'HiQlashAnswerSuccessDone') {
-          this.gameService.reportHiQlashAnswersDone(this.gameId)
-          console.log('answering done')
+        if (message === 'hiQlashVoteSuccessDone') {
+          this.gameService.reportHiQlashVotingDone(this.gameId);
+          console.log('Voting done')
         }
-        console.log(message)
+        setTimeout(() => {  
+          console.log("Voted")
+        })
       })
     )
   }

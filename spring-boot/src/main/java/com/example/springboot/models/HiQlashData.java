@@ -30,12 +30,12 @@ public class HiQlashData implements LobbyData{
     public List<SpyQData.VotingObject> votingObjectList;
     public List<SpyQData.HasVoted> hasVotedList;
 
-    boolean hasAllAnswered;
-
     // Viewing state
     String currentPrompt;
     List<String> currentAnswers;
     List<String> currentPlayers;
+    List<String> votedForOne;
+    List<String> votedForTwo;
 
     public HiQlashData(int numPlayers, List<Player> players, List<SpyQData.VotingObject> votingObject, List<SpyQData.HasVoted> hasVoted, long endTime, long endVoteTime) {
         Collections.shuffle(this.prompts);
@@ -57,12 +57,12 @@ public class HiQlashData implements LobbyData{
         this.votingObjectList = votingObject;
         this.hasVotedList     = hasVoted;
 
-        this.hasAllAnswered = false;
-
         // Viewing state
         this.currentPrompt = "";
         this.currentAnswers = new ArrayList<String>();
         this.currentPlayers = new ArrayList<String>();
+        this.votedForOne    = new ArrayList<String>();
+        this.votedForTwo    = new ArrayList<String>();
 
         for(int i = 0; i < numPlayers; ++i) {
             String playerName = players.get(i).getUsername();
@@ -136,11 +136,15 @@ public class HiQlashData implements LobbyData{
         List<String> prompts;
         boolean hasAnswered;
         boolean hasAllAnswered;
+        boolean hasVoted;
+        boolean hasAllVoted;
 
         // Viewing state
         String currentPrompt;
         List<String> currentAnswers;
         List<String> currentPlayers;
+        List<String> votedForOne;
+        List<String> votedForTwo;
 
         public GameDataMessage(long endTime, long endTimeConst, long endVoteTime, long endVoteTimeConst, String gameChoice, List<SpyQData.VotingObject> votingObject, List<String> prompts){
             super(endTime, endTimeConst, endVoteTime, endVoteTimeConst, gameChoice);
@@ -148,10 +152,15 @@ public class HiQlashData implements LobbyData{
             this.prompts = prompts;
             this.hasAnswered = false;
             this.hasAllAnswered = false;
+            this.hasVoted = false;
+            this.hasAllVoted = false;
 
             this.currentPrompt = "";
             this.currentAnswers = new ArrayList<String>();
             this.currentPlayers = new ArrayList<String>();
+            this.votedForOne    = new ArrayList<String>();
+            this.votedForTwo    = new ArrayList<String>();
+
         }
     }
 
@@ -237,6 +246,18 @@ public class HiQlashData implements LobbyData{
                 obj.hasVoted = true;
                 return;
             }
+        }
+    }
+
+    public void setVotedFor(String player, String votedFor){
+        if(currentPlayers.get(0).equals(votedFor)){
+            votedForOne.add(player);
+        }
+        else if(currentPlayers.get(1).equals(votedFor)) {
+            votedForTwo.add(player);
+        }
+        else {
+            System.err.println("Player " + player + " Cannot vote for " + votedFor);
         }
     }
 

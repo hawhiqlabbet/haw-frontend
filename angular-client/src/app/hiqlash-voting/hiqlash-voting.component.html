@@ -1,3 +1,5 @@
+<div class="d-flex flex-column align-items-center justify-content-center vh-100 vv-100 linear-background">
+
 <div class="text-center white-heading mb-3">{{currentPrompt}}</div>
 
     <div class="row mb-3">
@@ -18,11 +20,14 @@
         </div>
     </div>
 
-<ng-container *ngIf="!myVoteDone; else votedText">
-    <div class="text-center pink-info" id="infoText">Välj det roligaste svaret ovan, NU!</div>
-</ng-container>
-<ng-template #votedText>
-    <div class="text-center pink-info" id="infoText">Ta en Nocco&trade; medans de andra röstar</div>
-</ng-template>
+<div class="text-center pink-info">
+    <ng-container *ngIf="!myVoteDone; else votedText">
+        <div>Välj det roligaste svaret ovan, NU!</div>
+    </ng-container>
+    <ng-template #votedText>
+        <div>Ta en Nocco&trade; medans de andra röstar</div>
+    </ng-template>
+</div>
 
 <app-progress-bar [timeConst]="endVoteTimeConst" [timeDifference]="timeDifferenceVote"></app-progress-bar>
+</div>

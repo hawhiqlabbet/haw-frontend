@@ -3,8 +3,8 @@
     
     <ng-template #loadStuff>
         <app-settings-modal #settingsModal       
-            [category]="category" 
             [timeDifference]="gameTimeInMS"
+            [gameChoice]="gameChoice"
             (formSubmitted)="handleSettingsChange($event)">
         </app-settings-modal>
 

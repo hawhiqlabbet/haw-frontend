@@ -32,7 +32,7 @@ export class RoomPageComponent {
   gameStarted = false
   gameData: any
   gameTimeInMS = 60000 * 2
-  category = "countries"
+  category = ""
   timeDifference: number = 0
   timeDifferenceVote: number = 0
   animationDone = false
@@ -187,11 +187,11 @@ export class RoomPageComponent {
         next: (response) => {
           const { message, data, gameData } = response
 
-          console.log("MEssage: ", message, " Data: ", gameData)
+          console.log("MEssage: ", message, " Data: ", data)
 
           if (message === 'getGameDataSuccess' && data) {
-            const { players } = data;
-
+            const { players, gameChoice } = data;
+            this.gameChoice = gameChoice;
 
             this.users = Object.keys(players).map((i) => {
               const existingUser = this.findUserByUsername(this.users, players[i].username);
@@ -213,7 +213,7 @@ export class RoomPageComponent {
             if (gameData) {
               console.log(gameData);
               this.gameStarted = true
-              this.gameChoice = gameData.gameChoice
+            //  this.gameChoice = gameData.gameChoice
               this.gameData = gameData
               this.animationDone = true
 

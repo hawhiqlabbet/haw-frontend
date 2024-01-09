@@ -13,11 +13,11 @@
                     {{ getSelectedLabel() }}
                 </button>
   
-                <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <button *ngFor="let item of dropdownItems" class="dropdown-item" (click)="selectOption(item.name)">
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a *ngFor="let item of dropdownItems" class="dropdown-item" (click)="selectOption(item.name)">
                     {{ item.label }}
-                  </button>
-                </div> -->
+                  </a>
+                </div> 
               </div>
 
               <label for="timeInput" class="form-label">Välj en tid(s) för att ställa frågor</label>

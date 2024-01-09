@@ -66,7 +66,54 @@ public class Controller {
     );
 
 
+    public static final List<String> promptsDefault = Arrays.asList(
+            "Det bästa sättet att överleva en zombieapokalyps är att...",
+            "En avvisad smak för glass: ____-smaksatt.",
+            "Ett märkligt namn för en rymdraket.",
+            "Om utomjordingar besökte jorden, det första de skulle säga är...",
+            "Det sämsta jobbet i ett sagorike.",
+            "Den verkliga anledningen till att dinosaurierna är utdöda.",
+            "Uppfinn en ny högtid som ingen skulle vilja fira.",
+            "En bisarr ingrediens att lägga till i en smoothie.",
+            "Den hemliga talangen din brödrost har när du inte tittar.",
+            "En ny lag som alla måste följa: Inget mer ____ på tisdagar.",
+            "Ett hemskt tema för en studentbal.",
+            "En rubrik från år 3000.",
+            "Det sämsta att säga under en anställningsintervju.",
+            "Det sämsta raggningsrepliken på en begravning.",
+            "Den minst imponerande superkraften.",
+            "Om du kunde byta liv med en historisk person, vem skulle det vara och varför?",
+            "Ett tvivelaktigt alternativt användningsområde för silvertejp.",
+            "Titeln på en kontroversiell realityshow om ditt liv.",
+            "En överraskande plats för en romantisk weekend.",
+            "Om ditt liv var en cocktail, vad skulle huvudingrediensen vara?",
+            "Den mest olämpliga tiden att börja dansa.",
+            "Ett kontroversiellt användningsområde för en tidsmaskin.",
+            "Det sista du vill höra från din personliga tränare.",
+            "Ett bisarrt tillskott till en romantisk spellista.",
+            "Om ditt kylskåp kunde skvallra, vad skulle det säga om dina midnattssnacks?",
+            "En konstig sak att ta med till en nudiststrand.",
+            "Det sämsta möjliga ämnet för en ståupp-komedi rutin.",
+            "Ett kontroversiellt namn för en dejtingapp.",
+            "En konstig superkraft att ha i vardagen."
+    );
 
+    public static final List<String> promptsHiq = Arrays.asList(
+            "Den sämsta ursäkten för att ringa in sjuk till jobbet.",
+            "Om HiQ-kontoret hade en maskot, vad skulle det vara och varför?",
+            "En ny HiQ-företagspolicy: ____ på fredagar.",
+            "Den oskrivna regeln i HiQ:s anställningshandbok.",
+            "En nekad HiQ-slogan för en motivationsaffisch.",
+            "Det mest oväntade objektet i HiQ:s kylskåp.",
+            "En konstig talang din chef har som ingen pratar om.",
+            "Om kontorsmaterial hade personligheter, vilket skulle du vara vän med och varför?",
+            "En konstig sak att säga under standup på Magic Monday.",
+            "En olämplig aktivitet under ett KM.",
+            "HiQ Town Hall annonserar nästa konsultgrupp!: ____",
+            "Den största anledningen till att HiQ's tillväxt",
+            "Den nya satsningen för marknadsföring av HiQ innefattar ____",
+            "Temat för nästa julfest"
+    );
 
     //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/host")
@@ -271,6 +318,7 @@ public class Controller {
             lobbyService.addLobbyData(gameId, lobbyData);
         }
         else if("HiQlash".equals(lobby.getGameChoice())){
+            String category = request.get("category");
             long milliseconds = Long.parseLong(request.get("gameTimeInMS"));
 
             SpyQData.VotingObject[] votingObject = lobby.getPlayers().stream()
@@ -292,7 +340,19 @@ public class Controller {
             endTime = endTime / 1000;
             endVoteTime = endVoteTime / 1000;
 
-            HiQlashData lobbyData = new HiQlashData(lobby.getPlayers().size(), lobby.getPlayers(), Arrays.asList(votingObject), Arrays.asList(hasVoted), endTime, endVoteTime);
+            List<String> prompts;
+            if(category.equals("default")) {
+                prompts = promptsDefault;
+            }
+            else if(category.equals("HiQ")) {
+                prompts = promptsHiq;
+            }
+            else {
+                System.err.println("No category chosen for HiQlash, sending back empty list");
+                prompts = Arrays.asList("");
+            }
+
+            HiQlashData lobbyData = new HiQlashData(lobby.getPlayers().size(), lobby.getPlayers(), Arrays.asList(votingObject), Arrays.asList(hasVoted), endTime, endVoteTime, prompts);
             lobbyService.addLobbyData(gameId, lobbyData);
 
             System.out.println(lobbyData);

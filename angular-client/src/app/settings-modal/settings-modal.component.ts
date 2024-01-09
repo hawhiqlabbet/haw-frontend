@@ -18,6 +18,7 @@ export class SettingsModalComponent {
 
   @Input() category: string = ''
   @Input() timeDifference: number = 0
+  @Input() gameChoice: string = ''
 
   @Output() openModal: EventEmitter<void> = new EventEmitter<void>();
   @Output() formSubmitted: EventEmitter<{ selectedCategory: string, selectedTime: number }> = new EventEmitter<{
@@ -29,19 +30,36 @@ export class SettingsModalComponent {
   selectedTime: number = 0
   selectedCategory: string = ''
 
-  dropdownItems: DropdownItem[] = [
-    { name: 'countries', label: 'Länder' },
-    { name: 'HiQAreas', label: 'Platser på HiQ' },
-    { name: 'itTitles', label: 'Arbetsroller' },
-    { name: 'programmingLanguages', label: 'Programmeringsspråk' }
-  ];
+  dropdownItems: DropdownItem[] = []
 
   constructor(private userService: UserService) {
   }
 
   ngOnInit() {
+    console.log(this.gameChoice)
     this.selectedTime = this.timeDifference / 1000
-    this.selectedCategory = this.category
+    
+
+    if(this.gameChoice === "SpyQ") {
+      this.selectedCategory = "countries"
+      this.dropdownItems = [
+        { name: 'countries', label: 'Länder' },
+        { name: 'HiQAreas', label: 'Platser på HiQ' },
+        { name: 'itTitles', label: 'Arbetsroller' },
+        { name: 'programmingLanguages', label: 'Programmeringsspråk' }
+      ];
+    }
+    else if(this.gameChoice === "HiQlash") {
+      this.selectedCategory = "default"
+      this.dropdownItems = [
+        { name: 'HiQ', label: 'HiQ'},
+        { name: 'default', label: 'vanliga'}
+      ]
+    }
+    else {
+      console.log("Error, wierd gameChoice")
+    }
+    console.log(this.getSelectedLabel())
   }
 
   displayStyle = "none"

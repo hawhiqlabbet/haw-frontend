@@ -20,10 +20,7 @@ public class HiQlashData implements LobbyData{
     long endVoteTime;
     long endVoteTimeConst;
     List<PlayerPrompts> promptsForPlayers;
-    List<String> prompts = Arrays.asList(
-            "Do you like Jazz1?", "Do you like Jazz2?", "Do you like Jazz3?", "Do you like Jazz4?", "Do you like Jazz5?",
-            "Do you like Jazz6?", "Do you like Jazz7?", "Do you like Jazz8?", "Do you like Jazz9?", "Do you like Jazz10?"
-    );
+    List<String> prompts;
     List<PlayerScores> playerScores;
     List<String> usedPrompts;
 
@@ -37,9 +34,7 @@ public class HiQlashData implements LobbyData{
     List<String> votedForOne;
     List<String> votedForTwo;
 
-    public HiQlashData(int numPlayers, List<Player> players, List<SpyQData.VotingObject> votingObject, List<SpyQData.HasVoted> hasVoted, long endTime, long endVoteTime) {
-        Collections.shuffle(this.prompts);
-        Collections.shuffle(players);
+    public HiQlashData(int numPlayers, List<Player> players, List<SpyQData.VotingObject> votingObject, List<SpyQData.HasVoted> hasVoted, long endTime, long endVoteTime, List<String> prompts) {
 
         this.answeringPrompts = true;
         this.currRound        = 1;
@@ -51,6 +46,7 @@ public class HiQlashData implements LobbyData{
         this.endVoteTimeConst = endVoteTime;
 
         this.promptsForPlayers = new ArrayList<PlayerPrompts>();
+        this.prompts           = prompts;
         this.playerScores      = new ArrayList<PlayerScores>();
         this.usedPrompts       = new ArrayList<String>();
 
@@ -63,6 +59,9 @@ public class HiQlashData implements LobbyData{
         this.currentPlayers = new ArrayList<String>();
         this.votedForOne    = new ArrayList<String>();
         this.votedForTwo    = new ArrayList<String>();
+
+        Collections.shuffle(this.prompts);
+        Collections.shuffle(players);
 
         for(int i = 0; i < numPlayers; ++i) {
             String playerName = players.get(i).getUsername();

@@ -31,28 +31,44 @@
     </ng-container>
 
     <ng-template #votingBlock id="votingAnimation">
+        <ng-container *ngIf="!gameDone; else votingResultBlock">
+            <div class="text-center white-heading mb-3" id="currentPrompt">{{currentPrompt}}</div>
 
-        <div class="text-center white-heading mb-3" id="currentPrompt">{{currentPrompt}}</div>
-
-        <div class="row mb-3" id="speechBubble1">
-            <div class="answer-container">
-                    <img src="assets/speech-bubble1.png" alt="Speech Bubble Image" style="width: 400px; height: 200px;">
-                    <div (click)="vote(0)" class="answer-box">
-                        <div class="content">{{currentAnswers[0]}}</div>
-                    </div>
-            </div>
-        </div>
-
-        <div class="row mb-3" id="speechBubble2">
-            <div class="answer-container">
-                <img src="assets/speech-bubble-inverted1.png" alt="Speech Bubble Image" style="width: 400px; height: 200px;">
-                <div (click)="vote(1)" class="answer-box">
-                    <div class="content">{{currentAnswers[1]}}</div>
+            <div class="row mb-3" id="speechBubble1">
+                <div class="answer-container">
+                        <img src="assets/speech-bubble1.png" alt="Speech Bubble Image" style="width: 400px; height: 200px;">
+                        <div (click)="vote(0)" class="answer-box">
+                            <div class="content">{{currentAnswers[0]}}</div>
+                        </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="text-center pink-info" id="infoText">Välj det roligaste svaret ovan, NU!</div>
-        <app-progress-bar [timeConst]="gameData.endVoteTimeConst" [timeDifference]="timeDifferenceVote"></app-progress-bar>
-      </ng-template>
+
+            <div class="row mb-3" id="speechBubble2">
+                <div class="answer-container">
+                    <img src="assets/speech-bubble-inverted1.png" alt="Speech Bubble Image" style="width: 400px; height: 200px;">
+                    <div (click)="vote(1)" class="answer-box">
+                        <div class="content">{{currentAnswers[1]}}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <ng-container *ngIf="!myVoteDone; else votedText">
+                <div class="text-center pink-info" id="infoText">Välj det roligaste svaret ovan, NU!</div>
+            </ng-container>
+            <ng-template #votedText>
+                <div class="text-center pink-info" id="infoText">Ta en Nocco&trade; medans de andra röstar</div>
+            </ng-template>
+
+            <app-progress-bar [timeConst]="gameData.endVoteTimeConst" [timeDifference]="timeDifferenceVote"></app-progress-bar>
+        </ng-container>
+        <ng-template #votingResultBlock>  
+            <div>
+                <app-result-container 
+                    [votingData]="playerScores" 
+                    [gameData]="gameData"
+                    [subscriptions]="subscriptions" 
+                    [gameId]="gameId"></app-result-container>
+            </div>  
+        </ng-template>
+    </ng-template>
 </div>

@@ -131,15 +131,23 @@ public class SocketModule {
                 else {
                     lobbyData.setEndVoteTime(lobbyData.getEndVoteTime() - 1);
 
+                    // If everyone voted, then show results for n seconds before updating
+                    if(lobbyData.everyoneHasVoted() && lobbyData.getEndVoteTime() > 0) {
+                        lobbyData.setEndVoteTime(0);
+                    }
+
                     if(lobbyData.getEndVoteTime() <= -10) { // Update this value if less or more of viewing time
                         lobbyData.setCurrRound(lobbyData.getCurrRound() + 1);
 
-                        if(lobbyData.getCurrRound() < lobbyData.getNumRounds()) {
+                        System.err.println("NUM ROUNDS: " + lobbyData.getNumRounds());
+                        System.err.println("CURR ROUND: " + lobbyData.getCurrRound());
+                        if(lobbyData.getCurrRound() <= lobbyData.getNumRounds()) {
 
-                            // Reset timer
+                            // Reset timer and votes and count scores
                             lobbyData.setEndVoteTime(lobbyData.getEndVoteTimeConst());
+                            lobbyData.calculateScores();
+                            lobbyData.resetVotes();
 
-                            //TODO: Fix voting reset and add scores
 
                             // New prompt data
                             String prompt = lobbyData.getUsedPrompts().get(0);
@@ -153,6 +161,11 @@ public class SocketModule {
                             lobbyData.setCurrentPrompt(prompt);
 
                             socketService.sendMessageCollection("hiQlashPromptUpdate", clients, Map.of("prompt", prompt, "players", players, "promptAnswers", promptAnswers));
+                        }
+                        else {
+                            // TODO: Send results for end viewing
+                            List<HiQlashData.PlayerScores> playerScores = lobbyData.getPlayerScores();
+                            socketService.sendMessageCollection("hiQlashEnd", clients, Map.of("playerScores", playerScores));
                         }
                     }
                 }

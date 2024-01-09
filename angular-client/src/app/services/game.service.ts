@@ -190,6 +190,15 @@ export class GameService {
     })
   }
 
+  hiQlashEndEvent() {
+    return new Observable((observer) => {
+      this.socket.on('hiQlashEnd', (data: any) => {
+        const{ playerScores } = data
+        observer.next({ playerScores })
+      })
+    })
+  }
+
   timerUpdateEvent() {
     return new Observable((observer) => {
       this.socket.on('timeUpdateEvent', (data: any) => {

@@ -35,8 +35,11 @@ export class HiqlashGameComponent implements OnInit {
 
   myVoteDone: boolean = false
   allVotesDone: boolean = false
+
+  gameDone: boolean = false;
   
   votingData: any[] = []
+  playerScores: any[] = []
 
   @Input() timeDifference: number = 0
   @Input() timeDifferenceVote: number = 0
@@ -114,6 +117,14 @@ export class HiqlashGameComponent implements OnInit {
         this.currentAnswers = promptAnswers
         this.currentPrompt = prompt
         console.log("PROMPT: ", prompt, " PLAYERS: ", players, " ANSWERS: ", promptAnswers)
+      })
+    )
+
+    this.subscriptions.push(
+      this.gameService.hiQlashEndEvent().subscribe((data: any) =>{
+        const { playerScores } = data
+        this.playerScores = playerScores
+        this.gameDone     = true
       })
     )
   }

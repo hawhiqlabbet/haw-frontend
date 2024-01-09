@@ -90,12 +90,12 @@ public class HiQlashData implements LobbyData{
 
     @Data
     public static class PlayerScores {
-        String username;
-        int score;
+        String player;
+        int votes;
 
         public PlayerScores (String username, int score){
-            this.username = username;
-            this.score    = score;
+            this.player = username;
+            this.votes  = score;
         }
     }
     @Data
@@ -261,6 +261,19 @@ public class HiQlashData implements LobbyData{
         }
     }
 
+    public void resetVotes() {
+        votedForOne.clear();
+        votedForTwo.clear();
+
+        for(SpyQData.HasVoted obj : hasVotedList) {
+            obj.hasVoted = false;
+        }
+
+        for(SpyQData.VotingObject obj : votingObjectList) {
+            obj.votes = 0;
+        }
+    }
+
     public void incrementVotes(String player) {
         for(SpyQData.VotingObject obj : votingObjectList) {
             if(obj.player.equals(player)) {
@@ -277,6 +290,19 @@ public class HiQlashData implements LobbyData{
             }
         }
         return true; // If all players have voted, return true
+    }
+
+    public void calculateScores() {
+        for (SpyQData.VotingObject obj : votingObjectList) {
+            String player = obj.player;
+            int score     = obj.votes * 100;
+
+            for(PlayerScores scores : playerScores) {
+                if(scores.player.equals(player)){
+                    scores.votes = score;
+                }
+            }
+        }
     }
 
     public String getPlayerMostVotes() {

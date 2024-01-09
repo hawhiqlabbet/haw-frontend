@@ -25,6 +25,7 @@ interface GameData {
   styleUrls: ['./hiqlash-game.component.scss']
 })
 export class HiqlashGameComponent implements OnInit {
+
   constructor(private gameService: GameService, private userService: UserService) {
   }
 
@@ -37,7 +38,7 @@ export class HiqlashGameComponent implements OnInit {
   allVotesDone: boolean = false
 
   gameDone: boolean = false;
-  
+
   votingData: any[] = []
   playerScores: any[] = []
 
@@ -56,9 +57,9 @@ export class HiqlashGameComponent implements OnInit {
     hasAllVoted: false,
     prompts: [],
     votingObject: [],
-    currentPlayers: [],
-    currentAnswers: [],
-    currentPrompt: ""
+    currentPlayers: ['', ''],
+    currentAnswers: ['', ''],
+    currentPrompt: ''
   };
 
   promptAnswer1: string = ''
@@ -66,11 +67,10 @@ export class HiqlashGameComponent implements OnInit {
 
   showPromptBlock: boolean = true
 
-  currentAnswers: string[] = []
-  currentPlayers: string[] = []
+  currentAnswers: string[] = ['', '']
+  currentPlayers: string[] = ['', '']
   currentPrompt: string = ''
 
-  // showPromptBlock: boolean = false
 
   ngOnInit() {
     this.myAnswersDone = this.gameData.hasAnswered ?? false
@@ -84,9 +84,9 @@ export class HiqlashGameComponent implements OnInit {
     else
       this.showPromptBlock = true
 
-    this.currentPlayers = this.gameData.currentPlayers
-    this.currentAnswers = this.gameData.currentAnswers
-    this.currentPrompt = this.gameData.currentPrompt
+    this.currentPlayers = this.gameData.currentPlayers ?? ['', '']
+    this.currentAnswers = this.gameData.currentAnswers ?? ['', '']
+    this.currentPrompt = this.gameData.currentPrompt ?? ''
 
     console.log(this.myAnswersDone)
     console.log(this.allAnswersDone)
@@ -121,14 +121,13 @@ export class HiqlashGameComponent implements OnInit {
     )
 
     this.subscriptions.push(
-      this.gameService.hiQlashEndEvent().subscribe((data: any) =>{
+      this.gameService.hiQlashEndEvent().subscribe((data: any) => {
         const { playerScores } = data
         this.playerScores = playerScores
-        this.gameDone     = true
+        this.gameDone = true
       })
     )
   }
-
 
 
   submitAnswers(): void {
@@ -162,7 +161,7 @@ export class HiqlashGameComponent implements OnInit {
           this.gameService.reportHiQlashVotingDone(this.gameId);
           console.log('Voting done')
         }
-        setTimeout(() => {  
+        setTimeout(() => {
           console.log("Voted")
         })
       })

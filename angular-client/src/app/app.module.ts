@@ -21,6 +21,7 @@ import { ResultContainerComponent } from './result-container/result-container.co
 import { SettingsModalComponent } from './settings-modal/settings-modal.component';
 import { HiqlashGameComponent } from './hiqlash-game/hiqlash-game.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { HiqlashVotingComponent } from './hiqlash-voting/hiqlash-voting.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
     SettingsModalComponent,
     HiqlashGameComponent,
     ProgressBarComponent,
+    HiqlashVotingComponent,
   ],
   imports: [
     BrowserModule,

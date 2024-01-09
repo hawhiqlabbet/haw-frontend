@@ -7,7 +7,7 @@ import { RoomPageComponent } from './room-page/room-page.component';
 import { AuthGuard } from './auth.guard';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { HiqlashGameComponent } from './hiqlash-game/hiqlash-game.component';
+import { HiqlashVotingComponent } from './hiqlash-voting/hiqlash-voting.component';
 
 const routes: Routes = [
   { path: '', component: LaunchPageComponent },
@@ -15,7 +15,7 @@ const routes: Routes = [
   // { path: 'register', component: RegisterPageComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'games', component: GamesComponent, canActivate: [AuthGuard] },
-  { path: 'hiqlash', component: HiqlashGameComponent, canActivate: [AuthGuard] },
+  { path: 'hiqlash', component: HiqlashVotingComponent, canActivate: [AuthGuard] },
 
   { path: 'room/:gameId', component: RoomPageComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/', pathMatch: 'full' }, // Redirect to '/' for undefined routes

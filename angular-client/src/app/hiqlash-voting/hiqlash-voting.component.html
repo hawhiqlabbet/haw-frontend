@@ -1,0 +1,28 @@
+<div class="text-center white-heading mb-3">{{currentPrompt}}</div>
+
+    <div class="row mb-3">
+        <div class="answer-container container-1">
+                <img src="assets/speech-bubble1.png" alt="Speech Bubble Image" style="width: 400px; height: 200px;">
+                <div (click)="vote(0)" class="answer-box">
+                    <div class="content">{{currentAnswers[0]}}</div>
+                </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="answer-container container-2">
+            <img src="assets/speech-bubble-inverted1.png" alt="Speech Bubble Image" style="width: 400px; height: 200px;">
+            <div (click)="vote(1)" class="answer-box">
+                <div class="content">{{currentAnswers[0]}}</div>
+            </div>
+        </div>
+    </div>
+
+<ng-container *ngIf="!myVoteDone; else votedText">
+    <div class="text-center pink-info" id="infoText">Välj det roligaste svaret ovan, NU!</div>
+</ng-container>
+<ng-template #votedText>
+    <div class="text-center pink-info" id="infoText">Ta en Nocco&trade; medans de andra röstar</div>
+</ng-template>
+
+<app-progress-bar [timeConst]="endVoteTimeConst" [timeDifference]="timeDifferenceVote"></app-progress-bar>

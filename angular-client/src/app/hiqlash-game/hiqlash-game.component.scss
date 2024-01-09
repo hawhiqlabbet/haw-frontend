@@ -5,15 +5,6 @@
     line-height: 1.2;
 }
 
-.pink-info{
-    font-family: 'Unlock', sans-serif;
-    font-size: 20px;
-    margin-top: 40px;
-    color: $primary;
-    text-align: center;
-    width: 80%;
-}
-
 .white-prompts{
     font-family: 'Unlock', sans-serif;
     font-size: 16px;
@@ -40,40 +31,3 @@
     width: 80%;
 }
 
-.progress{
-    margin-top: 40px;
-}
-
-.answer-container{
-    width: 300px; 
-    height: 150px; 
-    position: relative; 
-    display: inline-block;
-}
-
-.answer-link{
-    cursor: pointer;
-    display: block;
-}
-
-.answer-box {
-    cursor: pointer;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -290%);
-    width: 250px; 
-    height: 80px; 
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.answer-box .content {
-    color: rgba($primary, 0.8);
-    font-weight: bold;
-    font-size: 0.9rem;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    overflow: auto;
-}

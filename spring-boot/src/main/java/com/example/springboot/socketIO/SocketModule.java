@@ -139,14 +139,14 @@ public class SocketModule {
                     if(lobbyData.getEndVoteTime() <= -10) { // Update this value if less or more of viewing time
                         lobbyData.setCurrRound(lobbyData.getCurrRound() + 1);
 
-                        System.err.println("NUM ROUNDS: " + lobbyData.getNumRounds());
-                        System.err.println("CURR ROUND: " + lobbyData.getCurrRound());
                         if(lobbyData.getCurrRound() <= lobbyData.getNumRounds()) {
 
                             // Reset timer and votes and count scores
+                            System.err.println("Before: " + lobbyData.getPlayerScores());
                             lobbyData.setEndVoteTime(lobbyData.getEndVoteTimeConst());
                             lobbyData.calculateScores();
                             lobbyData.resetVotes();
+                            System.err.println("After: " + lobbyData.getPlayerScores());
 
 
                             // New prompt data
@@ -163,7 +163,12 @@ public class SocketModule {
                             socketService.sendMessageCollection("hiQlashPromptUpdate", clients, Map.of("prompt", prompt, "players", players, "promptAnswers", promptAnswers));
                         }
                         else {
-                            // TODO: Send results for end viewing
+                            // Calculate last scores and send for end viewing
+                            if(lobbyData.getCurrRound() == lobbyData.getNumRounds() + 1) {
+                                lobbyData.calculateScores();
+                                lobbyData.resetVotes();
+                            }
+
                             List<HiQlashData.PlayerScores> playerScores = lobbyData.getPlayerScores();
                             socketService.sendMessageCollection("hiQlashEnd", clients, Map.of("playerScores", playerScores));
                         }

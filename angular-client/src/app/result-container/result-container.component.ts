@@ -54,7 +54,6 @@ export class ResultContainerComponent implements OnInit {
     this.subscriptions.push(
       this.userService.newRound(this.gameId, this.username).subscribe({
         next: (response) => {
-          console.log(response)
           const { message } = response
           if (message === 'newRoundSuccess') {
             this.gameService.newRoundSocket(this.gameId, this.username)
@@ -82,9 +81,6 @@ export class ResultContainerComponent implements OnInit {
   }
 
   resetRoom(): void {
-
-    console.log("RESET ROOM")
-
     let currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([currentUrl]);

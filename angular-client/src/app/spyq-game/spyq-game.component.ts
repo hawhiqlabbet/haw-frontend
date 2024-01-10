@@ -180,7 +180,6 @@ export class SpyqGameComponent {
   
 
   flipCard(): void {
-    console.log(this.isFlipped)
     this.isFlipped = !this.isFlipped;
 
   }
@@ -194,11 +193,9 @@ export class SpyqGameComponent {
         const { message } = data
         if (message === 'spyQVoteSuccessDone') {
           this.gameService.reportSpyQVotingDone(this.gameId)
-          console.log('Voting done')
           this.votingDone = true
         }
         setTimeout(() => {
-          console.log("Voted")
         })
       })
     )

@@ -187,8 +187,6 @@ export class RoomPageComponent {
         next: (response) => {
           const { message, data, gameData } = response
 
-          console.log("MEssage: ", message, " Data: ", data)
-
           if (message === 'getGameDataSuccess' && data) {
             const { players, gameChoice } = data;
             this.gameChoice = gameChoice;
@@ -211,7 +209,6 @@ export class RoomPageComponent {
             }).filter((item) => !(new Set(players).has(item.username)));
 
             if (gameData) {
-              console.log("gameData: ",gameData);
               this.gameStarted = true
             //  this.gameChoice = gameData.gameChoice
               this.gameData = gameData
@@ -246,7 +243,6 @@ export class RoomPageComponent {
         if (message === 'startGameSuccess') {
           this.animationDone = false
           this.gameService.startGameSocket(this.gameId, this.username)
-          console.log(response)
         }
       },
       error: (err) => {

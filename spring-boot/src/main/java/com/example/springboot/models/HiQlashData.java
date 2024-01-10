@@ -298,7 +298,7 @@ public class HiQlashData implements LobbyData{
 
             for(PlayerScores scores : playerScores) {
                 if(scores.player.equals(player)){
-                    scores.votes = score;
+                    scores.votes += score;
                 }
             }
         }

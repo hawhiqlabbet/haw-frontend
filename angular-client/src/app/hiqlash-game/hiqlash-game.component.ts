@@ -89,15 +89,9 @@ export class HiqlashGameComponent implements OnInit {
     this.currentAnswers = this.gameData.currentAnswers ?? ['', '']
     this.currentPrompt = this.gameData.currentPrompt ?? ''
 
-    console.log(this.myAnswersDone)
-    console.log(this.allAnswersDone)
-    console.log(this.showPromptBlock)
-
     this.subscriptions.push(
       this.gameService.hiQlashAnswersDoneEvent().subscribe((data: any) => {
         this.showPromptBlock = false;
-        console.log('all answering done')
-
       })
     )
 
@@ -106,8 +100,6 @@ export class HiqlashGameComponent implements OnInit {
         const { votingData } = data
         this.votingData = votingData
         this.allVotesDone = true;
-
-        console.log('all votes done')
       })
     )
 
@@ -118,7 +110,6 @@ export class HiqlashGameComponent implements OnInit {
         this.currentPlayers = players
         this.currentAnswers = promptAnswers
         this.currentPrompt = prompt
-        console.log("PROMPT: ", prompt, " PLAYERS: ", players, " ANSWERS: ", promptAnswers)
       })
     )
 
@@ -140,9 +131,7 @@ export class HiqlashGameComponent implements OnInit {
         const { message } = data
         if (message === 'HiQlashAnswerSuccessDone') {
           this.gameService.reportHiQlashAnswersDone(this.gameId)
-          console.log('answering done')
         }
-        console.log(message)
       })
     )
   }
@@ -150,21 +139,13 @@ export class HiqlashGameComponent implements OnInit {
   vote(choice: number): void {
     this.myVoteDone = true;
 
-    //let choice_nr: number = parseInt(choice)
-
-    console.log("pressed ", choice)
-    console.log(this.gameData)
-    //console.log(this.gameData.currentPlayers[choice])
-
     this.subscriptions.push(
       this.userService.hiQlashVote(this.gameId, this.username, this.currentPlayers[choice]).subscribe((data: any) => {
         const { message } = data
         if (message === 'hiQlashVoteSuccessDone') {
           this.gameService.reportHiQlashVotingDone(this.gameId);
-          console.log('Voting done')
         }
         setTimeout(() => {
-          console.log("Voted")
         })
       })
     )

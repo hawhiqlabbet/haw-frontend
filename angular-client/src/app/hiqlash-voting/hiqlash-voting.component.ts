@@ -17,7 +17,6 @@ export class HiqlashVotingComponent implements OnInit, OnChanges {
 
 
   ngOnInit(): void {
-    console.log(this.currentAnswers)
     if (this.currentAnswers && this.currentAnswers.length >= 2) {
       this.startAnimation()
     }

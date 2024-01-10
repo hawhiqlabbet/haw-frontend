@@ -110,7 +110,7 @@ public class Controller {
             "En konstig sak att säga under standup på Magic Monday.",
             "En olämplig aktivitet under ett KM.",
             "HiQ Town Hall annonserar nästa konsultgrupp!: ____",
-            "Den största anledningen till att HiQ's tillväxt",
+            "Den största anledningen till HiQ's tillväxt",
             "Den nya satsningen för marknadsföring av HiQ innefattar ____",
             "Temat för nästa julfest"
     );
@@ -522,6 +522,9 @@ public class Controller {
             if(lobbyData.hasPlayerVoted((username))) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Player: " + username + " already voted"));
             }
+        //    if(lobbyData.getCurrentPlayers().contains(username)) {
+        //        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Player: " + username + " cannot vote on prompts which they have answered"));
+        //    }
 
             lobbyData.setVotedFor(username, votedFor);
             lobbyData.setVoted(username);

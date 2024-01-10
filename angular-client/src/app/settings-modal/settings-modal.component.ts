@@ -36,7 +36,6 @@ export class SettingsModalComponent {
   }
 
   ngOnInit() {
-    console.log(this.gameChoice)
     this.selectedTime = this.timeDifference / 1000
     
 
@@ -59,7 +58,6 @@ export class SettingsModalComponent {
     else {
       console.log("Error, wierd gameChoice")
     }
-    console.log(this.getSelectedLabel())
   }
 
   displayStyle = "none"

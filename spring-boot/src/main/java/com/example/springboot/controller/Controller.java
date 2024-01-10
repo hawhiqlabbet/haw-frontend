@@ -341,15 +341,11 @@ public class Controller {
             endVoteTime = endVoteTime / 1000;
 
             List<String> prompts;
-            if(category.equals("default")) {
-                prompts = promptsDefault;
-            }
-            else if(category.equals("HiQ")) {
+            if(category.equals("HiQ")) {
                 prompts = promptsHiq;
             }
             else {
-                System.err.println("No category chosen for HiQlash, sending back empty list");
-                prompts = Arrays.asList("");
+                prompts = promptsDefault;
             }
 
             HiQlashData lobbyData = new HiQlashData(lobby.getPlayers().size(), lobby.getPlayers(), Arrays.asList(votingObject), Arrays.asList(hasVoted), endTime, endVoteTime, prompts);

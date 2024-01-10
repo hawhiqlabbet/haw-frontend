@@ -10,19 +10,9 @@
 .white-box {
   display: flex;
   justify-content: space-evenly;
+  height: 15%;
   align-items: center;
   padding: 0 20px; 
-}
-
-.icon-frame {
-  width: 2.7rem;
-  height: 2.7rem;
-  border: 0.2em solid $primary;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .icon-image {
@@ -134,8 +124,8 @@
 }
 
 .icon-frame {
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 4.7rem;
+  height: 4.7rem;
   border: 0.2em solid $primary;
   border-radius: 50%;
   overflow: hidden;
@@ -145,6 +135,7 @@
   position: relative;
   z-index: 1; /* Set a z-index for the icon */
   margin: 0 10px; /* Maintain margin for the icon-frame */
+  box-shadow: 0 2px 4px rgba(0, 0, 0.2);
 }
 
 

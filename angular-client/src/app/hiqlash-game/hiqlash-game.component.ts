@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { UserService } from '../services/user.service';
 import { Subscription } from 'rxjs';
+import { User } from '../room-page/room-page.component';
 
 interface GameData {
   endTime: number
@@ -40,8 +41,11 @@ export class HiqlashGameComponent implements OnInit {
   gameDone: boolean = false;
 
   votingData: any[] = []
+  votedForOne: string[] = []
+  votedForTwo: string[] = []
   playerScores: any[] = []
 
+  @Input() users: User[] = []
   @Input() timeDifference: number = 0
   @Input() timeDifferenceVote: number = 0
   @Input() gameId: string = ''
@@ -73,7 +77,7 @@ export class HiqlashGameComponent implements OnInit {
   currentAnswers: string[] = ['', '']
   currentPlayers: string[] = ['', '']
   currentPrompt: string = ''
-  
+
 
 
   ngOnInit() {
@@ -100,8 +104,11 @@ export class HiqlashGameComponent implements OnInit {
 
     this.subscriptions.push(
       this.gameService.hiQlashVotingDoneEvent().subscribe((data: any) => {
-        const { votingData } = data
+        const { votingData, votedForOne, votedForTwo } = data
         this.votingData = votingData
+        // this.votedForOne = votedForOne
+        // this.votedForTwo = votedForTwo
+
         this.allVotesDone = true;
       })
     )

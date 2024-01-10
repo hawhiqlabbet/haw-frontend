@@ -100,7 +100,7 @@ public class Controller {
 
     public static final List<String> promptsHiq = Arrays.asList(
             "Den sämsta ursäkten för att ringa in sjuk till jobbet.",
-            "Om HiQ-kontoret hade en maskot, vad skulle det vara och varför?",
+            "Om HiQ hade en maskot, vad skulle det vara och varför?",
             "En ny HiQ-företagspolicy: ____ på fredagar.",
             "Den oskrivna regeln i HiQ:s anställningshandbok.",
             "En nekad HiQ-slogan för en motivationsaffisch.",
@@ -112,7 +112,8 @@ public class Controller {
             "HiQ Town Hall annonserar nästa konsultgrupp!: ____",
             "Den största anledningen till HiQ's tillväxt",
             "Den nya satsningen för marknadsföring av HiQ innefattar ____",
-            "Temat för nästa julfest"
+            "Temat för nästa julfest",
+            ""
     );
 
     //@CrossOrigin(origins = "http://localhost:4200")

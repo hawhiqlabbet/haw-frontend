@@ -78,12 +78,15 @@ public class HiQlashData implements LobbyData{
                 }
                 playerPrompts.prompts.add(prompts.get(promptIndex));
                 playerPrompts.promptAnswers.add("");
-                usedPrompts.add(prompts.get(promptIndex));
+                if(!usedPrompts.contains(prompts.get(promptIndex))) {
+                    usedPrompts.add(prompts.get(promptIndex));
+                }
             }
 
             // Add unique prompts to the player
             promptsForPlayers.add(playerPrompts);
         }
+        System.err.println("USED PROMPTS: " + this.usedPrompts);
         Collections.shuffle(this.usedPrompts);
     }
 

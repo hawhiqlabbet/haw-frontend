@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { UserService } from '../services/user.service';
 import { Subscription } from 'rxjs';
@@ -63,6 +63,8 @@ export class HiqlashGameComponent implements OnInit {
     currentPrompt: ''
   };
 
+  @Output() resetRoom: EventEmitter<boolean> = new EventEmitter<boolean>
+
   promptAnswer1: string = ''
   promptAnswer2: string = ''
 
@@ -71,6 +73,7 @@ export class HiqlashGameComponent implements OnInit {
   currentAnswers: string[] = ['', '']
   currentPlayers: string[] = ['', '']
   currentPrompt: string = ''
+  
 
 
   ngOnInit() {
@@ -118,6 +121,12 @@ export class HiqlashGameComponent implements OnInit {
         const { playerScores } = data
         this.playerScores = playerScores
         this.gameDone = true
+      })
+    )
+
+    this.subscriptions.push(
+      this.gameService.newRoundEvent().subscribe((data: any) => {
+        this.resetRoom.emit()
       })
     )
   }

@@ -142,12 +142,9 @@ public class SocketModule {
                         if(lobbyData.getCurrRound() <= lobbyData.getNumRounds()) {
 
                             // Reset timer and votes and count scores
-                            System.err.println("Before: " + lobbyData.getPlayerScores());
                             lobbyData.setEndVoteTime(lobbyData.getEndVoteTimeConst());
                             lobbyData.calculateScores();
                             lobbyData.resetVotes();
-                            System.err.println("After: " + lobbyData.getPlayerScores());
-
 
                             // New prompt data
                             String prompt = lobbyData.getUsedPrompts().get(0);
@@ -220,7 +217,6 @@ public class SocketModule {
     }
 
     private DataListener<SocketRecieve> handleHiQlashVotingDone() {
-        System.out.println("REPORTING VOTING DONE TO ALL CLIENTS1");
         return (senderClient, data, ackSender) -> {
             String gameId = data.getGameId();
             LobbyData ld = lobbyService.getLobbyData(gameId);
@@ -232,7 +228,6 @@ public class SocketModule {
                 List<String> votedForTwo = lobbyData.getVotedForTwo();
 
                 Collection<SocketIOClient> clients = server.getRoomOperations(gameId).getClients();
-                System.out.println("REPORTING VOTING DONE TO ALL CLIENTS");
                 socketService.sendMessageCollection("hiQlashVotingDone", clients, Map.of("gameId", gameId, "votingData", votingData, "votedForOne", votedForOne, "votedForTwo", votedForTwo));
             }
         };

@@ -34,17 +34,18 @@ export class SpyqGameComponent {
     spyName: '',
     votingObject: []
   };
+
+  @Input() gameChoice: string = ''
   @Input() gameId: string = ''
   @Input() username: string = ''
   @Input() users: User[] = []
   @Input() timeDifference: number = 0
   @Input() timeDifferenceVote: number = 0
-
-  @Input() votingDone: boolean = false
-  @Output() votingDoneChanged: EventEmitter<boolean> = new EventEmitter<boolean>
   @Input() votingData: any[] = []
+  @Output() getNewData: EventEmitter<string> = new EventEmitter<string>
   @Output() resetRoom: EventEmitter<boolean> = new EventEmitter<boolean>
 
+  votingDone: boolean = false
   isFlipped: boolean = false
   userHasVoted: boolean = false
   spyName: string = ''
@@ -142,15 +143,27 @@ export class SpyqGameComponent {
   // spyName: string = 'emelie'
 
   constructor(private gameService: GameService, private userService: UserService) {
+  }
+
+  ngOnInit() {
+    if(this.gameData.votingObject && this.gameData.votingObject.length > 0) {
+      this.votingDone = true
+    }
+
+    this.votingData = this.gameData.votingObject ?? []
+    this.spyName = this.gameData.spyName
+    this.foundSpy = this.gameData.foundSpy
+
 
     this.subscriptions.push(
       this.gameService.votingDoneEvent().subscribe((data: any) => {
         const { votingData, foundSpy, spyName } = data
         this.votingData = votingData
-        console.log('votindg data: ', data)
         this.foundSpy = foundSpy
         this.spyName = spyName
-        this.votingDoneChanged.emit(true)
+        this.votingDone = true
+
+        this.getNewData.emit("Get new data mr parent")
       })
     )
 
@@ -159,12 +172,12 @@ export class SpyqGameComponent {
         this.resetRoom.emit()
       })
     )
-
-    this.gameService.newRoundEvent()
-    console.log("GameData: ", this.gameData)
-
-
+    
+    if(this.gameData.endVoteTime < 0 && localStorage.getItem('isHost') === 'true') {
+      this.gameService.reportSpyQVotingDone(this.gameId)
+    }
   }
+  
 
   flipCard(): void {
     console.log(this.isFlipped)
@@ -182,6 +195,7 @@ export class SpyqGameComponent {
         if (message === 'spyQVoteSuccessDone') {
           this.gameService.reportSpyQVotingDone(this.gameId)
           console.log('Voting done')
+          this.votingDone = true
         }
         setTimeout(() => {
           console.log("Voted")

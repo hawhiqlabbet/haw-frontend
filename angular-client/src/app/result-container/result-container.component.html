@@ -3,7 +3,7 @@
 <app-background-stars></app-background-stars>
 <div class="result-container" [ngClass]="{'centered-text': !showResultText}">
 
-    <ng-container *ngIf="!showResultText; else userResult">
+    <ng-container *ngIf="!showResultText && gameChoice=='SpyQ'; else userResult">
         <ng-container *ngIf="!gameData.foundSpy; else foundSpyTemplate">
             <img class="image" src="https://i.imgur.com/EPxyW4M.gif" width="104" height="104" >
             <h6 class="found-spy-info text-center">Åhnej, ni lyckades inte hitta SpyQ!</h6>
@@ -23,7 +23,7 @@
                         <i class="bi bi-incognito spy-icon"></i>
                     </ng-container>
                     <ng-template #spyVotes> 
-                        <h6 class="result-user-text">{{user.player}}: {{user.votes}} {{ user.votes === 1 ? 'röst' : 'röster' }}</h6>
+                        <h6 class="result-user-text">{{user.player}}: {{user.votes}} {{gameChoice === 'SpyQ' ? (user.votes === 1 ? 'röst' : 'röster') : 'Poäng' }}</h6>
                     </ng-template>
                 </div>
             </ng-container>

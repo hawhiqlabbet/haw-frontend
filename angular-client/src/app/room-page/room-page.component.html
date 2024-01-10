@@ -68,14 +68,13 @@
 
                     <app-spyq-game 
                         [gameData]="gameData" 
+                        [gameChoice]="gameChoice"
                         [gameId]="gameId" 
                         [username]="username" 
                         [timeDifference]="timeDifference" 
                         [timeDifferenceVote]="timeDifferenceVote" 
                         [users]="users"
-                        [votingData]="votingData"
-                        [votingDone]="votingDone"
-                        (votingDoneChanged)="handleVotingDoneChanged($event)"
+                        (getNewData)="getNewData()"
                         (resetRoom)="resetRoom()">
                     </app-spyq-game> 
                 </ng-container>
@@ -83,6 +82,7 @@
                 <ng-template #hiQlashGame>
                     <app-hiqlash-game
                     [gameData]="gameData" 
+                    [gameChoice]="gameChoice"
                     [gameId]="gameId"
                     [username]="username"
                     [timeDifference]="timeDifference" 

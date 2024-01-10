@@ -211,7 +211,7 @@ export class RoomPageComponent {
             }).filter((item) => !(new Set(players).has(item.username)));
 
             if (gameData) {
-              console.log(gameData);
+              console.log("gameData: ",gameData);
               this.gameStarted = true
             //  this.gameChoice = gameData.gameChoice
               this.gameData = gameData
@@ -269,6 +269,10 @@ export class RoomPageComponent {
 
   handleAnimationDone(value: boolean) {
     this.animationDone = value
+  }
+
+  getNewData(): void {
+    this.getGameData(this.gameId);
   }
 
   resetRoom(): void {

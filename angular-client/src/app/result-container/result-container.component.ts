@@ -17,6 +17,7 @@ export class ResultContainerComponent implements OnInit {
   @Input() gameData: any
   @Input() subscriptions: Subscription[] = []
   @Input() gameId: string = ''
+  @Input() gameChoice: string = ''
 
   username: string = localStorage.getItem('username') ?? ''
   isHost = localStorage.getItem("isHost") == 'true' ? true : false

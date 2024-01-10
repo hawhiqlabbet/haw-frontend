@@ -427,14 +427,15 @@ public class Controller {
                 spyQData.sortVotingObjectsByVotes();
                 gameDataMessage.setVotingObject(votingObject);
 
-                assert username != null;
-                if (!username.equals(spy)) {
-                    gameDataMessage.setCountry(country);
-                    gameDataMessage.setFoundSpy(foundSpy);
-                    gameDataMessage.setSpyName(spy);
-                }
+            //    assert username != null;
+            //    if (!username.equals(spy)) {
+                gameDataMessage.setCountry(country);
+                gameDataMessage.setFoundSpy(foundSpy);
+                gameDataMessage.setSpyName(spy);
+            //    }
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess", "data", lobby, "gameData", gameDataMessage));
             }
+
             if(spy.equals(username))
                 gameDataMessage.setCountry("");
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameDataMessage));

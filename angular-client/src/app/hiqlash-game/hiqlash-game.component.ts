@@ -45,6 +45,7 @@ export class HiqlashGameComponent implements OnInit {
   @Input() timeDifference: number = 0
   @Input() timeDifferenceVote: number = 0
   @Input() gameId: string = ''
+  @Input() gameChoice: string = ''
   @Input() username: string = ''
   @Input() gameData: GameData = {
     endTime: 0,

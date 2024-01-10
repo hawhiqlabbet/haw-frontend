@@ -21,12 +21,23 @@
         <div id="resultText">
             <ng-container *ngFor="let user of votingData; let i = index">
                 <div class="result-user-container">
-                    <ng-container *ngIf="user.player === gameData.spyName; else spyVotes">
-                        <h6 class="result-user-text bold-spy-user">{{user.player}}: {{user.votes}} {{ user.votes === 1 ? 'röst' : 'röster' }}</h6>
-                        <i class="bi bi-incognito spy-icon"></i>
+                    <ng-container *ngIf="gameChoice =='SpyQ'; else HiQlash">
+                        <ng-container *ngIf="user.player === gameData.spyName; else spyVotes">
+                            <h6 class="result-user-text bold-spy-user">{{user.player}}: {{user.votes}} {{ user.votes === 1 ? 'röst' : 'röster' }}</h6>
+                            <i class="bi bi-incognito spy-icon"></i>
+                        </ng-container>
+                        <ng-template #spyVotes> 
+                            <h6 class="result-user-text">{{user.player}}: {{user.votes}} {{ user.votes === 1 ? 'röst' : 'röster' }}</h6>
+                        </ng-template>
                     </ng-container>
-                    <ng-template #spyVotes> 
-                        <h6 class="result-user-text">{{user.player}}: {{user.votes}} {{gameChoice === 'SpyQ' ? (user.votes === 1 ? 'röst' : 'röster') : 'Poäng' }}</h6>
+                    <ng-template #HiQlash>
+                        <ng-container *ngIf="i === 0; else losers">
+                            <h6 class="result-user-text bold-spy-user">{{user.player}}: {{user.votes}} Poäng</h6>
+                            <i class="bi bi-trophy-fill bi-4x text-white"></i>
+                        </ng-container>
+                        <ng-template #losers> 
+                            <h6 class="result-user-text">{{user.player}}: {{user.votes}} Poäng</h6>
+                        </ng-template>
                     </ng-template>
                 </div>
             </ng-container>

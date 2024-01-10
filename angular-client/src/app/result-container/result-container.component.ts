@@ -50,6 +50,24 @@ export class ResultContainerComponent implements OnInit {
     )
   }
 
+  leaveGame(): void {
+    this.subscriptions.push(
+      this.userService.leaveGame(this.gameId, this.username).subscribe({
+        next: (response) => {
+          const { message } = response
+          if (message === 'leaveGameSuccess') {
+            this.gameService.leaveGameSocket(this.gameId, this.username)
+            this.router.navigateByUrl('/home')
+            this.userService.removeIsHost()
+          }
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
+    )
+  }
+
   newRound(): void {
     this.subscriptions.push(
       this.userService.newRound(this.gameId, this.username).subscribe({

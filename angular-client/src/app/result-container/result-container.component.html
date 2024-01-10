@@ -34,10 +34,14 @@
     </ng-template>
 </div>
 
-<ng-container *ngIf="isHost;">
+<ng-container *ngIf="isHost; else isPleb">
     <div class="buttons-container">
         <button (click)="newRound()" type="button" class="btn btn-secondary">Starta en ny omgång</button>
         <button (click)="closeLobby()" type="button" class="btn btn-secondary">Avsluta Spelet</button>
     </div>
 </ng-container>
-
+<ng-template #isPleb>
+    <div class="buttons-container">
+        <button (click)="leaveGame()" type="button" class="btn btn-secondary">Lämna</button>
+    </div>
+</ng-template>

@@ -55,5 +55,36 @@
   
   .save-button{
     margin-top: 20px;
-
   }
+
+.dropdown-menu {
+  width: 100%;
+  color: $primary;
+}
+
+.dropdown-menu a.dropdown-item {
+  color: $primary;
+}
+
+.dropdown-menu a.dropdown-item:hover,
+.dropdown-menu a.dropdown-item:focus {
+  color: $primary;
+}
+
+/* Styling for hover, active, and focus states of .dropdown-item */
+.dropdown-menu a.dropdown-item:hover,
+.dropdown-menu a.dropdown-item:focus,
+.dropdown-menu a.dropdown-item:active,
+.dropdown-menu a.dropdown-item.active {
+  color: white;
+  background-color: rgba($primary, 0.7);
+  border-color: $primary;
+}
+
+.dropdown-menu a.dropdown-item:focus,
+.dropdown-menu a.dropdown-item:active:focus,
+.dropdown-menu a.dropdown-item.active:focus {
+  box-shadow: rgba($primary, 0.2);
+  background-color: white;
+  color: $primary;
+}

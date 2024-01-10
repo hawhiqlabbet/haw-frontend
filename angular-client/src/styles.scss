@@ -64,6 +64,9 @@ body {
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show>.btn-secondary.dropdown-toggle:focus {
   box-shadow: rgba($primary, 0.5);
+  background-color: white;
+  color: $primary;
+
 }
 
 /* Secondary button styles */

@@ -1,6 +1,34 @@
 <div class="d-flex flex-column align-items-center vh-100 vv-100 linear-background">
+    <div class="background-overlay" *ngIf="isOverlayActive"></div>
+    <div id="info-overlay" class="overlay">
+        <div class="overlay-content">
+            <ng-container *ngIf="gameChoice=='SpyQ'; else hiQlashInfo">
+                <div class="white-heading text-center "> SpyQ </div>
+                <p>
+                    När SpyQ startar blir alla spelare <i>förutom en</i> tilldelade ett hemligt ord baserat på vald kategori. 
+                </p>
+                <p>
+                    Målet med spelet är att lista ut vilken spelare som inte vet det hemliga ordet.
+                    För att göra detta ställer spelare frågor till varandra i klockvis ordning. 
+                </p>
+                <p>
+                    <b>Frågan måste ska kunna besvaras med ett Ja/Nej</b>
+                </p>
+            </ng-container>
+            <ng-template #hiQlashInfo>
+                <div class="white-heading text-center "> HiQlash </div>
+                <p>
+                    När HiQlash startar blir alla spelare tilldelade två prompts baserade på vald kategori, varpå båda promptsen ska besvaras.
+                    Varje prompt delas av två spelare, vars svar kommer ställas mot varandra inför en röstning.                     
+                </p>
+                <p>
+                    Målet med spelet är att använda såkallad "humor" för att få så många av de andra spelarnas röster som möjligt. 
+                    Poängen summeras och en vinnare krönas då alla prompts blivit röstade på
+                </p>
+            </ng-template>
+        </div>
+    </div>
     <ng-container *ngIf="!gotData; else loadStuff"></ng-container>
-    
     <ng-template #loadStuff>
         <app-settings-modal #settingsModal       
             [timeDifference]="gameTimeInMS"
@@ -9,8 +37,9 @@
         </app-settings-modal>
 
         <ng-container *ngIf="!gameStarted; else gameStartedContent">
-
-            <div class="white-heading text-center ">RUMSKOD: {{gameId}}</div>
+            <div class="white-heading text-center ">RUMSKOD: {{gameId}}
+                <div id="info" class="bi bi-info-circle-fill text-white" (click)="openInfoPopup($event)"></div>
+            </div>
             
             <button *ngIf="isHost" (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
             <div class="btn-group" role="group" aria-label="Basic example" style="width: 90%;">
@@ -19,7 +48,7 @@
             </div>
             <button *ngIf="!isHost" (click)="leaveGame()" type="button" class="btn room-button-primary btn-secondary">Lämna rummet</button>
 
-            <div class="svg-container">
+             <div class="svg-container">
                 <svg class="circle-svg" style="height: 70vh; width: 100%;">
                     <ng-container *ngFor="let user of users; let i = index">
                         <text 

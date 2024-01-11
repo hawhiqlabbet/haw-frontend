@@ -20,6 +20,7 @@ export interface User {
   styleUrls: ['./room-page.component.scss']
 })
 export class RoomPageComponent {
+  closePopupHandler: () => void;
 
   subscriptions: Subscription[] = []
   users: User[] = [];
@@ -42,9 +43,15 @@ export class RoomPageComponent {
 
   gotData: boolean = false;
 
-  constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) {
-  }
+  selectedInfo: string = '';
+  displayInfo: string = ""
+  isOverlayActive: boolean = false;
+  
 
+  constructor(private gameService: GameService, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) {
+    this.closePopupHandler = () => {};
+  }
+  
   handleSettingsChange(event: { selectedCategory: string, selectedTime: number }): void {
     this.category = event.selectedCategory;
     this.gameTimeInMS = event.selectedTime;
@@ -281,4 +288,34 @@ export class RoomPageComponent {
 
   }
 
+  openInfoPopup(event: Event): void {
+    var overlay = document.getElementById('info-overlay');
+    if (!overlay) {
+      return;
+    }
+
+    this.isOverlayActive = true;
+    overlay.style.display = 'block';
+
+    // Store the function reference to use when removing the event listener
+    this.closePopupHandler = () => this.closeInfoPopup();
+
+    // Add an event listener to close the overlay when clicking anywhere on the screen
+    document.addEventListener('click', this.closePopupHandler);
+
+    // Stop the event propagation to prevent immediate closing
+    event.stopPropagation();
+  }
+
+  closeInfoPopup(): void {
+    var overlay = document.getElementById('info-overlay');
+    if (!overlay)
+      return;
+
+    this.isOverlayActive = false;
+    overlay.style.display = 'none';
+
+    // Remove the event listener using the stored function reference
+    document.removeEventListener('click', this.closePopupHandler);
+  }
 }

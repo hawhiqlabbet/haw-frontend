@@ -197,6 +197,8 @@ export class RoomPageComponent {
           if (message === 'getGameDataSuccess' && data) {
             const { players, gameChoice } = data;
             this.gameChoice = gameChoice;
+            console.log("PLAYERS", players)
+            // this.players = players
 
             this.users = Object.keys(players).map((i) => {
               const existingUser = this.findUserByUsername(this.users, players[i].username);
@@ -217,7 +219,7 @@ export class RoomPageComponent {
 
             if (gameData) {
               this.gameStarted = true
-            //  this.gameChoice = gameData.gameChoice
+              //  this.gameChoice = gameData.gameChoice
               this.gameData = gameData
               this.animationDone = true
 

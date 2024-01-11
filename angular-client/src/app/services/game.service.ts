@@ -90,10 +90,10 @@ export class GameService {
   }
 
   reportHiQlashAnswersDone(gameId: string) {
-    this.socket.emit('reportHiQlashAnswersDone', {gameId})
+    this.socket.emit('reportHiQlashAnswersDone', { gameId })
   }
   reportHiQlashVotingDone(gameId: string) {
-    this.socket.emit('reportHiQlashVotingDone', {gameId})
+    this.socket.emit('reportHiQlashVotingDone', { gameId })
   }
 
   newRoundEvent(): Observable<any> {
@@ -164,7 +164,7 @@ export class GameService {
   hiQlashAnswersDoneEvent() {
     return new Observable((observer) => {
       this.socket.on('hiQlashAnswersDone', (data: any) => {
-        const{ gameId } = data
+        const { gameId } = data
         observer.next({ gameId })
       })
     })
@@ -173,8 +173,9 @@ export class GameService {
   hiQlashVotingDoneEvent() {
     return new Observable((observer) => {
       this.socket.on('hiQlashVotingDone', (data: any) => {
-        const { votingData } = data
-        observer.next({ votingData })
+        console.log(data)
+        const { votingData, votedForOne, votedForTwo } = data
+        observer.next({ votingData, votedForOne, votedForTwo })
       })
     })
   }
@@ -182,7 +183,7 @@ export class GameService {
   hiQlashPromptUpdateEvent() {
     return new Observable((observer) => {
       this.socket.on('hiQlashPromptUpdate', (data: any) => {
-        const{ prompt, players, promptAnswers } = data
+        const { prompt, players, promptAnswers } = data
         observer.next({ prompt, players, promptAnswers })
       })
     })
@@ -191,7 +192,7 @@ export class GameService {
   hiQlashEndEvent() {
     return new Observable((observer) => {
       this.socket.on('hiQlashEnd', (data: any) => {
-        const{ playerScores } = data
+        const { playerScores } = data
         observer.next({ playerScores })
       })
     })

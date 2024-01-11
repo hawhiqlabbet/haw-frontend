@@ -192,8 +192,8 @@ export class GameService {
   hiQlashEndEvent() {
     return new Observable((observer) => {
       this.socket.on('hiQlashEnd', (data: any) => {
-        const { playerScores } = data
-        observer.next({ playerScores })
+        const { playerScores, highestScore } = data
+        observer.next({ playerScores, highestScore })
       })
     })
   }

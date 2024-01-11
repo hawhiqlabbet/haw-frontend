@@ -167,7 +167,9 @@ public class SocketModule {
                             }
 
                             List<HiQlashData.PlayerScores> playerScores = lobbyData.getPlayerScores();
-                            socketService.sendMessageCollection("hiQlashEnd", clients, Map.of("playerScores", playerScores));
+                            playerScores.sort(Comparator.comparingInt(HiQlashData.PlayerScores::getVotes).reversed());
+                            int highestScore = playerScores.get(0).getVotes();
+                            socketService.sendMessageCollection("hiQlashEnd", clients, Map.of("playerScores", playerScores, "highestScore", highestScore));
                         }
                     }
                 }

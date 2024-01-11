@@ -14,6 +14,7 @@ import anime from 'animejs/lib/anime.es.js';
 })
 export class ResultContainerComponent implements OnInit {
   @Input() votingData: any[] = []
+  @Input() highestScore: number = -1
   @Input() gameData: any
   @Input() subscriptions: Subscription[] = []
   @Input() gameId: string = ''

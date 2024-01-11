@@ -31,7 +31,7 @@
                         </ng-template>
                     </ng-container>
                     <ng-template #HiQlash>
-                        <ng-container *ngIf="i === 0; else losers">
+                        <ng-container *ngIf="i === 0 || highestScore===user.votes; else losers">
                             <h6 class="result-user-text bold-spy-user">{{user.player}}: {{user.votes}} Poäng</h6>
                             <i class="bi bi-trophy-fill bi-4x text-white"></i>
                         </ng-container>

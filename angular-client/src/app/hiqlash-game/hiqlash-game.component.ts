@@ -44,6 +44,7 @@ export class HiqlashGameComponent implements OnInit {
   votedForOne: string[] = []
   votedForTwo: string[] = []
   playerScores: any[] = []
+  highestScore: number = -1
 
   @Input() users: User[] = []
   @Input() timeDifference: number = 0
@@ -125,9 +126,12 @@ export class HiqlashGameComponent implements OnInit {
 
     this.subscriptions.push(
       this.gameService.hiQlashEndEvent().subscribe((data: any) => {
-        const { playerScores } = data
+        const { playerScores, highestScore } = data
         this.playerScores = playerScores
+        this.highestScore = highestScore
         this.gameDone = true
+
+        console.log("HIGHEST SCORE: ", highestScore)
       })
     )
 

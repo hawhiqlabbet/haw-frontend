@@ -32,6 +32,7 @@
 
         <div class="img-player1" *ngIf="allVotesDone">
             <img [src]="getImageUrl(currentPlayers[0])" class="img-fluid" alt="Avatar Image" style="max-width: 40px;">
+            <div class="user-name">{{currentPlayers[0]}}</div>
         </div>
 
         
@@ -57,6 +58,7 @@
 
         <div class="img-player2" *ngIf="allVotesDone">
             <img [src]="getImageUrl(currentPlayers[1])" class="img-fluid" alt="Avatar Image" style="max-width: 40px;">
+            <div class="user-name">{{currentPlayers[1]}}</div>
         </div>
 
     </div>

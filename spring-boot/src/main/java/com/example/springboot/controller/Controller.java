@@ -112,8 +112,7 @@ public class Controller {
             "HiQ Town Hall annonserar nästa konsultgrupp!: ____",
             "Den största anledningen till HiQ's tillväxt",
             "Den nya satsningen för marknadsföring av HiQ innefattar ____",
-            "Temat för nästa julfest",
-            ""
+            "Temat för nästa julfest"
     );
 
     //@CrossOrigin(origins = "http://localhost:4200")

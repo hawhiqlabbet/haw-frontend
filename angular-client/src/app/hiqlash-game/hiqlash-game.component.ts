@@ -117,6 +117,7 @@ export class HiqlashGameComponent implements OnInit {
     this.subscriptions.push(
       this.gameService.hiQlashPromptUpdateEvent().subscribe((data: any) => {
         const { players, promptAnswers, prompt } = data
+        this.allVotesDone = false;
         this.myVoteDone = false;
         this.currentPlayers = players
         this.currentAnswers = promptAnswers

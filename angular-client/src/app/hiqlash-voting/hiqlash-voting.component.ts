@@ -72,18 +72,18 @@ export class HiqlashVotingComponent implements OnInit {
         this.startSequence.restart();
         this.startSequence.pause();
         }
-        /*
         if(this.chooseSequence) {
           console.log('removing choose animation')
           this.chooseSequence.restart();
           this.chooseSequence.pause();
         }
-        */
         if(this.winnerSequence) {
           console.log('removing winner animation')
           this.winnerSequence.restart();
           this.winnerSequence.pause();
         }
+
+        this.allVotesDone = false;
         this.startAnimation();
       })
     )

@@ -33,6 +33,10 @@ export class HiqlashVotingComponent implements OnInit {
   votedForTwo: string[] = ['emelie', 'david']
   allVotesDone: boolean = false
 
+  startSequence: any
+  chooseSequence: any
+  winnerSequence: any
+
   constructor(private gameService: GameService) {
   }
 
@@ -41,9 +45,9 @@ export class HiqlashVotingComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (this.currentAnswers && this.currentAnswers.length >= 2) {
-      this.startAnimation()
-    }
+  //  if (this.currentAnswers && this.currentAnswers.length >= 2) {
+  //    this.startAnimation()
+  //  }
 
     this.subscriptions.push(
       this.gameService.hiQlashVotingDoneEvent().subscribe((data: any) => {
@@ -59,6 +63,30 @@ export class HiqlashVotingComponent implements OnInit {
       })
     )
 
+
+    this.subscriptions.push(
+      this.gameService.hiQlashPromptUpdateEvent().subscribe((data: any) => {
+        console.log("starting animation")
+        if(this.startSequence) {
+        console.log('removing start animation')
+        this.startSequence.restart();
+        this.startSequence.pause();
+        }
+        /*
+        if(this.chooseSequence) {
+          console.log('removing choose animation')
+          this.chooseSequence.restart();
+          this.chooseSequence.pause();
+        }
+        */
+        if(this.winnerSequence) {
+          console.log('removing winner animation')
+          this.winnerSequence.restart();
+          this.winnerSequence.pause();
+        }
+        this.startAnimation();
+      })
+    )
   }
 
   getImageUrl(username: string): string {
@@ -94,7 +122,8 @@ export class HiqlashVotingComponent implements OnInit {
   // }
 
   private startAnimation(): void {
-    anime.timeline({ loop: false })
+    console.log("start animation")
+    this.startSequence = anime.timeline({ loop: false })
       .add({
         targets: '.answer-row-1 .container-1',
         translateX: ['-100vw', '0%'],
@@ -119,7 +148,7 @@ export class HiqlashVotingComponent implements OnInit {
 
   private chooseAnswerAnimation(voteIndex: number) {
     if (voteIndex === 0) {
-      anime.timeline({ loop: false })
+    this.chooseSequence = anime.timeline({ loop: false })
         .add({
           targets: '.answer-row-2 .container-2',
           opacity: [1, 0.2],
@@ -135,7 +164,7 @@ export class HiqlashVotingComponent implements OnInit {
 
     }
     else {
-      anime.timeline({ loop: false })
+    this.chooseSequence = anime.timeline({ loop: false })
         .add({
           targets: '.answer-row-1 .container-1',
           opacity: [1, 0.2],
@@ -155,7 +184,8 @@ export class HiqlashVotingComponent implements OnInit {
 
   private winnerAnimation() {
 
-    const timeline = anime.timeline({ loop: false })
+    //const timeline = anime.timeline({ loop: false })
+    this.winnerSequence = anime.timeline({ loop: false })
       .add({
         targets: '.overlay-box-info',
         opacity: [0, 1],
@@ -205,7 +235,7 @@ export class HiqlashVotingComponent implements OnInit {
 
 
     if (this.votedForOne.length > this.votedForTwo.length) {
-      timeline.add({
+      this.winnerSequence.add({
         targets: '.answer-row-1',
         translateY: ['20%', '-20%', '20%', '-20%', '20%', '-20%', '50%'],
         opacity: 1,
@@ -223,7 +253,7 @@ export class HiqlashVotingComponent implements OnInit {
           rotate: '1turn'
         })
     } else if (this.votedForOne.length < this.votedForTwo.length) {
-      timeline.add({
+      this.winnerSequence.add({
         targets: '.answer-row-2',
         translateY: ['-20%', '20%', '-20%', '20%', '-20%', '20%', '-50%'],
         opacity: 1,
@@ -242,7 +272,7 @@ export class HiqlashVotingComponent implements OnInit {
         })
 
     }
-    timeline.add({
+    this.winnerSequence.add({
       targets: '.overlay-box-result',
       opacity: [0, 1],
       duration: 3000,
@@ -253,6 +283,7 @@ export class HiqlashVotingComponent implements OnInit {
   }
 
   vote(choice: number): void {
+    console.log("PRESSED")
     if (!this.myVoteDone) {
       this.voteEvent.emit(choice);
       this.chooseAnswerAnimation(choice)

@@ -62,7 +62,7 @@ public class Controller {
             "Front-end Developer", "Back-end Developer", "Full-stack Developer", "DevOps Engineer",
             "Quality Assurance Tester", "User Experience Designer", "Technical Support Specialist",
             "IT Project Manager", "Machine Learning Engineer", "Cybersecurity Specialist",
-            "Business Intelligence Analyst", "Web Developer"
+            "Business Intelligence Analyst", "Web Developer", "Recruiter", "Salesperson", "CEO"
     );
 
 
@@ -95,7 +95,15 @@ public class Controller {
             "En konstig sak att ta med till en nudiststrand.",
             "Det sämsta möjliga ämnet för en ståupp-komedi rutin.",
             "Ett kontroversiellt namn för en dejtingapp.",
-            "En konstig superkraft att ha i vardagen."
+            "En konstig superkraft att ha i vardagen.",
+            "Nyckeln till fred på jorden.",
+            "Tre ord för att beskriva <--->.",
+            "<--->'s största svaghet.",
+            "<--->'s hemliga internet-nickname",
+            "<--->'s mörkaste hemlighet",
+            "Om <---> startade ett politiskt parti, vad skulle det heta?",
+            "Om <---> var en superhjälte skulle hens superkraft vara ____",
+            "Om <---> var en stand-up komiker, vilket kontroversiellt ämne skulle hen skämta om?"
     );
 
     public static final List<String> promptsHiq = Arrays.asList(
@@ -112,7 +120,11 @@ public class Controller {
             "HiQ Town Hall annonserar nästa konsultgrupp!: ____",
             "Den största anledningen till HiQ's tillväxt",
             "Den nya satsningen för marknadsföring av HiQ innefattar ____",
-            "Temat för nästa julfest"
+            "Temat för nästa julfest",
+            "Det bästa sättet att få in nya kunder.",
+            "Repan har köpt in ____, produktiviteten stiger!",
+            "Vad <---> gör i labbet.",
+            "LEAP-programmet stängs ned, följden blir"
     );
 
     //@CrossOrigin(origins = "http://localhost:4200")

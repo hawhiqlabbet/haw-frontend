@@ -63,6 +63,7 @@ public class HiQlashData implements LobbyData{
         Collections.shuffle(this.prompts);
         Collections.shuffle(players);
 
+
         for(int i = 0; i < numPlayers; ++i) {
             String playerName = players.get(i).getUsername();
             PlayerPrompts playerPrompts = new PlayerPrompts(playerName);
@@ -76,10 +77,20 @@ public class HiQlashData implements LobbyData{
                 if(i == (numPlayers - 1) && j == 1) {
                     promptIndex = 0;
                 }
-                playerPrompts.prompts.add(prompts.get(promptIndex));
+                String currPrompt = prompts.get(promptIndex);
+
+                // Replace with names included
+                if (currPrompt.contains("<--->")) {
+                    Random random = new Random();
+                    boolean done = false;
+                    String randomizedPlayerInLobby = players.get(random.nextInt(numPlayers - 1)).getUsername();
+                    currPrompt = currPrompt.replace("<--->", randomizedPlayerInLobby);
+                }
+
+                playerPrompts.prompts.add(currPrompt);
                 playerPrompts.promptAnswers.add("");
-                if(!usedPrompts.contains(prompts.get(promptIndex))) {
-                    usedPrompts.add(prompts.get(promptIndex));
+                if(!usedPrompts.contains(currPrompt)) {
+                    usedPrompts.add(currPrompt);
                 }
             }
 
@@ -87,6 +98,7 @@ public class HiQlashData implements LobbyData{
             promptsForPlayers.add(playerPrompts);
         }
         System.err.println("USED PROMPTS: " + this.usedPrompts);
+
         Collections.shuffle(this.usedPrompts);
     }
 

@@ -45,9 +45,9 @@ export class HiqlashVotingComponent implements OnInit {
 
   ngOnInit(): void {
 
-  //  if (this.currentAnswers && this.currentAnswers.length >= 2) {
-  //    this.startAnimation()
-  //  }
+    if (this.currentAnswers && this.currentAnswers.length >= 2) {
+      this.startAnimation()
+    }
 
     this.subscriptions.push(
       this.gameService.hiQlashVotingDoneEvent().subscribe((data: any) => {

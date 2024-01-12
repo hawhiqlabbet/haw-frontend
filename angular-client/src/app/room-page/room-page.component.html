@@ -18,12 +18,12 @@
             <ng-template #hiQlashInfo>
                 <div class="white-heading text-center "> HiQlash </div>
                 <p>
-                    När HiQlash startar blir alla spelare tilldelade två prompts baserade på vald kategori, varpå båda promptsen ska besvaras.
+                    När HiQlash startar blir alla spelare tilldelade två prompts att besvara, baserade på vald kategori.
                     Varje prompt delas av två spelare, vars svar kommer ställas mot varandra inför en röstning.                     
                 </p>
                 <p>
-                    Målet med spelet är att använda såkallad "humor" för att få så många av de andra spelarnas röster som möjligt. 
-                    Poängen summeras och en vinnare krönas då alla prompts blivit röstade på
+                    Målet med spelet är att använda såkallad <i>"humor"</i> för att få så många av de andra spelarnas röster som möjligt. 
+                    Poängen summeras och en vinnare krönas då röstning genomförts för alla prompts.
                 </p>
             </ng-template>
         </div>
@@ -38,7 +38,7 @@
 
         <ng-container *ngIf="!gameStarted; else gameStartedContent">
             <div class="white-heading text-center ">RUMSKOD: {{gameId}}
-                <div id="info" class="bi bi-info-circle-fill text-white" (click)="openInfoPopup($event)"></div>
+                <div id="info" class="bi bi-info-circle-fill text-white room-sub-heading" (click)="openInfoPopup($event)"> Hur spelar man <i>{{gameChoice}}?</i></div>
             </div>
             
             <button *ngIf="isHost" (click)="startGame()" type="button" class="btn room-button-primary btn-secondary">Starta spelet</button>
@@ -49,7 +49,7 @@
             <button *ngIf="!isHost" (click)="leaveGame()" type="button" class="btn room-button-primary btn-secondary">Lämna rummet</button>
 
              <div class="svg-container">
-                <svg class="circle-svg" style="height: 70vh; width: 100%;">
+                <svg class="circle-svg">
                     <ng-container *ngFor="let user of users; let i = index">
                         <text 
                             *ngIf="user.isHost"

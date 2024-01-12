@@ -1,8 +1,8 @@
 @import '../../styles.scss';
 
 .divider {
-  border-top: 1.5px solid rgba(244, 63, 133, 0.3);   
-  width: 80%; 
+  border-top: 2px solid rgba($primary, 0.35);   
+  width: 340px;
   position: absolute;
   top: 0; 
 }
@@ -10,7 +10,7 @@
 .white-box {
   display: flex;
   justify-content: space-evenly;
-  height: 15%;
+  height: 100px;
   align-items: center;
   padding: 0 20px; 
 }
@@ -27,7 +27,7 @@
 }
 
 .modal-dialog {
-  max-width: 90%;
+  width: 80%;
   margin: auto;
 
 }

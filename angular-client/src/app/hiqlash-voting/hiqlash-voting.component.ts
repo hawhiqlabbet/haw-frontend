@@ -67,17 +67,17 @@ export class HiqlashVotingComponent implements OnInit {
     this.subscriptions.push(
       this.gameService.hiQlashPromptUpdateEvent().subscribe((data: any) => {
         console.log("starting animation")
-        if(this.startSequence) {
-        console.log('removing start animation')
-        this.startSequence.restart();
-        this.startSequence.pause();
+        if (this.startSequence) {
+          console.log('removing start animation')
+          this.startSequence.restart();
+          this.startSequence.pause();
         }
-        if(this.chooseSequence) {
+        if (this.chooseSequence) {
           console.log('removing choose animation')
           this.chooseSequence.restart();
           this.chooseSequence.pause();
         }
-        if(this.winnerSequence) {
+        if (this.winnerSequence) {
           console.log('removing winner animation')
           this.winnerSequence.restart();
           this.winnerSequence.pause();
@@ -102,24 +102,6 @@ export class HiqlashVotingComponent implements OnInit {
     }
     return 'Det är oavgjort!'
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   // if (changes['myVoteDone']) {
-  //   //   const currentValue = changes['myVoteDone'].currentValue;
-  //   //   const previousValue = changes['myVoteDone'].previousValue;
-
-  //   //   if (currentValue !== previousValue && currentValue === false) {
-  //   //     this.startAnimation()
-  //   //   }
-  //   // }
-
-  //   if (changes['allVotesDone'] && changes['allVotesDone'].currentValue) {
-
-  //     this.winnerAnimation();
-  //     console.log("YUOYUO")
-
-  //   }
-  // }
 
   private startAnimation(): void {
     console.log("start animation")
@@ -148,7 +130,7 @@ export class HiqlashVotingComponent implements OnInit {
 
   private chooseAnswerAnimation(voteIndex: number) {
     if (voteIndex === 0) {
-    this.chooseSequence = anime.timeline({ loop: false })
+      this.chooseSequence = anime.timeline({ loop: false })
         .add({
           targets: '.answer-row-2 .container-2',
           opacity: [1, 0.2],
@@ -164,7 +146,7 @@ export class HiqlashVotingComponent implements OnInit {
 
     }
     else {
-    this.chooseSequence = anime.timeline({ loop: false })
+      this.chooseSequence = anime.timeline({ loop: false })
         .add({
           targets: '.answer-row-1 .container-1',
           opacity: [1, 0.2],
@@ -189,12 +171,12 @@ export class HiqlashVotingComponent implements OnInit {
       .add({
         targets: '.overlay-box-info',
         opacity: [0, 1],
-        duration: 1500,
+        duration: 3000,
       })
       .add({
         targets: '.overlay-box-info',
         opacity: [1, 0],
-        duration: 1500,
+        duration: 3000,
       })
       .add({
         targets: '.answer-row-1 .container-1',
@@ -212,25 +194,25 @@ export class HiqlashVotingComponent implements OnInit {
         targets: '.answer-row-1 .img-player1',
         opacity: [0, 1],
         easing: 'easeInExpo',
-        duration: 500
+        duration: 2000
       })
       .add({
         targets: '.answer-row-2 .img-player2',
         opacity: [0, 1],
         easing: 'easeInExpo',
-        duration: 500
+        duration: 2000
       })
       .add({
         targets: '.answer-row-1 .container-1 .small-images-container-1',
         opacity: [0, 1],
         easing: 'easeInExpo',
-        duration: 500
+        duration: 2000
       })
       .add({
         targets: '.answer-row-2 .container-2 .small-images-container-2',
         opacity: [0, 1],
         easing: 'easeInExpo',
-        duration: 500
+        duration: 2000
       })
 
 
@@ -240,14 +222,14 @@ export class HiqlashVotingComponent implements OnInit {
         translateY: ['20%', '-20%', '20%', '-20%', '20%', '-20%', '50%'],
         opacity: 1,
         scale: 1.2,
-        duration: 500,
+        duration: 1000,
         easing: 'easeInExpo'
       })
         .add({
           targets: '.answer-row-2',
           translateY: ['0%', '10%'],
           opacity: [1, 0],
-          duration: 500,
+          duration: 2000,
           scale: 0.5,
           easing: 'easeOutQuad',
           rotate: '1turn'
@@ -258,14 +240,14 @@ export class HiqlashVotingComponent implements OnInit {
         translateY: ['-20%', '20%', '-20%', '20%', '-20%', '20%', '-50%'],
         opacity: 1,
         scale: 1.2,
-        duration: 500,
+        duration: 1000,
         easing: 'easeInExpo'
       })
         .add({
           targets: '.answer-row-1',
           translateY: ['0%', '-10%'],
           opacity: [1, 0],
-          duration: 500,
+          duration: 2000,
           scale: 0.5,
           easing: 'easeOutQuad',
           rotate: '1turn'
@@ -275,7 +257,7 @@ export class HiqlashVotingComponent implements OnInit {
     this.winnerSequence.add({
       targets: '.overlay-box-result',
       opacity: [0, 1],
-      duration: 3000,
+      duration: 5000,
     });
 
     // this.startAnimation()

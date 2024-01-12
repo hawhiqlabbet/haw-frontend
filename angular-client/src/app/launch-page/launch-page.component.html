@@ -10,7 +10,7 @@
       <form #userName="ngForm" (ngSubmit)="chooseUsername(userName.value.username)">
         <div class="white-box fixed-bottom d-flex justify-content-center">
           <div class="name-input-group">
-            <input type="text" class="form-control name-input" placeholder="Välj ditt namn" name="username" ngModel required>
+            <input type="text" class="form-control name-input" placeholder="Välj ditt namn" name="username" ngModel required maxlength="9">
             <button type="submit" class="btn btn-secondary btn-lg name-input"  id="loginButton">BÖRJA SPELA</button>
           </div>
         </div>

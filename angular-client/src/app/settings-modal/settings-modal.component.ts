@@ -37,9 +37,9 @@ export class SettingsModalComponent {
 
   ngOnInit() {
     this.selectedTime = this.timeDifference / 1000
-    
 
-    if(this.gameChoice === "SpyQ") {
+
+    if (this.gameChoice === "SpyQ") {
       this.selectedCategory = "countries"
       this.dropdownItems = [
         { name: 'countries', label: 'Länder' },
@@ -48,11 +48,11 @@ export class SettingsModalComponent {
         { name: 'programmingLanguages', label: 'Programmeringsspråk' }
       ];
     }
-    else if(this.gameChoice === "HiQlash") {
+    else if (this.gameChoice === "HiQlash") {
       this.selectedCategory = "default"
       this.dropdownItems = [
-        { name: 'HiQ', label: 'HiQ'},
-        { name: 'default', label: 'vanliga'}
+        { name: 'HiQ', label: 'HiQ' },
+        { name: 'default', label: 'Random' }
       ]
     }
     else {

@@ -71,46 +71,38 @@
     font-size: 12px;
 }
 
-.btn-primary{
+.btn-join {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bolder;
+  background-color: rgba($secondary, 0.45);
+  border-color:  white;
+  border-width: revert;
+  color: white;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  &:hover {
+    background-color: rgba($secondary, 0.2);
+    border-color: rgba($secondary, 0.2); 
     color: white;
-    background-color: rgba($secondary, 0.45);
-    border-color: white; 
-
-    // box-shadow: 0px 0px 0px 2px rgba(white, 0.25);
+  }
 }
 
-.btn-primary:hover{
-    background-color: rgb($primary, 0.3);
-    border-color: $primary; 
-    color: white;
-}
 
-.btn-secondary{
-    box-shadow: 0 0 10px rgba(white, 0.25);
-    border-color: white;
-    background-color: rgba($primary, 0.25);
-
-}
-
-.btn-secondary:hover{
-    background-color: white;
-    color: $primary;
-    border-color: $primary; 
-}
-
-.btn-footer {
-  border-color:  rgba($secondary, 0.65);
+.btn-host {
   text-transform: uppercase;
   font-size: 14px;
   font-weight: bolder;
   background-color: white;
   border-color: $primary; 
+  border-width: revert;
   color: $primary;
   padding-top: 8px;
   padding-bottom: 8px;
   &:hover {
     background-color: rgb(white, 0.75);
-    color: rgb($primary, 0.75);
+    color: $primary;
+    border-color: white; 
   }
 }
 

@@ -137,7 +137,7 @@ public class SocketModule {
                         lobbyData.setEndVoteTime(0);
                     }
 
-                    if(lobbyData.getEndVoteTime() <= -10) { // Update this value if less or more of viewing time
+                    if(lobbyData.getEndVoteTime() <= -23) { // Update this value if less or more of viewing time
                         lobbyData.setCurrRound(lobbyData.getCurrRound() + 1);
 
                         if(lobbyData.getCurrRound() <= lobbyData.getNumRounds()) {

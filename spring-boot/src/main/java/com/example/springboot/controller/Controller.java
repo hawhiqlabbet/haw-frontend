@@ -478,6 +478,8 @@ public class Controller {
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "getGameDataSuccess","data", lobby, "gameData", gameData));
         }
+        System.err.println("Game Choice: " + gameChoice);
+        System.err.println("Lobby: " + lobby);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "GAME MODE DOES NOT EXIST"));
     }
 

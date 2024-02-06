@@ -16,7 +16,9 @@ jobs:
       - run: npm install
       - run: npm install -g @angular/cli > /dev/null
       - run: ng build
-      - run: ls /dist
+      - run: ls dist
+      - run: ls dist/angular-client
+
       - name: Push build to S3
         uses: sai-sharan/aws-s3-sync-action@master
         with:

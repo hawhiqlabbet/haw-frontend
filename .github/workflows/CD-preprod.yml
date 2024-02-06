@@ -17,7 +17,7 @@ jobs:
       - run: npm install -g @angular/cli > /dev/null
       - run: ng build
       - run: ls dist
-      - run: ls dist/angular-client
+      - run: mv dist/angular-client .
 
       - name: Push build to S3
         uses: sai-sharan/aws-s3-sync-action@master
@@ -25,7 +25,7 @@ jobs:
           access_key: ${{ secrets.ACCESS_KEY }}
           secret_access_key: ${{ secrets.SECRET_ACCESS_KEY }}
           region: "eu-north-1"
-          source: "dist"
+          source: "angular-client"
           destination_bucket: ${{ secrets.DESTINATION_BUCKET }}
           exclude: ".git/*"
           delete: true

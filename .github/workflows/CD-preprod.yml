@@ -15,8 +15,10 @@ jobs:
           node-version: 18
       - name: npm install
         run: npm install
-      - name: build for production
-        run: ng build
+
+      - run: npm install -g @angular/cli > /dev/null
+      - run: ng build --prod
+
       - name: Push build to S3
         uses: sai-sharan/aws-s3-sync-action@master
         with:

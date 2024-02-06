@@ -13,12 +13,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: npm install
-        run: npm install
-
+      - run: npm install
       - run: npm install -g @angular/cli > /dev/null
-      - run: ng build --prod
-
+      - run: ng build
       - name: Push build to S3
         uses: sai-sharan/aws-s3-sync-action@master
         with:

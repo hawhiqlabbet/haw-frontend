@@ -25,7 +25,7 @@ jobs:
           access_key: ${{ secrets.ACCESS_KEY }}
           secret_access_key: ${{ secrets.SECRET_ACCESS_KEY }}
           region: "eu-north-1"
-          source: "dist/angular-client"
+          source: "dist"
           destination_bucket: ${{ secrets.DESTINATION_BUCKET }}
           exclude: ".git/*"
           delete: true

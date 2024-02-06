@@ -4,10 +4,6 @@ export const environment = {
     apiUrl: 'http://4.225.66.54:8080',
     webSocketUrl: 'http://4.225.66.54:8085'
     */
-   /*
-    apiUrl: 'http://localhost:8080',
-    webSocketUrl: 'http://localhost:8085'
-    */
-    apiUrl:         'http://172.20.10.7:8080',
-    webSocketUrl:   'http://172.20.10.7:8085'
+    apiUrl:         'https://haw.api-preprod.hiqlabbet.com',
+    webSocketUrl:   'http://haw.api-preprod.hiqlabbet.com:8085'
 };

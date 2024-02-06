@@ -1,0 +1,32 @@
+name: Build and Deploy to preprod
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm install -g @angular/cli > /dev/null
+      - run: ng build
+      - run: ls dist
+      - run: mv dist/angular-client .
+
+      - name: Push build to S3
+        uses: sai-sharan/aws-s3-sync-action@master
+        with:
+          access_key: ${{ secrets.ACCESS_KEY }}
+          secret_access_key: ${{ secrets.SECRET_ACCESS_KEY }}
+          region: "eu-north-1"
+          source: "angular-client"
+          destination_bucket: ${{ secrets.DESTINATION_BUCKET }}
+          exclude: ".git/*"
+          delete: true
+          quiet: false
